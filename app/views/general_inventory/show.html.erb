@@ -1,0 +1,27 @@
+<%- model_class = GeneralInventory -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:gn_inventory_id) %>:</strong></dt>
+  <dd><%= @general_inventory.gn_inventory_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:rxcui) %>:</strong></dt>
+  <dd><%= @general_inventory.rxcui %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:lot_number) %>:</strong></dt>
+  <dd><%= @general_inventory.lot_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:expiration_date) %>:</strong></dt>
+  <dd><%= @general_inventory.expiration_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:current_stock) %>:</strong></dt>
+  <dd><%= @general_inventory.current_stock %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              general_inventories_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_general_inventory_path(@general_inventory), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              general_inventory_path(@general_inventory),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
