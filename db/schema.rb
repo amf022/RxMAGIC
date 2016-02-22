@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160219184137) do
+ActiveRecord::Schema.define(version: 20160221230053) do
 
   create_table "drug_thresholds", primary_key: "threshold_id", force: :cascade do |t|
     t.integer  "rxcui",      limit: 4
@@ -27,6 +27,14 @@ ActiveRecord::Schema.define(version: 20160219184137) do
     t.integer  "current_stock",   limit: 4,   default: 0
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+  end
+
+  create_table "news", primary_key: "news_id", force: :cascade do |t|
+    t.string   "message",    limit: 255
+    t.string   "type",       limit: 255
+    t.boolean  "resolved",   limit: 1,   default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   create_table "pap_inventories", primary_key: "pap_inventory_id", force: :cascade do |t|
