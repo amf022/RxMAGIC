@@ -4,7 +4,14 @@ class GeneralInventoryController < ApplicationController
   end
 
   def new
-    @general_inventory = GeneralInventory.new
+
+  end
+
+  def edit
+
+  end
+
+  def create
 
   end
 end

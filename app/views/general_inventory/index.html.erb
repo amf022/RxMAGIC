@@ -1,44 +1,84 @@
 <%- model_class = GeneralInventory -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:gn_inventory_id) %></th>
-      <th><%= model_class.human_attribute_name(:rxcui) %></th>
-      <th><%= model_class.human_attribute_name(:lot_number) %></th>
-      <th><%= model_class.human_attribute_name(:expiration_date) %></th>
-      <th><%= model_class.human_attribute_name(:current_stock) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% (@general_inventories || []).each do |general_inventory| %>
-      <tr>
-        <td><%= link_to general_inventory.id, general_inventory_path(general_inventory) %></td>
-        <td><%= general_inventory.gn_inventory_id %></td>
-        <td><%= general_inventory.rxcui %></td>
-        <td><%= general_inventory.lot_number %></td>
-        <td><%= general_inventory.expiration_date %></td>
-        <td><%= general_inventory.current_stock %></td>
-        <td><%=l general_inventory.created_at %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_general_inventory_path(general_inventory), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      general_inventory_path(general_inventory),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery.dataTables.min.js' %>
+<%= javascript_include_tag 'dataTables.bootstrap4.min.js' %>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_general_inventory_path,
-            :class => 'btn btn-primary' %>
+
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-12 col-sm-9">
+    <table id="example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th>Item Identifier</th>
+        <th>Lot Number</th>
+        <th>Received Quantity</th>
+        <th>Current Quantity</th>
+        <th>Date Received</th>
+        <th>Expiration Date</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+        <% (1..20).each do |item| %>
+            <tr>
+              <td>Paracetamol</td>
+              <td>GN-<%= "#{item}".rjust(5,"0") %></td>
+              <td><%= (0...5).map { (65 + rand(26)).chr }.join %></td>
+              <td><%= rand(20000) %></td>
+              <td><%= rand(20) %></td>
+              <td><%= Time.now.advance(:weeks => (rand(300)*-1)).strftime('%b-%d-%Y')%></td>
+              <td><%= Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y') %></td>
+              <td></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="col-xs-4 col-sm-3 sidebar-offcanvas" id="sidebar" >
+    <div class="panel panel-info" >
+      <div class="panel-heading">
+        <h3 style=" font-size: 20px;" class="panel-title">Stock Summary</h3>
+      </div>
+      <div class="panel-body">
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading">Items in Stock</h4>
+          <p class="list-group-item-text"> <%= 0 %></p>
+        </a>
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading">Under Stocked Items</h4>
+          <p class="list-group-item-text"> <%= 0 %></p>
+        </a>
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading">Items About to Expire</h4>
+          <p class="list-group-item-text"> <%= 0 %></p>
+        </a>
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading">Expired Items</h4>
+          <p class="list-group-item-text"> <%= 0 %></p>
+        </a>
+      </div>
+    </div>
+
+    <%= link_to "Add Item",
+                new_general_inventory_path,
+                :class => 'btn btn-lg btn-primary' %>
+  </div>
+</div><!--/.sidebar-offcanvas-->
+</div>
+
+<script type="text/javascript">
+
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+</script>

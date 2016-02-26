@@ -1,13 +1,13 @@
-<%= form_for @general_inventory, :html => { :class => "form-horizontal general_inventory" } do |f| %>
+<%= form_for :general_inventory, :html => { :class => "form-horizontal general_inventory" }, :url => general_inventory_index_path  do |f| %>
 
-  <% if @general_inventory.errors.any? %>
+  <% if (@general_inventory.blank? ? FALSE :  @general_inventory.errors.any?) %>
     <div id="error_expl" class="panel panel-danger">
       <div class="panel-heading">
         <h3 class="panel-title"><%= pluralize(@general_inventory.errors.count, "error") %> prohibited this general_inventory from being saved:</h3>
       </div>
       <div class="panel-body">
         <ul>
-        <% @general_inventory.errors.full_messages.each do |msg| %>
+        <% (@general_inventory.blank? ? [] : @general_inventory.errors.full_messages).each do |msg| %>
           <li><%= msg %></li>
         <% end %>
         </ul>
@@ -16,46 +16,39 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :gn_inventory_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :gn_inventory_id, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:gn_inventory_id) %>
-  </div>
-  <div class="form-group">
-    <%= f.label :rxcui, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :rxcui, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:rxcui) %>
+     <%= f.label :item, :class => 'control-label col-lg-2' %>
+     <div class="col-lg-4">
+       <%= f.text_field :item, :class => 'form-control' %>
+     </div>
+      <%#=f.error_span(:lot_number) %>
   </div>
   <div class="form-group">
     <%= f.label :lot_number, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
+    <div class="col-lg-4">
       <%= f.text_field :lot_number, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:lot_number) %>
+    <%#=f.error_span(:lot_number) %>
   </div>
   <div class="form-group">
     <%= f.label :expiration_date, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
+    <div class="col-lg-4">
       <%= f.text_field :expiration_date, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:expiration_date) %>
+    <%#=f.error_span(:expiration_date) %>
   </div>
   <div class="form-group">
-    <%= f.label :current_stock, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :current_stock, :class => 'form-control' %>
+    <%= f.label :received_quantity, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-4">
+      <%= f.text_field :received_quantity, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:current_stock) %>
+    <%#=f.error_span(:current_stock) %>
   </div>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= f.submit "Save", :class => 'btn btn-primary' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                general_inventories_path, :class => 'btn btn-default' %>
+                "/general_inventory", :class => 'btn btn-danger' %>
     </div>
   </div>
 
