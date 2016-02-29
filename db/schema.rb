@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20160226191550) do
   create_table "pap_inventories", primary_key: "pap_inventory_id", force: :cascade do |t|
     t.string   "rxaui",             limit: 255
     t.string   "lot_number",        limit: 255
+    t.integer  "pap_identifier",    limit: 4
     t.integer  "patient_id",        limit: 4
     t.date     "expiry_date"
     t.integer  "received_quantity", limit: 4,   default: 0
