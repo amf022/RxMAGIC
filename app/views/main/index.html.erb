@@ -1,10 +1,5 @@
 <style>
     .col-xs-6.col-lg-4{
-        border-width: 1px 0px 0px 0px;
-        border-color: silver;
-        border-style: solid;
-        padding: 5px;
-        margin: 5px;
     }
     img {
         height: 60px !important;
@@ -19,24 +14,52 @@
 
 <div class="row row-offcanvas row-offcanvas-right" style="margin-top: 20px;">
   <div class="col-xs-12 col-sm-9">
+
+
+    <h3 style=" font-size: 20px;" class="panel-title">Prescription Management </h3>
+    <hr style="border-color: black"/>
     <div class="row">
-      <div class="col-xs-6 col-lg-4">
-        <table cellpadding="5px">
-          <tr>
-            <td rowspan="2" style="padding: 10px;">
-                <img src="/assets/dispense.png" >
-            </td>
-            <td>
-              <a href="/prescription/" class="heading">Dispense</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-                Fulfil prescriptions that came through Epic.
-            </td>
-          </tr>
-        </table>
-      </div><!--/.col-xs-6.col-lg-4-->
+          <div class="col-xs-6 col-lg-4">
+            <table cellpadding="5px">
+              <tr>
+                <td rowspan="2" style="padding: 10px;">
+                  <img src="/assets/dispense.png" >
+                </td>
+                <td>
+                  <a href="/prescription/" class="heading">Dispense</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Fill prescriptions sent from Epic.
+                </td>
+              </tr>
+            </table>
+          </div><!--/.col-xs-6.col-lg-4-->
+          <div class="col-xs-6 col-lg-4">
+            <table>
+              <tr>
+                <td rowspan="2" style="padding: 10px;">
+                  <img src="/assets/refill.png" >
+                </td>
+                <td>
+                  <a class="heading">Re-fill</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Dispense medication with no prescriptions.
+                </td>
+              </tr>
+            </table>
+          </div><!--/.col-xs-6.col-lg-4-->
+        </div>
+    <br/><br/>
+
+    <h3 style=" font-size: 20px;" class="panel-title">Inventory Control</h3>
+    <hr style="border-color: black"/>
+
+    <div class="row">
       <div class="col-xs-6 col-lg-4">
         <table>
           <tr>
@@ -49,7 +72,7 @@
           </tr>
           <tr>
             <td>
-                Add and edit general inventory medicine.
+              Enter and manage general medications.
             </td>
           </tr>
         </table>
@@ -61,38 +84,22 @@
               <img src="/assets/pap_inventory.png" >
             </td>
             <td>
-              <a class="heading" href="/pap_inventory/">PAP Inventory</a>
+              <a class="heading" href="/pap_inventory/">PMAP Inventory</a>
             </td>
           </tr>
           <tr>
             <td>
-              Add and edit PAP inventory medicine.
+              Enter and manage PMAP medications.
             </td>
           </tr>
         </table>
       </div><!--/.col-xs-6.col-lg-4-->
+
       <div class="col-xs-6 col-lg-4">
         <table>
           <tr>
             <td rowspan="2" style="padding: 10px;">
-              <img src="/assets/refill.png" >
-            </td>
-            <td>
-              <a class="heading">Re-fill</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-                Dispense medicine to patients without prescriptions.
-            </td>
-          </tr>
-        </table>
-      </div><!--/.col-xs-6.col-lg-4-->
-      <div class="col-xs-6 col-lg-4">
-        <table>
-          <tr>
-            <td rowspan="2" style="padding: 10px;">
-              <img src="/assets/prescription_drugs.png" >
+              <img src="/assets/inventory_management.png" >
             </td>
             <td>
               <a class="heading">Inventory Management</a>
@@ -100,35 +107,40 @@
           </tr>
           <tr>
             <td>
-                Manage medicine thresholds.
-            </td>
-          </tr>
-        </table>
-      </div><!--/.col-xs-6.col-lg-4-->
-      <div class="col-xs-6 col-lg-4">
-        <table>
-          <tr>
-            <td rowspan="2" style="padding: 10px;">
-              <img src="/assets/report.png" >
-            </td>
-            <td>
-              <a class="heading">Reports</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-                View system reports.
+              Manage inventory thresholds for medication.
             </td>
           </tr>
         </table>
       </div><!--/.col-xs-6.col-lg-4-->
     </div><!--/row-->
+    <br/><br/>
+    <h3 style=" font-size: 20px;" class="panel-title">Documentation</h3>
+    <hr style="border-color: black"/>
+    <div class="row">
+          <div class="col-xs-6 col-lg-4">
+            <table>
+              <tr>
+                <td rowspan="2" style="padding: 10px;">
+                  <img src="/assets/report.png" >
+                </td>
+                <td>
+                  <a class="heading">Reports</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Manage pharmacy activity sheet
+                </td>
+              </tr>
+            </table>
+          </div><!--/.col-xs-6.col-lg-4-->
+        </div>
   </div><!--/.col-xs-12.col-sm-9-->
 
   <div class="col-xs-4 col-sm-3 sidebar-offcanvas" id="sidebar" >
     <div class="panel panel-primary" >
       <div class="panel-heading">
-        <h3 style=" font-size: 20px;" class="panel-title">News</h3>
+        <h3 style=" font-size: 20px;" class="panel-title">Alerts</h3>
       </div>
       <div class="panel-body">
         <%= render '/news/feed' %>
