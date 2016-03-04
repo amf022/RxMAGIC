@@ -9,16 +9,14 @@
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
-  <div class="col-xs-12 col-sm-9">
-    <table id="example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+  <div class="col-xs-12 col-sm-10">
+    <table id="generalInventory" class="table table-striped table-bordered" width="100%" cellspacing="0">
       <thead>
       <tr>
         <th>Item</th>
         <th>Item Identifier</th>
         <th>Lot Number</th>
-        <th>Received Quantity</th>
         <th>Current Quantity</th>
-        <th>Date Received</th>
         <th>Expiration Date</th>
         <th>Actions</th>
       </tr>
@@ -31,11 +29,13 @@
               <td><%= item.rxnconso.name.downcase.titleize %></td>
               <td><%= item.gn_identifier %></td>
               <td><%= item.lot_number %></td>
-              <td><%= item.received_quantity %></td>
               <td><%= item.current_quantity %></td>
-              <td><%= item.date_received.strftime('%b-%d-%Y')%></td>
               <td><%= item.expiration_date.strftime('%b-%d-%Y') %></td>
-              <td></td>
+              <td>
+
+                <img src="/assets/edit.png" title="Fill prescription">
+                <img src="/assets/delete.png" title="Cancel prescription">
+              </td>
             </tr>
         <% end %>
       </tbody>
@@ -43,7 +43,7 @@
   </div>
 
 
-  <div class="col-xs-4 col-sm-3 sidebar-offcanvas" id="sidebar" >
+  <div class="col-xs-3 col-sm-2 sidebar-offcanvas" id="sidebar" >
     <div class="panel panel-info" >
       <div class="panel-heading">
         <h3 style=" font-size: 20px;" class="panel-title">Stock Summary</h3>
@@ -68,17 +68,85 @@
       </div>
     </div>
 
-    <%= link_to "Add Item",
-                new_general_inventory_path,
-                :class => 'btn btn-lg btn-primary' %>
+    <a href="#" class="btn btn-lg btn-primary"
+       data-toggle="modal"
+       data-target="#basicModal">Add Item</a>
   </div>
 </div><!--/.sidebar-offcanvas-->
 </div>
 
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Item</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :general_inventory, :html => { :class => "form-horizontal general_inventory" }, :url => general_inventory_index_path  do |f| %>
+
+            <% if (@general_inventory.blank? ? FALSE :  @general_inventory.errors.any?) %>
+                <div id="error_expl" class="panel panel-danger">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><%= pluralize(@general_inventory.errors.count, "error") %> prohibited this general_inventory from being saved:</h3>
+                  </div>
+                  <div class="panel-body">
+                    <ul>
+                      <% (@general_inventory.blank? ? [] : @general_inventory.errors.full_messages).each do |msg| %>
+                          <li><%= msg %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+            <% end %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :item, :class => 'form-control' %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :lot_number, :class => 'form-control' %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :expiration_date, :class => 'form-control' %>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :quantity_received, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :quantity_received, :class => 'form-control' %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#example').DataTable();
+        $('#generalInventory').DataTable({"bLengthChange": false});
     } );
 </script>
