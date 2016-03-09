@@ -1,7 +1,6 @@
 <%- model_class = GeneralInventory -%>
 <%= javascript_include_tag 'jquery-1.12.0.min.js' %>
-<%= javascript_include_tag 'jquery.dataTables.min.js' %>
-<%= javascript_include_tag 'dataTables.bootstrap4.min.js' %>
+
 
 
 <div class="page-header">
@@ -117,7 +116,12 @@
             <div class="form-group">
               <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :expiration_date, :class => 'form-control' %>
+                <div class='input-group date' id='datetimepicker1'>
+                  <input name="expiration_date" type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
               </div>
               <%#=f.error_span(:expiration_date) %>
             </div>
@@ -129,14 +133,6 @@
               <%#=f.error_span(:current_stock) %>
             </div>
 
-            <div class="form-group">
-              <div id="dp3" class="input-append date" data-date-format="dd-mm-yyyy" data-date="12-02-2012">
-                <input class="span2" type="text" readonly="" value="12-02-2012" size="16">
-<span class="add-on">
-<i class="icon-calendar"></i>
-</span>
-              </div>
-            </div>
             <div class="form-group">
               <div class="col-lg-offset-7 col-lg-10">
                 <%= f.submit "Save", :class => 'btn btn-success' %>
@@ -157,4 +153,10 @@
     $(document).ready(function() {
         $('#generalInventory').DataTable({"bLengthChange": false});
     } );
+
+    // Date picker activation
+    $(function () {
+        $('#datetimepicker1').datetimepicker({format: 'MMM DD, YYYY'});
+    });
+
 </script>
