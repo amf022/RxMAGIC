@@ -1,7 +1,7 @@
 class CreateGeneralInventories < ActiveRecord::Migration
   def change
     create_table :general_inventories, :primary_key => :gn_inventory_id do |t|
-      t.integer :rxaui
+      t.string :rxaui
       t.string :gn_identifier
       t.string :lot_number
       t.date :expiration_date

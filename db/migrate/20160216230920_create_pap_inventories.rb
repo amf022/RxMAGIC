@@ -1,7 +1,7 @@
 class CreatePapInventories < ActiveRecord::Migration
   def change
     create_table :pap_inventories,  :primary_key => :pap_inventory_id do |t|
-    t.integer :rxaui
+    t.string :rxaui
     t.string :lot_number
     t.string :pap_identifier
     t.integer :patient_id

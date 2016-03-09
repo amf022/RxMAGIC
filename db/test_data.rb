@@ -96,29 +96,55 @@
   end
 
   def random_medicine_name
-    drugs = ['Hydrocodone',
-             'Lisinopril',
-             'Metoprolol',
-             'Simvastatin',
-             'Azithromycin',
-             'Metformin',
-             'Lipitor',
-             'Amlodipine',
-             'Amoxicillin',
-             'Hydrochlorothiazide',
-             'Omeprazole',
-             'Alprazolam',
-             'Furosemide',
-             'Atenolol',
-             'lyrica',
-             'ventolin',
-             'Atorvastatin']
+    drugs = ['Cardura 1 MG Oral Tablet',
+	           'Cardura 2 MG Oral Tablet',
+             'Zestril 5 MG Oral Tablet',
+             "Clozaril 25 MG Oral Tablet",
+             "Clozaril 100 MG Oral Tablet",
+             "Zofran 4 MG Oral Tablet",
+            "Zofran 8 MG Oral Tablet",
+            "Naprosyn 250 MG Oral Tablet",
+            "Naprosyn 500 MG Oral Tablet",
+            "Naprosyn 375 MG Oral Tablet",
+            "Topamax 50 MG Oral Tablet",
+            "Topamax 100 MG Oral Tablet",
+            "Topamax 200 MG Oral Tablet",
+            "Tenormin 50 MG Oral Tablet",
+            "acyclovir 400 MG Oral Tablet",
+            "acyclovir 800 MG Oral Tablet",
+            "albuterol 2 MG Oral Tablet",
+            "albuterol 4 MG Oral Tablet",
+            "dexamethasone 2 MG Oral Tablet",
+            "dexamethasone 4 MG Oral Tablet",
+            "dexamethasone 6 MG Oral Tablet",
+            "diazepam 10 MG Oral Tablet",
+            "diazepam 2 MG Oral Tablet",
+            "diazepam 5 MG Oral Tablet",
+            "fluconazole 100 MG Oral Tablet",
+            "fluconazole 150 MG Oral Tablet",
+            "fluconazole 200 MG Oral Tablet",
+            "fluconazole 50 MG Oral Tablet",
+            "ibuprofen 300 MG Oral Tablet",
+            "ibuprofen 400 MG Oral Tablet",
+            "ibuprofen 600 MG Oral Tablet",
+            "ibuprofen 800 MG Oral Tablet",
+            "lovastatin 10 MG Oral Tablet",
+            "lovastatin 20 MG Oral Tablet",
+            "lovastatin 40 MG Oral Tablet",
+            "aspirin 486 MG Oral Tablet",
+            "aspirin 500 MG Oral Tablet",
+            "aspirin 650 MG Oral Tablet",
+            "aspirin 80 MG Chewable Tablet",
+            "amoxicillin 500 MG Oral Tablet",
+            "amoxicillin 875 MG Oral Tablet",
+            "isoniazid 100 MG Oral Tablet",
+            'Cardura 4 MG Oral Tablet']
     return drugs[rand(drugs.length)]
   end
 
   def random_drug
     drug = random_medicine_name
-    return Rxnconso.where("STR = ? and SAB = ?", drug, 'RXNORM').first.RXAUI
+    return Rxnconso.where("STR = ?", drug).first.RXAUI
   end
 
   def random_first_name
