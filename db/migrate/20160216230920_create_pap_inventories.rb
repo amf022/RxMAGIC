@@ -10,7 +10,7 @@ class CreatePapInventories < ActiveRecord::Migration
     t.integer :current_quantity, :default => 0
     t.date :reorder_date
     t.date :date_received
-    t.boolean :voided
+    t.boolean :voided, :default => false
     t.string :void_reason
     t.timestamps null: false
     end

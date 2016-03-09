@@ -69,7 +69,8 @@
     new_prescription.provider_id = create_provider
     new_prescription.patient_id = patient_id
     new_prescription.rxaui = random_drug
-    new_prescription.drug_name = Rxnconso.where("RXAUI = ?",new_prescription.rxaui).first.STR
+    new_prescription.directions = random_directions
+    new_prescription.date_prescribed = Time.now.advance(:days => (rand(5)*-1)).strftime('%b-%d-%Y')
     new_prescription.quantity = ((rand(3) + 1 ) * 30)
     new_prescription.save
 
@@ -96,54 +97,13 @@
   end
 
   def random_medicine_name
-    drugs = ['Cardura 1 MG Oral Tablet',
-	           'Cardura 2 MG Oral Tablet',
-             'Zestril 5 MG Oral Tablet',
-             "Clozaril 25 MG Oral Tablet",
-             "Clozaril 100 MG Oral Tablet",
-             "Zofran 4 MG Oral Tablet",
-            "Zofran 8 MG Oral Tablet",
-            "Naprosyn 250 MG Oral Tablet",
-            "Naprosyn 500 MG Oral Tablet",
-            "Naprosyn 375 MG Oral Tablet",
-            "Topamax 50 MG Oral Tablet",
-            "Topamax 100 MG Oral Tablet",
-            "Topamax 200 MG Oral Tablet",
-            "Tenormin 50 MG Oral Tablet",
-            "acyclovir 400 MG Oral Tablet",
-            "acyclovir 800 MG Oral Tablet",
-            "albuterol 2 MG Oral Tablet",
-            "albuterol 4 MG Oral Tablet",
-            "dexamethasone 2 MG Oral Tablet",
-            "dexamethasone 4 MG Oral Tablet",
-            "dexamethasone 6 MG Oral Tablet",
-            "diazepam 10 MG Oral Tablet",
-            "diazepam 2 MG Oral Tablet",
-            "diazepam 5 MG Oral Tablet",
-            "fluconazole 100 MG Oral Tablet",
-            "fluconazole 150 MG Oral Tablet",
-            "fluconazole 200 MG Oral Tablet",
-            "fluconazole 50 MG Oral Tablet",
-            "ibuprofen 300 MG Oral Tablet",
-            "ibuprofen 400 MG Oral Tablet",
-            "ibuprofen 600 MG Oral Tablet",
-            "ibuprofen 800 MG Oral Tablet",
-            "lovastatin 10 MG Oral Tablet",
-            "lovastatin 20 MG Oral Tablet",
-            "lovastatin 40 MG Oral Tablet",
-            "aspirin 486 MG Oral Tablet",
-            "aspirin 500 MG Oral Tablet",
-            "aspirin 650 MG Oral Tablet",
-            "aspirin 80 MG Chewable Tablet",
-            "amoxicillin 500 MG Oral Tablet",
-            "amoxicillin 875 MG Oral Tablet",
-            "isoniazid 100 MG Oral Tablet",
-            'Cardura 4 MG Oral Tablet']
+    drugs = ["Cardura 1 MG Oral Tablet","Cardura 2 MG Oral Tablet","Cardura 4 MG Oral Tablet","Zestril 5 MG Oral Tablet","Clozaril 25 MG Oral Tablet","Clozaril 100 MG Oral Tablet","Zofran 4 MG Oral Tablet","Zofran 8 MG Oral Tablet","Naprosyn 250 MG Oral Tablet","Naprosyn 500 MG Oral Tablet","Naprosyn 375 MG Oral Tablet","Topamax 50 MG Oral Tablet","Topamax 100 MG Oral Tablet","Topamax 200 MG Oral Tablet","Tenormin 50 MG Oral Tablet","acyclovir 400 MG Oral Tablet","acyclovir 800 MG Oral Tablet","albuterol 2 MG Oral Tablet","albuterol 4 MG Oral Tablet","dexamethasone 2 MG Oral Tablet","dexamethasone 4 MG Oral Tablet","dexamethasone 6 MG Oral Tablet","diazepam 10 MG Oral Tablet","diazepam 2 MG Oral Tablet","diazepam 5 MG Oral Tablet","fluconazole 100 MG Oral Tablet","fluconazole 150 MG Oral Tablet","fluconazole 200 MG Oral Tablet","fluconazole 50 MG Oral Tablet","ibuprofen 400 MG Oral Tablet","ibuprofen 600 MG Oral Tablet","ibuprofen 800 MG Oral Tablet","lovastatin 10 MG Oral Tablet","lovastatin 20 MG Oral Tablet","lovastatin 40 MG Oral Tablet","aspirin 500 MG Oral Tablet","aspirin 650 MG Oral Tablet","amoxicillin 500 MG Oral Tablet","amoxicillin 875 MG Oral Tablet","isoniazid 100 MG Oral Tablet"]
     return drugs[rand(drugs.length)]
   end
 
   def random_drug
     drug = random_medicine_name
+
     return Rxnconso.where("STR = ?", drug).first.RXAUI
   end
 
@@ -174,6 +134,13 @@
   def random_city(state)
     rand_max = $states[state].length
     return $states[state[rand(rand_max)]]
+  end
+
+  def random_directions
+    directions = ['Take 2 tablets by mouth daily','Take 3 tablets by mouth daily','Take 1 tablet by mouth 3 times a day',
+                  'Take 1 tablet by mouth daily', 'Take 2 tablets by mouth 3 times a day']
+
+    return directions[rand(directions.length)]
   end
 
   start

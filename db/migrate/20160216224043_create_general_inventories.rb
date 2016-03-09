@@ -8,6 +8,7 @@ class CreateGeneralInventories < ActiveRecord::Migration
       t.date :date_received
       t.integer :received_quantity, :default => 0
       t.integer :current_quantity, :default => 0
+      t.boolean :voided, :default => false
       t.timestamps null: false
     end
   end
