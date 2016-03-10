@@ -1,7 +1,7 @@
 <%- model_class = GeneralInventory -%>
 <%= javascript_include_tag 'jquery-1.12.0.min.js' %>
-
-
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
@@ -32,8 +32,8 @@
               <td><%= item.expiration_date.strftime('%b-%d-%Y') %></td>
               <td>
 
-                <img src="/assets/edit.png" title="Fill prescription">
-                <img src="/assets/delete.png" title="Cancel prescription">
+                <img src="/assets/edit.png" title="Edit Item">
+                <img src="/assets/delete.png" title="Void Item">
               </td>
             </tr>
         <% end %>
@@ -102,14 +102,14 @@
             <div class="form-group">
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :item, :class => 'form-control' %>
+                <input type="text" name="item" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
             <div class="form-group">
               <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :lot_number, :class => 'form-control' %>
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number' %>
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -117,7 +117,7 @@
               <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker1'>
-                  <input name="expiration_date" type='text' class="form-control" />
+                  <input name="expiration_date" type='text' placeholder="Expiry date" class="form-control" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -128,7 +128,7 @@
             <div class="form-group">
               <%= f.label :quantity_received, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :quantity_received, :class => 'form-control' %>
+                <%= f.text_field :quantity_received,:placeholder => "Quantity received" ,:class => 'form-control' %>
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
@@ -158,5 +158,12 @@
     $(function () {
         $('#datetimepicker1').datetimepicker({format: 'MMM DD, YYYY'});
     });
+
+    var drugNames = ["Cardura 1 MG Oral Tablet","Cardura 2 MG Oral Tablet","Cardura 4 MG Oral Tablet","Zestril 5 MG Oral Tablet","Clozaril 25 MG Oral Tablet","Clozaril 100 MG Oral Tablet","Zofran 4 MG Oral Tablet","Zofran 8 MG Oral Tablet","Naprosyn 250 MG Oral Tablet","Naprosyn 500 MG Oral Tablet","Naprosyn 375 MG Oral Tablet","Topamax 50 MG Oral Tablet","Topamax 100 MG Oral Tablet","Topamax 200 MG Oral Tablet","Tenormin 50 MG Oral Tablet","acyclovir 400 MG Oral Tablet","acyclovir 800 MG Oral Tablet","albuterol 2 MG Oral Tablet","albuterol 4 MG Oral Tablet","dexamethasone 2 MG Oral Tablet","dexamethasone 4 MG Oral Tablet","dexamethasone 6 MG Oral Tablet","diazepam 10 MG Oral Tablet","diazepam 2 MG Oral Tablet","diazepam 5 MG Oral Tablet","fluconazole 100 MG Oral Tablet","fluconazole 150 MG Oral Tablet","fluconazole 200 MG Oral Tablet","fluconazole 50 MG Oral Tablet","ibuprofen 400 MG Oral Tablet","ibuprofen 600 MG Oral Tablet","ibuprofen 800 MG Oral Tablet","lovastatin 10 MG Oral Tablet","lovastatin 20 MG Oral Tablet","lovastatin 40 MG Oral Tablet","aspirin 500 MG Oral Tablet","aspirin 650 MG Oral Tablet","amoxicillin 500 MG Oral Tablet","amoxicillin 875 MG Oral Tablet","isoniazid 100 MG Oral Tablet"];
+    $( "#drugName" ).autocomplete({
+        source: "/suggestions",
+        minLength: 2
+    });
+
 
 </script>
