@@ -102,7 +102,7 @@
             <div class="form-group">
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <input type="text" name="item" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' >
+                <input type="text" name="general_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -117,7 +117,7 @@
               <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker1'>
-                  <input name="expiration_date" type='text' placeholder="Expiry date" class="form-control" />
+                  <input name="general_inventory[expiration_date]" type='text' placeholder="Expiry date" class="form-control" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>

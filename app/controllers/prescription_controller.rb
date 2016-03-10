@@ -11,4 +11,30 @@ class PrescriptionController < ApplicationController
 
   def delete
   end
+
+  def dispense
+
+    #First we check which inventory we are dispensing from
+    bottle = params[:bottl_id].match(/gn/i)? "General" : "PMAP"
+
+    #Dispense according to inventory while paying attention to possible race conditions
+    case bottle
+      when "PMAP"
+        PapInventory.transaction do
+          item = PapInventory.where("pap_identifier = ? ", params[:bottle_id]).lock(true).first
+          item.current_quantity -= params[:quantity]
+          item.save
+        end
+        break
+
+      when "General"
+        GeneralInventory.transaction do
+          item = GeneralInventory.where("gn_identifier = ? ", params[:bottle_id]).lock(true).first
+          item.current_quantity -= params[:quantity]
+          item.save
+        end
+        break
+    end
+
+  end
 end
