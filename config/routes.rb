@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get "/suggestions" => "rxnconso#suggestions"
 
+  get "/void_prescriptions/:id" => "prescription#destroy"
 
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
 

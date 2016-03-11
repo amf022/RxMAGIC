@@ -1,6 +1,6 @@
 class PrescriptionController < ApplicationController
   def index
-    @prescriptions = Prescription.order(created_at: :asc)
+    @prescriptions = Prescription.where("voided = ? ", false).order(created_at: :asc)
   end
 
   def show
@@ -9,7 +9,10 @@ class PrescriptionController < ApplicationController
   def edit
   end
 
-  def delete
+  def destroy
+    prescription = Prescription.find(params[:id])
+    prescription.update_attributes(:voided => true)
+    redirect_to "/prescription"
   end
 
   def dispense
