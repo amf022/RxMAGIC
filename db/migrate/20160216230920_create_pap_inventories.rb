@@ -5,7 +5,7 @@ class CreatePapInventories < ActiveRecord::Migration
     t.string :lot_number
     t.string :pap_identifier
     t.integer :patient_id
-    t.date :expiry_date
+    t.date :expiration_date
     t.integer :received_quantity, :default => 0
     t.integer :current_quantity, :default => 0
     t.date :reorder_date

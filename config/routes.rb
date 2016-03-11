@@ -7,6 +7,9 @@ Rails.application.routes.draw do
 
   get "/suggestions" => "rxnconso#suggestions"
 
+
+  get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
+
   resources :general_inventory
   resources :pap_inventory
   resources :drug_threshold

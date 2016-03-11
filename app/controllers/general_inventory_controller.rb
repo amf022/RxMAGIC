@@ -26,12 +26,13 @@ class GeneralInventoryController < ApplicationController
       @new_stock_entry.save
     end
 
-    flash[:errors] = @new_stock_entry.errors
-
-
-    redirect_to "/general_inventory"
-
-
+    if @new_stock_entry.errors.blank?
+      #print barcode for new bottles
+      print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.gn_identifier}", "/general_inventory")
+    else
+      flash[:errors] = @new_stock_entry.errors
+      redirect_to "/general_inventory"
+    end
 
   end
 

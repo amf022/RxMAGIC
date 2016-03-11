@@ -3,8 +3,8 @@
 <%= javascript_include_tag 'jquery-ui.min.js' %>
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h3><%=t '.title', :default => model_class.model_name.human.titleize %></h3>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
@@ -13,11 +13,11 @@
       <thead>
       <tr>
         <th>Item</th>
-        <th>Item Identifier</th>
-        <th>Lot Number</th>
-        <th>Current Quantity</th>
-        <th>Expiration Date</th>
-        <th>Actions</th>
+        <th style="width: 15%;">Item Identifier</th>
+        <th style="width: 10%;">Lot Number</th>
+        <th style="width: 10%;">Current Quantity</th>
+        <th style="width: 10%;">Expiration Date</th>
+        <th style="width: 15%;">Actions</th>
       </tr>
       </thead>
 
@@ -33,6 +33,7 @@
               <td>
 
                 <img src="/assets/edit.png" title="Edit Item">
+                <img src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
                 <img src="/assets/delete.png" title="Void Item">
               </td>
             </tr>
@@ -94,7 +95,7 @@
             <div class="form-group">
               <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number', :required => true %>
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number',:autocomplete=> 'off', :required => true %>
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -102,7 +103,7 @@
               <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker1'>
-                  <input name="general_inventory[expiration_date]" type='text' placeholder="Expiry date" class="form-control" required/>
+                  <input name="general_inventory[expiration_date]" type='text' placeholder="Expiry date" class="form-control" autocomplete="off" required/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -113,7 +114,7 @@
             <div class="form-group">
               <%= f.label :received_quantity, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control', :required => true %>
+                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
@@ -133,34 +134,41 @@
   </div>
 </div>
 
-<% if !flash[:errors].blank? %>
+<% if !flash[:errors].blank? || !flash[:success].blank? %>
 
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" >
+    <div class="modal show" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-            <div id="error_expl" class="panel panel-danger">
+            <% if !flash[:errors].blank? %>
+                <div id="error_expl" class="panel panel-danger">
               <div class="panel-heading">
                 <h3 class="panel-title">Entry could not be saved due to :</h3>
               </div>
               <div class="panel-body">
                 <ul>
                   <% flash[:errors].keys.each do |attribute| %>
-                          <% flash[:errors][attribute].each do |msg| %>
+                          <% flash[:errors][attribute].uniq.each do |msg| %>
                                   <li><%= attribute.gsub('_', ' ') %> <%= msg %></li>
                               <% end %>
                   <% end %>
                 </ul>
               </div>
             </div>
+            <% else %>
+                <div class="alert alert-success" role="alert">
+                 <strong><%= flash[:success] %></strong>
+                </div>
+            <% end %>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" onclick = "$('#errorModal').removeClass('show')">Close</button>
           </div>
         </div>
       </div>
     </div>
 <% end %>
+
 
 <script type="text/javascript">
 
@@ -179,8 +187,5 @@
         source: "/suggestions",
         minLength: 2
     });
-
-
-
 
 </script>
