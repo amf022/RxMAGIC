@@ -33,7 +33,7 @@
             <td>
               <img src="/assets/edit.png" title="Edit Item">
               <img src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.pap_identifier %>'" title="Print Barcode">
-              <img src="/assets/delete.png" title="Void Item">
+              <a href="#" data-href="/void_pap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
             </td>
           </tr>
       <% end %>
@@ -74,10 +74,66 @@
 </div><!--/.sidebar-offcanvas-->
 </div>
 
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title">Delete Item from Inventory</h3>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <a class="btn btn-danger btn-ok" id="btnYes">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if !flash[:errors].blank? || !flash[:success].blank? %>
+
+    <div class="modal show" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <% if !flash[:errors].blank? %>
+                <div id="error_expl" class="panel panel-danger">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Entry could not be saved due to :</h3>
+                  </div>
+                  <div class="panel-body">
+                    <ul>
+                      <% flash[:errors].keys.each do |attribute| %>
+                          <% flash[:errors][attribute].uniq.each do |msg| %>
+                              <li><%= attribute.gsub('_', ' ') %> <%= msg %></li>
+                          <% end %>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+            <% else %>
+                <div class="alert alert-success" role="alert">
+                  <strong><%= flash[:success] %></strong>
+                </div>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" onclick = "$('#errorModal').removeClass('show')">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <script type="text/javascript">
 
     // Styling the table with datatables library
     $(document).ready(function() {
         $('#example').DataTable({"bLengthChange": false});
     } );
+
+    $('.delete').on('click', function(e) {
+        $('#btnYes').attr('href',$(this).data('href'));
+    });
 </script>
