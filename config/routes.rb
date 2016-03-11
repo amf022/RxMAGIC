@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 
   get "/void_prescriptions/:id" => "prescription#destroy"
 
+  get "/void_general_inventory/:id" => "general_inventory#destroy"
+
+  get "/void_pap_inventory/:id" => "pap_inventory#destroy"
+
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
 
   resources :general_inventory

@@ -1,6 +1,6 @@
 class GeneralInventoryController < ApplicationController
   def index
-    @inventory = GeneralInventory.where("current_quantity > 0").order(date_received: :asc)
+    @inventory = GeneralInventory.where("current_quantity > 0 and voided = ?", false).order(date_received: :asc)
   end
 
   def new
@@ -9,6 +9,15 @@ class GeneralInventoryController < ApplicationController
 
   def edit
 
+  end
+
+  def destroy
+    #Delete an item from general inventory
+
+    item = GeneralInventory.find_by_gn_identifier(params[:id])
+    item.update_attributes(:voided => true)
+    flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully deleted."
+    redirect_to "/general_inventory"
   end
 
   def create
