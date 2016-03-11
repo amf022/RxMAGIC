@@ -1,10 +1,8 @@
 <%= javascript_include_tag 'jquery-1.12.0.min.js' %>
-<%= javascript_include_tag 'jquery.dataTables.min.js' %>
-<%= javascript_include_tag 'dataTables.bootstrap4.min.js' %>
 
 
-<div class="page-header">
-  <h1><%=t '.title', :default => "Current Prescriptions" %></h1>
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h3><%=t '.title', :default => "Current Prescriptions" %></h3>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
@@ -14,10 +12,10 @@
       <tr>
         <th>Patient</th>
         <th>Item</th>
-        <th>Quantity</th>
+        <th style="width: 7.5%;">Quantity</th>
         <th>Directions</th>
         <th>Provider</th>
-        <th>Actions</th>
+        <th style="width: 7.5%;">Actions</th>
       </tr>
       </thead>
 
@@ -27,10 +25,13 @@
           <tr>
             <td><%= prescription.patient_name %></td>
             <td><%= prescription.rxnconso.name.downcase.titleize %></td>
-            <td><%= prescription.quantity %></td>
-            <td><%= " " %></td>
+            <td style="text-align: center"><%= prescription.quantity %></td>
+            <td><%= prescription.directions %></td>
             <td><%= prescription.prescribed_by %></td>
-            <td></td>
+            <td>
+              <img src="/assets/delete.png" title="Void Item">
+              <img src="/assets/dispense_small.png" title="Fill prescription">
+            </td>
           </tr>
       <% end %>
       </tbody>
@@ -43,6 +44,6 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#example').DataTable();
+        $('#example').DataTable({"bLengthChange": false});
     } );
 </script>

@@ -25,7 +25,7 @@ class PrescriptionController < ApplicationController
           item.current_quantity -= params[:quantity]
           item.save
         end
-        break
+
 
       when "General"
         GeneralInventory.transaction do
@@ -33,7 +33,7 @@ class PrescriptionController < ApplicationController
           item.current_quantity -= params[:quantity]
           item.save
         end
-        break
+
     end
 
   end
