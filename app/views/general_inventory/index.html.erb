@@ -15,8 +15,8 @@
         <th>Item</th>
         <th style="width: 15%;">Item Identifier</th>
         <th style="width: 10%;">Lot Number</th>
-        <th style="width: 10%;">Current Quantity</th>
-        <th style="width: 10%;">Expiration Date</th>
+        <th style="width: 7.5%;">Current Quantity</th>
+        <th style="width: 7.5%;">Expiration Date</th>
         <th style="width: 15%;">Actions</th>
       </tr>
       </thead>
@@ -29,7 +29,7 @@
               <td><%= item.gn_identifier %></td>
               <td><%= item.lot_number %></td>
               <td><%= item.current_quantity %></td>
-              <td><%= item.expiration_date.strftime('%b-%d-%Y') %></td>
+              <td><%= item.expiration_date.strftime('%b/%y') %></td>
               <td>
 
                 <img src="/assets/edit.png" title="Edit Item">

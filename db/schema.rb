@@ -11,7 +11,74 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226191550) do
+ActiveRecord::Schema.define(version: 20160311194259) do
+
+  create_table "RXNCONSO", id: false, force: :cascade do |t|
+    t.string "RXCUI",    limit: 8,                    null: false
+    t.string "LAT",      limit: 3,    default: "ENG", null: false
+    t.string "TS",       limit: 1
+    t.string "LUI",      limit: 8
+    t.string "STT",      limit: 3
+    t.string "SUI",      limit: 8
+    t.string "ISPREF",   limit: 1
+    t.string "RXAUI",    limit: 8,                    null: false
+    t.string "SAUI",     limit: 50
+    t.string "SCUI",     limit: 50
+    t.string "SDUI",     limit: 50
+    t.string "SAB",      limit: 20,                   null: false
+    t.string "TTY",      limit: 20,                   null: false
+    t.string "CODE",     limit: 50,                   null: false
+    t.string "STR",      limit: 3000,                 null: false
+    t.string "SRL",      limit: 10
+    t.string "SUPPRESS", limit: 1
+    t.string "CVF",      limit: 50
+  end
+
+  create_table "RXNREL", id: false, force: :cascade do |t|
+    t.string "RXCUI1",   limit: 8
+    t.string "RXAUI1",   limit: 8
+    t.string "STYPE1",   limit: 50
+    t.string "REL",      limit: 4
+    t.string "RXCUI2",   limit: 8
+    t.string "RXAUI2",   limit: 8
+    t.string "STYPE2",   limit: 50
+    t.string "RELA",     limit: 100
+    t.string "RUI",      limit: 10
+    t.string "SRUI",     limit: 50
+    t.string "SAB",      limit: 20,   null: false
+    t.string "SL",       limit: 1000
+    t.string "DIR",      limit: 1
+    t.string "RG",       limit: 10
+    t.string "SUPPRESS", limit: 1
+    t.string "CVF",      limit: 50
+  end
+
+  create_table "RXNSAT", id: false, force: :cascade do |t|
+    t.string "RXCUI",    limit: 8
+    t.string "LUI",      limit: 8
+    t.string "SUI",      limit: 8
+    t.string "RXAUI",    limit: 8
+    t.string "STYPE",    limit: 50
+    t.string "CODE",     limit: 50
+    t.string "ATUI",     limit: 11
+    t.string "SATUI",    limit: 50
+    t.string "ATN",      limit: 1000, null: false
+    t.string "SAB",      limit: 20,   null: false
+    t.string "ATV",      limit: 4000
+    t.string "SUPPRESS", limit: 1
+    t.string "CVF",      limit: 50
+  end
+
+  create_table "dispensations", primary_key: "dispensation_id", force: :cascade do |t|
+    t.integer  "rx_id",             limit: 4
+    t.string   "inventory_id",      limit: 255
+    t.integer  "patient_id",        limit: 4
+    t.integer  "quantity",          limit: 4
+    t.datetime "dispensation_date"
+    t.boolean  "voided",            limit: 1,   default: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
 
   create_table "drug_thresholds", primary_key: "threshold_id", force: :cascade do |t|
     t.string   "rxaui",      limit: 255
@@ -46,7 +113,7 @@ ActiveRecord::Schema.define(version: 20160226191550) do
     t.string   "lot_number",        limit: 255
     t.string   "pap_identifier",    limit: 255
     t.integer  "patient_id",        limit: 4
-    t.date     "expiry_date"
+    t.date     "expiration_date"
     t.integer  "received_quantity", limit: 4,   default: 0
     t.integer  "current_quantity",  limit: 4,   default: 0
     t.date     "reorder_date"

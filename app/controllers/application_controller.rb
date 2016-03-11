@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def print_and_redirect(print_url, redirect_url, message = "Printing label ...", show_next_button = false, patient_id = nil)
+    #Function handles redirects when printing labels
     @print_url = print_url
     @redirect_url = redirect_url
     @message = message
