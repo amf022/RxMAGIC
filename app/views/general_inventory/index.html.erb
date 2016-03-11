@@ -84,32 +84,17 @@
       <div class="modal-body">
         <%= form_for :general_inventory, :html => { :class => "form-horizontal general_inventory" }, :url => general_inventory_index_path  do |f| %>
 
-            <% if (@general_inventory.blank? ? FALSE :  @general_inventory.errors.any?) %>
-                <div id="error_expl" class="panel panel-danger">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><%= pluralize(@general_inventory.errors.count, "error") %> prohibited this general_inventory from being saved:</h3>
-                  </div>
-                  <div class="panel-body">
-                    <ul>
-                      <% (@general_inventory.blank? ? [] : @general_inventory.errors.full_messages).each do |msg| %>
-                          <li><%= msg %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                </div>
-            <% end %>
-
             <div class="form-group">
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <input type="text" name="general_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' >
+                <input type="text" name="general_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' required >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
             <div class="form-group">
               <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number' %>
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number', :required => true %>
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -117,7 +102,7 @@
               <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker1'>
-                  <input name="general_inventory[expiration_date]" type='text' placeholder="Expiry date" class="form-control" />
+                  <input name="general_inventory[expiration_date]" type='text' placeholder="Expiry date" class="form-control" required/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -126,9 +111,9 @@
               <%#=f.error_span(:expiration_date) %>
             </div>
             <div class="form-group">
-              <%= f.label :quantity_received, :class => 'control-label col-lg-4' %>
+              <%= f.label :received_quantity, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :quantity_received,:placeholder => "Quantity received" ,:class => 'form-control' %>
+                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control', :required => true %>
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
@@ -147,6 +132,36 @@
     </div>
   </div>
 </div>
+
+<% if !flash[:errors].blank? %>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div id="error_expl" class="panel panel-danger">
+              <div class="panel-heading">
+                <h3 class="panel-title">Entry could not be saved due to :</h3>
+              </div>
+              <div class="panel-body">
+                <ul>
+                  <% flash[:errors].keys.each do |attribute| %>
+                          <% flash[:errors][attribute].each do |msg| %>
+                                  <li><%= attribute.gsub('_', ' ') %> <%= msg %></li>
+                              <% end %>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <script type="text/javascript">
 
     // Styling the table with datatables library
@@ -156,14 +171,16 @@
 
     // Date picker activation
     $(function () {
-        $('#datetimepicker1').datetimepicker({format: 'MMM DD, YYYY'});
+        $('#datetimepicker1').datetimepicker({format: 'MMM YYYY'});
     });
 
-    var drugNames = ["Cardura 1 MG Oral Tablet","Cardura 2 MG Oral Tablet","Cardura 4 MG Oral Tablet","Zestril 5 MG Oral Tablet","Clozaril 25 MG Oral Tablet","Clozaril 100 MG Oral Tablet","Zofran 4 MG Oral Tablet","Zofran 8 MG Oral Tablet","Naprosyn 250 MG Oral Tablet","Naprosyn 500 MG Oral Tablet","Naprosyn 375 MG Oral Tablet","Topamax 50 MG Oral Tablet","Topamax 100 MG Oral Tablet","Topamax 200 MG Oral Tablet","Tenormin 50 MG Oral Tablet","acyclovir 400 MG Oral Tablet","acyclovir 800 MG Oral Tablet","albuterol 2 MG Oral Tablet","albuterol 4 MG Oral Tablet","dexamethasone 2 MG Oral Tablet","dexamethasone 4 MG Oral Tablet","dexamethasone 6 MG Oral Tablet","diazepam 10 MG Oral Tablet","diazepam 2 MG Oral Tablet","diazepam 5 MG Oral Tablet","fluconazole 100 MG Oral Tablet","fluconazole 150 MG Oral Tablet","fluconazole 200 MG Oral Tablet","fluconazole 50 MG Oral Tablet","ibuprofen 400 MG Oral Tablet","ibuprofen 600 MG Oral Tablet","ibuprofen 800 MG Oral Tablet","lovastatin 10 MG Oral Tablet","lovastatin 20 MG Oral Tablet","lovastatin 40 MG Oral Tablet","aspirin 500 MG Oral Tablet","aspirin 650 MG Oral Tablet","amoxicillin 500 MG Oral Tablet","amoxicillin 875 MG Oral Tablet","isoniazid 100 MG Oral Tablet"];
+
     $( "#drugName" ).autocomplete({
         source: "/suggestions",
         minLength: 2
     });
+
+
 
 
 </script>
