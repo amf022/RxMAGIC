@@ -5,9 +5,13 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'main#index'
 
+
+  get '/dashboard' => "main#dashboard"
+
   get "/suggestions" => "rxnconso#suggestions"
 
   get "/void_prescriptions/:id" => "prescription#destroy"
+  get "/prescriptions" => "prescription#ajax_prescriptions"
 
   get "/void_general_inventory/:id" => "general_inventory#destroy"
 

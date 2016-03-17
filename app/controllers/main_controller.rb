@@ -5,4 +5,9 @@ class MainController < ApplicationController
 
   end
 
+  def dashboard
+    #This is the function that handles the dashboard page
+    render :layout => false
+  end
+
 end

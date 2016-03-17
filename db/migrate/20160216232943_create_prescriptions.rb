@@ -3,7 +3,7 @@ class CreatePrescriptions < ActiveRecord::Migration
     create_table :prescriptions, :primary_key => :rx_id do |t|
       t.integer :patient_id
       t.string :rxaui
-      t.date :date_prescribed
+      t.datetime :date_prescribed
       t.integer :quantity
       t.string :directions
       t.integer :provider_id
