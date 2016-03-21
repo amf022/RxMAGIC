@@ -1,0 +1,1079 @@
+<channel version="3.3.0">
+  <id>82094a52-cf61-48ad-88e3-df918c46c84b</id>
+  <nextMetaDataId>2</nextMetaDataId>
+  <name>epic_rxmagic_feed</name>
+  <description></description>
+  <enabled>true</enabled>
+  <lastModified>
+    <time>1458580850372</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>1</revision>
+  <sourceConnector version="3.3.0">
+    <metaDataId>0</metaDataId>
+    <name>sourceConnector</name>
+    <properties class="com.mirth.connect.connectors.http.HttpReceiverProperties" version="3.3.0">
+      <pluginProperties/>
+      <listenerConnectorProperties version="3.3.0">
+        <host>0.0.0.0</host>
+        <port>3006</port>
+      </listenerConnectorProperties>
+      <sourceConnectorProperties version="3.3.0">
+        <responseVariable>None</responseVariable>
+        <respondAfterProcessing>true</respondAfterProcessing>
+        <processBatch>false</processBatch>
+        <firstResponse>false</firstResponse>
+        <resourceIds class="singleton-set">
+          <string>Default Resource</string>
+        </resourceIds>
+      </sourceConnectorProperties>
+      <xmlBody>false</xmlBody>
+      <parseMultipart>true</parseMultipart>
+      <includeMetadata>false</includeMetadata>
+      <binaryMimeTypes>application/.*(?&lt;!json|xml)$|image/.*|video/.*|audio/.*</binaryMimeTypes>
+      <binaryMimeTypesRegex>true</binaryMimeTypesRegex>
+      <responseContentType>text/plain</responseContentType>
+      <responseDataTypeBinary>false</responseDataTypeBinary>
+      <responseStatusCode></responseStatusCode>
+      <responseHeaders class="linked-hash-map"/>
+      <charset>UTF-8</charset>
+      <contextPath>epic_provider</contextPath>
+      <timeout>0</timeout>
+      <staticResources/>
+    </properties>
+    <transformer version="3.3.0">
+      <steps/>
+      <inboundDataType>HL7V2</inboundDataType>
+      <outboundDataType>HL7V2</outboundDataType>
+      <inboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.3.0">
+        <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.3.0">
+          <handleRepetitions>true</handleRepetitions>
+          <handleSubcomponents>true</handleSubcomponents>
+          <useStrictParser>false</useStrictParser>
+          <useStrictValidation>false</useStrictValidation>
+          <stripNamespaces>true</stripNamespaces>
+          <segmentDelimiter>\r</segmentDelimiter>
+          <convertLineBreaks>true</convertLineBreaks>
+        </serializationProperties>
+        <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.3.0">
+          <useStrictParser>false</useStrictParser>
+          <useStrictValidation>false</useStrictValidation>
+          <segmentDelimiter>\r</segmentDelimiter>
+        </deserializationProperties>
+        <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.3.0">
+          <splitType>MSH_Segment</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+        <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.3.0">
+          <segmentDelimiter>\r</segmentDelimiter>
+          <successfulACKCode>AA</successfulACKCode>
+          <successfulACKMessage></successfulACKMessage>
+          <errorACKCode>AE</errorACKCode>
+          <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+          <rejectedACKCode>AR</rejectedACKCode>
+          <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+          <msh15ACKAccept>false</msh15ACKAccept>
+          <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+        </responseGenerationProperties>
+        <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.3.0">
+          <successfulACKCode>AA,CA</successfulACKCode>
+          <errorACKCode>AE,CE</errorACKCode>
+          <rejectedACKCode>AR,CR</rejectedACKCode>
+          <validateMessageControlId>true</validateMessageControlId>
+          <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+          <originalIdMapVariable></originalIdMapVariable>
+        </responseValidationProperties>
+      </inboundProperties>
+      <outboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.3.0">
+        <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.3.0">
+          <handleRepetitions>true</handleRepetitions>
+          <handleSubcomponents>true</handleSubcomponents>
+          <useStrictParser>false</useStrictParser>
+          <useStrictValidation>false</useStrictValidation>
+          <stripNamespaces>true</stripNamespaces>
+          <segmentDelimiter>\r</segmentDelimiter>
+          <convertLineBreaks>true</convertLineBreaks>
+        </serializationProperties>
+        <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.3.0">
+          <useStrictParser>false</useStrictParser>
+          <useStrictValidation>false</useStrictValidation>
+          <segmentDelimiter>\r</segmentDelimiter>
+        </deserializationProperties>
+        <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.3.0">
+          <splitType>MSH_Segment</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+        <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.3.0">
+          <segmentDelimiter>\r</segmentDelimiter>
+          <successfulACKCode>AA</successfulACKCode>
+          <successfulACKMessage></successfulACKMessage>
+          <errorACKCode>AE</errorACKCode>
+          <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+          <rejectedACKCode>AR</rejectedACKCode>
+          <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+          <msh15ACKAccept>false</msh15ACKAccept>
+          <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+        </responseGenerationProperties>
+        <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.3.0">
+          <successfulACKCode>AA,CA</successfulACKCode>
+          <errorACKCode>AE,CE</errorACKCode>
+          <rejectedACKCode>AR,CR</rejectedACKCode>
+          <validateMessageControlId>true</validateMessageControlId>
+          <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+          <originalIdMapVariable></originalIdMapVariable>
+        </responseValidationProperties>
+      </outboundProperties>
+    </transformer>
+    <filter version="3.3.0">
+      <rules/>
+    </filter>
+    <transportName>HTTP Listener</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <waitForPrevious>true</waitForPrevious>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector version="3.3.0">
+      <metaDataId>1</metaDataId>
+      <name>rxmagic_database_writer</name>
+      <properties class="com.mirth.connect.connectors.jdbc.DatabaseDispatcherProperties" version="3.3.0">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.3.0">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="singleton-set">
+            <string>Default Resource</string>
+          </resourceIds>
+        </destinationConnectorProperties>
+        <driver>com.mysql.jdbc.Driver</driver>
+        <url>jdbc:mysql://localhost:3306/rxmagic_dev</url>
+        <username>root</username>
+        <password>rootpwd</password>
+        <query>var dbConn;
+
+try {
+	dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;com.mysql.jdbc.Driver&apos;,&apos;jdbc:mysql://localhost:3306/rxmagic_dev&apos;,&apos;root&apos;,&apos;rootpwd&apos;);
+
+} finally {
+	if (dbConn) { 
+
+		var sql = &quot;CALL `proc_insert_epic_prescriptions`( &apos;&quot; + $(&apos;provider_first_name&apos;).trim() +&quot;&apos;,&apos;&quot; + $(&apos;provider_last_name&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_first_name&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_last_name&apos;).trim() +&quot;&apos;,&apos;&quot;+$(&apos;patient_epic_id&apos;).trim()+&quot;&apos;,&apos;&quot;+ $(&apos;patient_gender&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_dob&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_address&apos;).trim() +&quot;&apos;,&apos;&quot;+$(&apos;patient_city&apos;).trim()+&quot;&apos;,&apos;&quot;+$(&apos;patient_state&apos;).trim()+&quot;&apos;,&apos;&quot;+ $(&apos;patient_zip_code&apos;).trim() +&quot;&apos;,&apos;&quot;+$(&apos;patient_phone&apos;).trim()+&quot;&apos;,&apos;&quot;+ $(&apos;date_prescribed&apos;).trim() +&quot;&apos;,&quot;+$(&apos;dispense_amount&apos;).trim() +&quot;,&apos;&quot;+ $(&apos;directions&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;drug_identifier&apos;).trim() +&quot;&apos;)&quot;;
+		var result = dbConn.executeUpdate(sql);
+		dbConn.close();
+	}
+}</query>
+        <useScript>true</useScript>
+      </properties>
+      <transformer version="3.3.0">
+        <steps>
+          <step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>provider_last_name</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;ORC&apos;][&apos;ORC.12&apos;][&apos;ORC.12.2&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;provider_last_name&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>provider_last_name</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;ORC&apos;][&apos;ORC.12&apos;][&apos;ORC.12.2&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>1</sequenceNumber>
+            <name>provider_first_name</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;ORC&apos;][&apos;ORC.12&apos;][&apos;ORC.12.3&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;provider_first_name&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>provider_first_name</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;ORC&apos;][&apos;ORC.12&apos;][&apos;ORC.12.3&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>2</sequenceNumber>
+            <name>drug_identifier</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;RXO&apos;][&apos;RXO.1&apos;][&apos;RXO.1.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;drug_identifier&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>drug_identifier</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;RXO&apos;][&apos;RXO.1&apos;][&apos;RXO.1.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>3</sequenceNumber>
+            <name>drug_coding_system</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;RXO&apos;][&apos;RXO.1&apos;][&apos;RXO.1.3&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;drug_coding_system&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>drug_coding_system</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;RXO&apos;][&apos;RXO.1&apos;][&apos;RXO.1.3&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>4</sequenceNumber>
+            <name>drug_name</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;RXO&apos;][&apos;RXO.1&apos;][&apos;RXO.1.2&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;drug_name&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>drug_name</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;RXO&apos;][&apos;RXO.1&apos;][&apos;RXO.1.2&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>5</sequenceNumber>
+            <name>directions</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;RXO&apos;][&apos;RXO.7&apos;][&apos;RXO.7.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;directions&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>directions</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;RXO&apos;][&apos;RXO.7&apos;][&apos;RXO.7.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>6</sequenceNumber>
+            <name>dispense_amount</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;RXO&apos;][&apos;RXO.11&apos;][&apos;RXO.11.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;dispense_amount&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>dispense_amount</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;RXO&apos;][&apos;RXO.11&apos;][&apos;RXO.11.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>7</sequenceNumber>
+            <name>date_prescribed</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;ORC&apos;][&apos;ORC.9&apos;][&apos;ORC.9.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;date_prescribed&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>date_prescribed</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;ORC&apos;][&apos;ORC.9&apos;][&apos;ORC.9.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>8</sequenceNumber>
+            <name>patient_first_name</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.2&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_first_name&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_first_name</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.2&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>9</sequenceNumber>
+            <name>patient_last_name</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_last_name&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_last_name</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>10</sequenceNumber>
+            <name>patient_gender</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_gender&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_gender</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>11</sequenceNumber>
+            <name>patient_dob</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_dob&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_dob</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>12</sequenceNumber>
+            <name>patient_address</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_address&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_address</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>13</sequenceNumber>
+            <name>patient_city</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.3&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_city&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_city</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.3&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>14</sequenceNumber>
+            <name>patient_state</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.4&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_state&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_state</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.4&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>15</sequenceNumber>
+            <name>patient_zip_code</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.5&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_zip_code&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_zip_code</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.11&apos;][&apos;PID.11.5&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>16</sequenceNumber>
+            <name>patient_phone</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.13&apos;][&apos;PID.13.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_phone&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_phone</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.13&apos;][&apos;PID.13.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+          <step>
+            <sequenceNumber>17</sequenceNumber>
+            <name>patient_epic_id</name>
+            <script>var mapping;
+
+try {
+	mapping = msg[&apos;PID&apos;][&apos;PID.3&apos;][&apos;PID.3.1&apos;].toString(); 
+} catch (e) {
+	logger.error(e);
+	mapping = &apos;&apos;;
+}
+
+channelMap.put(&apos;patient_epic_id&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data>
+              <entry>
+                <string>Variable</string>
+                <string>patient_epic_id</string>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.3&apos;][&apos;PID.3.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+        </steps>
+        <inboundTemplate encoding="base64">TVNIfF5+XCZ8RVBJQ3x8ZGJNb3Rpb258VVBNQ3wyMDE2MDExNDExMTU0N3xDT05OT1JTRXxPUk1e
+TzAxfDU3OTIwMjUyfFB8Mi4zfHx8fHx8fHx8DVBJRHx8fDg0MTg1ODgzNF5eXkVQSUNeRVBJQ3x8
+ZG9lXmpvaG58fDE5NTYwOTA1fE18fHwxODIyOCBXQUtBIFNUXl5QSVRUU0JVUkdIXlBBXjE1MjEz
+XlVTXl5eQUxMRUdIRU5ZfHwoNDEyKTEyMy01Njc4Xl5IT01FIFBIfCg5OTkpOTk5LTk5OTleXldP
+UksgUEh8fHx8MDEwMDA4NDE4NTg4MzR+MDMyMDA4NDE4NTg4MzR+MDExMDA4NDE4NTg4MzR+MDI0
+MDA4NDE4NTg4MzR+MDI1MDA4NDE4NTg4MzR+MDI3MDA4NDE4NTg4MzR+MDEwNzA4NDE4NTg4MzR+
+MDMxMDA4NDE4NTg4MzR8MjMwLTQ1LTUzNDl8fHx8fHx8fHx8fHx8DU5URXwxfHxNUjY3NTA5Mw1Q
+VjF8fHwxMDA5MTY0Xl5eMTBeXl5eMTAwOV5eXnx8fHx8fHx8fHx8fHx8fHwyMjY3MTY5NTV8fHx8
+fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8DU9SQ3xEQ3wyMjk0ODI1NzBeRVBDfHx8fHxeRGFp
+bHleXjIwMTUxMjE3XjIwMTYwMTE0Xk5PIFBSSU5UT1VUXnwyMjk0ODI1NjhefDIwMTUxMjE3MDk0
+OTIzfENPTk5PUlNFXkNPTk5PUl5TSEFST05eRV58fF5CRU5TT05eTUFHR0lFXktefHwoNDEyKTQ4
+MS03OTAweDI4MXx8UmVvcmRlcnx8fHx8fHx8NDQgU291dGggOXRoIFN0cmVldF5eUElUVFNCVVJH
+SF5QQV4xNTIwMzExMTl8fHx8fHx8fHwNVFExfDF8MXxEYWlseSZEYWlseXx8fHx8fHwNUlhPfDU0
+NTY5NTcwOTAwXnF1aW5hcHJpbCAoQUNDVVBSSUwpIDEwIG1nIG9yYWwgdGFibGV0Xk5EQ15eXl5e
+XnF1aW5hcHJpbCAoQUNDVVBSSUwpIDEwIG1nIG9yYWwgdGFibGV0fDIwfHxtZ15tZ3x8VGFrZSAy
+IHRhYmxldHMgYnkgbW91dGggZGFpbHl8VGFrZSAyIHRhYmxldHMgYnkgbW91dGggZGFpbHl8fEd8
+fDYwfHRhYmxldF50YWJsZXR8MHxeQkVOU09OXk1BR0dJRV5LXnx8fHx8fHx8fHwNTlRFfDF8fHx8
+DVJYUnxvcmFsXm9yYWx8fHw=</inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundDataType>HL7V2</inboundDataType>
+        <outboundDataType>HL7V2</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.3.0">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.3.0">
+            <handleRepetitions>true</handleRepetitions>
+            <handleSubcomponents>true</handleSubcomponents>
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <stripNamespaces>true</stripNamespaces>
+            <segmentDelimiter>\r</segmentDelimiter>
+            <convertLineBreaks>true</convertLineBreaks>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.3.0">
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <segmentDelimiter>\r</segmentDelimiter>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.3.0">
+            <splitType>MSH_Segment</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+          <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.3.0">
+            <segmentDelimiter>\r</segmentDelimiter>
+            <successfulACKCode>AA</successfulACKCode>
+            <successfulACKMessage></successfulACKMessage>
+            <errorACKCode>AE</errorACKCode>
+            <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+            <rejectedACKCode>AR</rejectedACKCode>
+            <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+            <msh15ACKAccept>false</msh15ACKAccept>
+            <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+          </responseGenerationProperties>
+          <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.3.0">
+            <successfulACKCode>AA,CA</successfulACKCode>
+            <errorACKCode>AE,CE</errorACKCode>
+            <rejectedACKCode>AR,CR</rejectedACKCode>
+            <validateMessageControlId>true</validateMessageControlId>
+            <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+            <originalIdMapVariable></originalIdMapVariable>
+          </responseValidationProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.3.0">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.3.0">
+            <handleRepetitions>true</handleRepetitions>
+            <handleSubcomponents>true</handleSubcomponents>
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <stripNamespaces>true</stripNamespaces>
+            <segmentDelimiter>\r</segmentDelimiter>
+            <convertLineBreaks>true</convertLineBreaks>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.3.0">
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <segmentDelimiter>\r</segmentDelimiter>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.3.0">
+            <splitType>MSH_Segment</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+          <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.3.0">
+            <segmentDelimiter>\r</segmentDelimiter>
+            <successfulACKCode>AA</successfulACKCode>
+            <successfulACKMessage></successfulACKMessage>
+            <errorACKCode>AE</errorACKCode>
+            <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+            <rejectedACKCode>AR</rejectedACKCode>
+            <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+            <msh15ACKAccept>false</msh15ACKAccept>
+            <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+          </responseGenerationProperties>
+          <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.3.0">
+            <successfulACKCode>AA,CA</successfulACKCode>
+            <errorACKCode>AE,CE</errorACKCode>
+            <rejectedACKCode>AR,CR</rejectedACKCode>
+            <validateMessageControlId>true</validateMessageControlId>
+            <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+            <originalIdMapVariable></originalIdMapVariable>
+          </responseValidationProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.3.0">
+        <steps/>
+        <inboundDataType>HL7V2</inboundDataType>
+        <outboundDataType>HL7V2</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.3.0">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.3.0">
+            <handleRepetitions>true</handleRepetitions>
+            <handleSubcomponents>true</handleSubcomponents>
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <stripNamespaces>true</stripNamespaces>
+            <segmentDelimiter>\r</segmentDelimiter>
+            <convertLineBreaks>true</convertLineBreaks>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.3.0">
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <segmentDelimiter>\r</segmentDelimiter>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.3.0">
+            <splitType>MSH_Segment</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+          <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.3.0">
+            <segmentDelimiter>\r</segmentDelimiter>
+            <successfulACKCode>AA</successfulACKCode>
+            <successfulACKMessage></successfulACKMessage>
+            <errorACKCode>AE</errorACKCode>
+            <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+            <rejectedACKCode>AR</rejectedACKCode>
+            <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+            <msh15ACKAccept>false</msh15ACKAccept>
+            <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+          </responseGenerationProperties>
+          <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.3.0">
+            <successfulACKCode>AA,CA</successfulACKCode>
+            <errorACKCode>AE,CE</errorACKCode>
+            <rejectedACKCode>AR,CR</rejectedACKCode>
+            <validateMessageControlId>true</validateMessageControlId>
+            <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+            <originalIdMapVariable></originalIdMapVariable>
+          </responseValidationProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.3.0">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.3.0">
+            <handleRepetitions>true</handleRepetitions>
+            <handleSubcomponents>true</handleSubcomponents>
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <stripNamespaces>true</stripNamespaces>
+            <segmentDelimiter>\r</segmentDelimiter>
+            <convertLineBreaks>true</convertLineBreaks>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.3.0">
+            <useStrictParser>false</useStrictParser>
+            <useStrictValidation>false</useStrictValidation>
+            <segmentDelimiter>\r</segmentDelimiter>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.3.0">
+            <splitType>MSH_Segment</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+          <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.3.0">
+            <segmentDelimiter>\r</segmentDelimiter>
+            <successfulACKCode>AA</successfulACKCode>
+            <successfulACKMessage></successfulACKMessage>
+            <errorACKCode>AE</errorACKCode>
+            <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+            <rejectedACKCode>AR</rejectedACKCode>
+            <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+            <msh15ACKAccept>false</msh15ACKAccept>
+            <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+          </responseGenerationProperties>
+          <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.3.0">
+            <successfulACKCode>AA,CA</successfulACKCode>
+            <errorACKCode>AE,CE</errorACKCode>
+            <rejectedACKCode>AR,CR</rejectedACKCode>
+            <validateMessageControlId>true</validateMessageControlId>
+            <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+            <originalIdMapVariable></originalIdMapVariable>
+          </responseValidationProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.3.0">
+        <rules/>
+      </filter>
+      <transportName>Database Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+  </destinationConnectors>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <undeployScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</undeployScript>
+  <properties version="3.3.0">
+    <clearGlobalChannelMap>true</clearGlobalChannelMap>
+    <messageStorageMode>DEVELOPMENT</messageStorageMode>
+    <encryptData>false</encryptData>
+    <removeContentOnCompletion>false</removeContentOnCompletion>
+    <removeOnlyFilteredOnCompletion>false</removeOnlyFilteredOnCompletion>
+    <removeAttachmentsOnCompletion>false</removeAttachmentsOnCompletion>
+    <initialState>STARTED</initialState>
+    <storeAttachments>false</storeAttachments>
+    <tags class="linked-hash-set"/>
+    <metaDataColumns>
+      <metaDataColumn>
+        <name>SOURCE</name>
+        <type>STRING</type>
+        <mappingName>mirth_source</mappingName>
+      </metaDataColumn>
+      <metaDataColumn>
+        <name>TYPE</name>
+        <type>STRING</type>
+        <mappingName>mirth_type</mappingName>
+      </metaDataColumn>
+    </metaDataColumns>
+    <attachmentProperties>
+      <type>None</type>
+      <properties/>
+    </attachmentProperties>
+    <archiveEnabled>true</archiveEnabled>
+    <resourceIds class="linked-hash-set">
+      <string>Default Resource</string>
+    </resourceIds>
+  </properties>
+  <codeTemplateLibraries/>
+</channel>
