@@ -33,27 +33,35 @@ function reloadTable(section, data, keys, container)
         table.removeChild(table.lastChild);
     }
 
-    for( i=0 ; i < data.length ; i++)
-    {
-        if ((height + 40) <= maxHeight) {
+    patientKeys = Object.keys(data);
 
-            html = html + "<div style='display: table-row' class='"+ ((i % 2 == 0) ? 'odd' : 'even') +"'>"
-            for(w = 0; w < keys.length ; w++)
-            {
-                    html = html + "<div class='base-cell'>"+
-                        data[i][keys[w]] +"</div>"
-            }
-            html += "</div>"
-            height += 35;
-        }
-        else
+    totalCount = 0;
+    for (e = 0; e < patientKeys.length;e++ )
+    {
+        for( i=0 ; i < data[patientKeys[e]].length ; i++)
         {
-            break;
+            if ((height + 40) <= maxHeight) {
+
+                html = html + "<div style='display: table-row' class='"+ ((i % 2 == 0) ? 'odd' : 'even') +"'>"
+                for(w = 0; w < keys.length ; w++)
+                {
+                    html = html + "<div class='base-cell'>"+
+                        data[patientKeys[e]][i][keys[w]] +"</div>"
+                }
+                html += "</div>"
+                height += 35;
+            }
+            else
+            {
+                break;
+            }
+            count += 1
         }
-        count += 1
+        totalCount += data[patientKeys[e]].length;
     }
+
     table.innerHTML = html
-    document.getElementById('footer').innerHTML = "Showing " + count + " of " + data.length + " Prescriptions"
+    document.getElementById('footer').innerHTML = "Showing " + count + " of " + totalCount + " Prescriptions"
 
 }
 
