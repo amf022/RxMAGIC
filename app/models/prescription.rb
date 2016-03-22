@@ -16,7 +16,7 @@ class Prescription < ActiveRecord::Base
     pmap_meds = PapInventory.where("patient_id = ? and rxaui = ? and current_quantity = ? and voided = ?",
                                    self.patient_id, self.rxaui, 0, false)
 
-    return pmap_meds.blank?
+    return (pmap_meds.blank? ? false : true)
   end
 
   def prescribed_by

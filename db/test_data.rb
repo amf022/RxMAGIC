@@ -34,6 +34,9 @@
     end
 
 
+    (0..5).each do |pap|
+      create_pmap_prescriptions()
+    end
   end
 
   def create_general_stocks
@@ -74,6 +77,21 @@
     new_prescription.quantity = ((rand(3) + 1 ) * 30)
     new_prescription.save
 
+  end
+
+  def create_pmap_prescriptions()
+    pap_items = PapInventory.all
+
+    rand_inventory = pap_items[rand(pap_items.length)]
+
+    new_prescription = Prescription.new
+    new_prescription.provider_id = create_provider
+    new_prescription.patient_id = rand_inventory.patient_id
+    new_prescription.rxaui = rand_inventory.rxaui
+    new_prescription.directions = random_directions
+    new_prescription.date_prescribed = Time.now.advance(:days => (rand(5)*-1)).strftime('%b-%d-%Y')
+    new_prescription.quantity = ((rand(3) + 1 ) * 30)
+    new_prescription.save
   end
 
   def create_pap_stocks

@@ -42,7 +42,7 @@ function reloadTable(section, data, keys, container)
         {
             if ((height + 40) <= maxHeight) {
 
-                html = html + "<div style='display: table-row' class='"+ ((i % 2 == 0) ? 'odd' : 'even') +"'>"
+                html = html + "<div style='display: table-row' class='"+ ((e % 2 == 0) ? 'odd' : 'even') +"'>"
                 for(w = 0; w < keys.length ; w++)
                 {
                     html = html + "<div class='base-cell'>"+

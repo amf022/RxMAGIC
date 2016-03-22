@@ -7,7 +7,8 @@ module PrescriptionHelper
 
       prescriptions[prescription.patient.epic_id] = [] if prescription[prescription.patient.epic_id].blank?
       prescriptions[prescription.patient.epic_id] << {"name" => prescription.patient_name, "item" => prescription.drug_name,
-                        "quantity" => prescription.quantity, "type" => (prescription.has_pmap ? 'PMAP' : "General")}
+                        "quantity" => prescription.quantity, "type" => (prescription.has_pmap ? 'PMAP' : "General"),
+                        "prescribed_by" => prescription.prescribed_by}
     end
 
     return prescriptions
