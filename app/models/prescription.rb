@@ -13,7 +13,7 @@ class Prescription < ActiveRecord::Base
   end
 
   def has_pmap
-    pmap_meds = PapInventory.where("patient_id = ? and rxaui = ? and current_quantity = ? and voided = ?",
+    pmap_meds = PapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
                                    self.patient_id, self.rxaui, 0, false)
 
     return (pmap_meds.blank? ? false : true)
