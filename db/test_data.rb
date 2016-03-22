@@ -83,7 +83,7 @@
     new_stock_entry.patient_id = patient_id
     new_stock_entry.rxaui = random_drug
     new_stock_entry.lot_number = (0...5).map { (65 + rand(26)).chr }.join
-    new_stock_entry.expiry_date = Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y')
+    new_stock_entry.expiration_date = Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y')
     new_stock_entry.received_quantity = ((rand(3) + 1 ) * 30)
     new_stock_entry.reorder_date = Time.now.advance(:months => (new_stock_entry.received_quantity/30)).strftime('%b-%d-%Y')
     new_stock_entry.date_received = Date.today
