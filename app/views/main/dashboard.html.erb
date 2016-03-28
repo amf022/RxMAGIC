@@ -70,12 +70,12 @@
                   reloadTable('dataSection',data,['name','item','prescribed_by','quantity','type'], "main")
               }
           }
-         setTimeout("updateRecords()", 1000)
+         setTimeout("updateRecords()", 10000)
          setInterval("updateRecords()", 60000)
 
       </script>
     </head>
-    <body onresize="resized()" style="margin: 0px;">
+    <body style="margin: 0px;">
         <div id="header" class="heading">
           Pending Prescriptions
           <span id="clockbox">Birmingham Free Clinic</span>

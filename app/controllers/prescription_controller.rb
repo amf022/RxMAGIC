@@ -48,7 +48,7 @@ class PrescriptionController < ApplicationController
   def ajax_prescriptions
     # this function services the application dashboard
 
-    prescriptions = Prescription.where("voided = ?", false).order(date_prescribed: :desc).limit(20)
+    prescriptions =  Prescription.where("voided = ? AND date_prescribed BETWEEN ? AND ?",FALSE, Time.now.advance(:minutes => -30).strftime('%Y-%m-%d %H:%M:%S'),Time.now.strftime('%Y-%m-%d %H:%M:%S'))
     render :text => view_context.prescriptions(prescriptions).to_json
   end
 end
