@@ -42,7 +42,7 @@ BEGIN
 	UPDATE prescriptions SET patient_id = @patient_id, rxaui = @drug_id, date_prescribed = STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), quantity = rx_quantity, directions = rx_directions, provider_id = @provider_id, voided = FALSE, updated_at = now() WHERE rxaui = @drug_id AND patient_id = @patient_id AND DATE(date_prescribed) = STR_TO_DATE(rx_date_prescribed, '%Y%m%d');
 
 	IF (ROW_COUNT() = 0) THEN
-		INSERT INTO prescriptions (patient_id, rxaui,date_prescribed, quantity, directions, provider_id, voided, created_at, updated_at) VALUES ( @patient_id,@drug_id, STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), rx_quantity, rx_directions, @provider_id, FALSE, now(), now());
+		INSERT INTO prescriptions (patient_id, rxaui,date_prescribed, quantity, directions, provider_id, voided, created_at, updated_at) VALUES ( @patient_id,@drug_id, COALESCE(STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), now()), rx_quantity, rx_directions, @provider_id, FALSE, now(), now());
 
 	END IF;
 END$$

@@ -30,7 +30,7 @@
             <td><%= prescription.prescribed_by %></td>
             <td>
               <a href="#" data-href="/void_prescriptions/<%= prescription.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
-              <img src="/assets/dispense_small.png" title="Fill prescription">
+              <%= link_to image_tag('/assets/dispense_small.png'), prescription %>
             </td>
           </tr>
       <% end %>
