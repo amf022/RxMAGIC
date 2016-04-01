@@ -4,7 +4,7 @@ class Prescription < ActiveRecord::Base
   belongs_to :rxnconso, :foreign_key => :rxaui
 
   def patient_name
-    self.patient.fullname
+    self.patient.fullname.titleize
   end
 
   def drug_name
@@ -14,12 +14,12 @@ class Prescription < ActiveRecord::Base
 
   def has_pmap
     pmap_meds = PapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
-                                   self.patient_id, self.rxaui, 0, false)
+                                   self.patient_id, self.rxaui, 0, false).pluck(:pap_inventory_id)
 
     return (pmap_meds.blank? ? false : true)
   end
 
   def prescribed_by
-    self.provider.fullname
+    self.provider.fullname.titleize
   end
 end

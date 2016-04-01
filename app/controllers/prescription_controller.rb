@@ -1,4 +1,6 @@
 class PrescriptionController < ApplicationController
+  include Misc
+
   def index
     # This function serves the main table for prescriptions
 
@@ -6,6 +8,29 @@ class PrescriptionController < ApplicationController
   end
 
   def show
+    @prescription = Prescription.where(:rx_id => params[:id]).first rescue nil
+
+    if @prescription.blank?
+      redirect_to "/prescription"
+    end
+
+    meds = PapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
+                                   @prescription.patient_id, @prescription.rxaui, 0,
+                                   false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
+                                                                             :expiration_date,:current_quantity)
+
+    @suggestions =[]
+    if meds.blank?
+      meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", @prescription.rxaui,0,
+                                       false).order(expiration_date: :asc).limit(5).pluck(:gn_identifier, :lot_number,
+                                                                                         :expiration_date,:current_quantity)
+    end
+
+    (meds || []).each do |item|
+      @suggestions << {"id" => dash_formatter(item[0]),"lot_number" => dash_formatter(item[1]),
+                       "expiry_date" => (item[2].to_date.strftime('%b %d, %Y') rescue ""),"amount_remaining" => item[3]}
+    end
+
   end
 
   def edit

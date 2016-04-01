@@ -43,8 +43,9 @@ BEGIN
 
 	IF (ROW_COUNT() = 0) THEN
 		INSERT INTO prescriptions (patient_id, rxaui,date_prescribed, quantity, directions, provider_id, voided, created_at, updated_at) VALUES ( @patient_id,@drug_id, COALESCE(STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), now()), rx_quantity, rx_directions, @provider_id, FALSE, now(), now());
-
 	END IF;
+
+
 END$$
 
 

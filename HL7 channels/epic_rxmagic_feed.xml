@@ -5,10 +5,10 @@
   <description></description>
   <enabled>true</enabled>
   <lastModified>
-    <time>1458580850372</time>
+    <time>1459530843782</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>1</revision>
+  <revision>2</revision>
   <sourceConnector version="3.3.0">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -165,7 +165,7 @@ try {
 } finally {
 	if (dbConn) { 
 
-		var sql = &quot;CALL `proc_insert_epic_prescriptions`( &apos;&quot; + $(&apos;provider_first_name&apos;).trim() +&quot;&apos;,&apos;&quot; + $(&apos;provider_last_name&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_first_name&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_last_name&apos;).trim() +&quot;&apos;,&apos;&quot;+$(&apos;patient_epic_id&apos;).trim()+&quot;&apos;,&apos;&quot;+ $(&apos;patient_gender&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_dob&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;patient_address&apos;).trim() +&quot;&apos;,&apos;&quot;+$(&apos;patient_city&apos;).trim()+&quot;&apos;,&apos;&quot;+$(&apos;patient_state&apos;).trim()+&quot;&apos;,&apos;&quot;+ $(&apos;patient_zip_code&apos;).trim() +&quot;&apos;,&apos;&quot;+$(&apos;patient_phone&apos;).trim()+&quot;&apos;,&apos;&quot;+ $(&apos;date_prescribed&apos;).trim() +&quot;&apos;,&quot;+$(&apos;dispense_amount&apos;).trim() +&quot;,&apos;&quot;+ $(&apos;directions&apos;).trim() +&quot;&apos;,&apos;&quot;+ $(&apos;drug_identifier&apos;).trim() +&quot;&apos;)&quot;;
+		var sql = &apos;CALL `proc_insert_epic_prescriptions`( &quot;&apos; + $(&quot;provider_first_name&quot;).trim() +&apos;&quot;,&quot;&apos; + $(&quot;provider_last_name&quot;).trim() +&apos;&quot;,&quot;&apos;+ $(&quot;patient_first_name&quot;).trim() +&apos;&quot;,&quot;&apos;+ $(&quot;patient_last_name&quot;).trim() +&apos;&quot;,&quot;&apos;+$(&quot;patient_epic_id&quot;).trim()+&apos;&quot;,&quot;&apos;+ $(&quot;patient_gender&quot;).trim() +&apos;&quot;,&quot;&apos;+ $(&quot;patient_dob&quot;).trim() +&apos;&quot;,&quot;&apos;+ $(&quot;patient_address&quot;).trim() +&apos;&quot;,&quot;&apos;+$(&quot;patient_city&quot;).trim()+&apos;&quot;,&quot;&apos;+$(&quot;patient_state&quot;).trim()+&apos;&quot;,&quot;&apos;+ $(&quot;patient_zip_code&quot;).trim() +&apos;&quot;,&quot;&apos;+$(&quot;patient_phone&quot;).trim()+&apos;&quot;,&quot;&apos;+ $(&quot;date_prescribed&quot;).trim() +&apos;&quot;,&apos;+$(&quot;dispense_amount&quot;).trim() +&apos;,&quot;&apos;+ $(&quot;directions&quot;).trim() +&apos;&quot;,&quot;&apos;+ $(&quot;drug_identifier&quot;).trim() +&apos;&quot;)&apos;;
 		var result = dbConn.executeUpdate(sql);
 		dbConn.close();
 	}

@@ -1,25 +1,123 @@
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h4><%=t '.title', :default => 'Dispesation' %></h4>
+  <h4><%=t '.title', :default => 'Dispensation' %></h4>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
-  <div class="col-xs-6 col-sm-6">
-    <div class="panel panel-primary">
-      <div class="panel-heading primary">
-        <h3 class="panel-title">Patient Details</h3>
-      </div>
-      <div class="panel-body"> Panel Content </div>
-    </div>
-
-  </div>
-  <div class="col-xs-6 col-sm-6">
+  <div class="col-xs-8 col-sm-8">
     <div class="panel panel-primary">
       <div class="panel-heading primary">
         <h3 class="panel-title">Prescription Details</h3>
       </div>
-      <div class="panel-body"> Panel content </div>
+      <div class="panel-body">
+        <table class="table" style="width: 96%; margin: auto;">
+          <thead>
+            <th colspan="4">
+              <h4><strong><%= @prescription.drug_name %></strong></h4>
+            </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Prescribed By</strong>
+              </td>
+              <td style="text-align: center"><strong>QTY</strong></td>
+              <td><strong>Date Prescribed</strong></td>
+              <td><strong>Directions</strong></td>
+            </tr>
+            <tr>
+              <td><%= @prescription.prescribed_by %></td>
+              <td style="text-align: center"><%= @prescription.quantity %></td>
+              <td><%= @prescription.date_prescribed.strftime('%b %d, %Y') %></td>
+              <td><%= @prescription.directions %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 class="panel-title">Inventory Suggestions</h3>
+      </div>
+      <div class="panel-body">
+        <% if @suggestions.blank? %>
+            <h4> Item is out of stock </h4>
+        <% else %>
+            <table class="table">
+              <thead>
+                  <tr>
+                    <th style="width: 25%;">
+                      Bottle ID
+                    </th>
+                    <th style="width: 25%;">
+                      Lot Number
+                    </th>
+                    <th style="width: 25%;">
+                      Expiry Date
+                    </th>
+                    <th>
+                      Amount Remaining
+                    </th>
+                  </tr>
+              </thead>
+              <tbody>
+                <% (@suggestions || []).each do |suggestion| %>
+                    <tr>
+                      <td><%= suggestion["id"] %></td>
+                      <td><%= suggestion["lot_number"] %></td>
+                      <td><%= suggestion["expiry_date"] %></td>
+                      <td><%= number_with_delimiter(suggestion["amount_remaining"]) %></td>
+                    </tr>
+                <% end %>
+              </tbody>
+            </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4">
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 class="panel-title">Patient Details</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                Name
+              </td>
+              <td>
+                <%= @prescription.patient_name %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Gender
+              </td>
+              <td>
+                <%= @prescription.patient.patient_gender %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Age
+              </td>
+              <td>
+                <%= @prescription.patient.age %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <a href="#" class="btn btn-default btn-success" style="min-width: 60%;float: right;"
+       data-toggle="modal"
+       data-target="#basicModal">Dispense</a> <br/><br/>
+    <a href="#" class="btn btn-default btn-warning" style="min-width: 60%;float: right;"
+       data-toggle="modal"
+       data-target="#basicModal">Edit</a> <br/><br/>
+    <a href="/prescription" class="btn btn-default btn-danger" style="min-width: 60%;float: right;">Cancel</a>
   </div>
 </div>
 
