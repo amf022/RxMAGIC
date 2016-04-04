@@ -14,10 +14,10 @@
       <tr>
         <th>Item</th>
         <th style="width: 15%;">Item Identifier</th>
-        <th style="width: 10%;">Lot Number</th>
+        <th style="width: 15%;">Lot Number</th>
         <th style="width: 7.5%;">Current Quantity</th>
         <th style="width: 7.5%;">Expiration Date</th>
-        <th style="width: 15%;">Actions</th>
+        <th style="width: 10%;">Actions</th>
       </tr>
       </thead>
 
@@ -32,8 +32,8 @@
               <td><%= item.expiration_date.strftime('%b-%Y') %></td>
               <td>
 
-                <img src="/assets/edit.png" title="Edit Item">
-                <img src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
+                <img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item">
+                <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
                 <a href="#" data-href="/void_general_inventory/<%= item.gn_identifier %>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
               </td>
             </tr>

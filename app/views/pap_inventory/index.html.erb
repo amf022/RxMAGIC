@@ -2,7 +2,7 @@
 <%= javascript_include_tag 'jquery-1.12.0.min.js' %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => "PAP Inventory" %></h3>
+  <h3><%=t '.title', :default => "PMAP Inventory" %></h3>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
@@ -16,7 +16,7 @@
         <th style="width: 10%;">Lot Number</th>
         <th style="width: 7.5%;">Current Quantity</th>
         <th style="width: 7.5%;">Expiration Date</th>
-        <th style="width: 12.5%;">Actions</th>
+        <th style="width: 10%;">Actions</th>
       </tr>
       </thead>
 
@@ -31,8 +31,8 @@
             <td><%= item.current_quantity %></td>
             <td><%= item.expiration_date.strftime('%b-%Y') %></td>
             <td>
-              <img src="/assets/edit.png" title="Edit Item">
-              <img src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.pap_identifier %>'" title="Print Barcode">
+              <img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item">
+              <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.pap_identifier %>'" title="Print Barcode">
               <a href="#" data-href="/void_pap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
             </td>
           </tr>
