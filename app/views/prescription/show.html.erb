@@ -55,7 +55,7 @@
                     <th style="width: 25%;">
                       Expiry Date
                     </th>
-                    <th>
+                    <th style="text-align: center;">
                       Amount Remaining
                     </th>
                   </tr>
@@ -66,7 +66,7 @@
                       <td><%= suggestion["id"] %></td>
                       <td><%= suggestion["lot_number"] %></td>
                       <td><%= suggestion["expiry_date"] %></td>
-                      <td><%= number_with_delimiter(suggestion["amount_remaining"]) %></td>
+                      <td style="text-align: center;"><%= number_with_delimiter(suggestion["amount_remaining"]) %></td>
                     </tr>
                 <% end %>
               </tbody>
@@ -111,13 +111,47 @@
         </table>
       </div>
     </div>
-    <a href="#" class="btn btn-default btn-success" style="min-width: 60%;float: right;"
-       data-toggle="modal"
-       data-target="#basicModal">Dispense</a> <br/><br/>
-    <a href="#" class="btn btn-default btn-warning" style="min-width: 60%;float: right;"
-       data-toggle="modal"
-       data-target="#basicModal">Edit</a> <br/><br/>
-    <a href="/prescription" class="btn btn-default btn-danger" style="min-width: 60%;float: right;">Cancel</a>
+
+    <div style="width: 100%;">
+      <table class="table" style="width: 100%;">
+        <tr>
+          <td style="border: 0em !important;">
+            <img src="/assets/barcode.png"><strong>Scan Bottle Barcode</strong>
+          </td>
+          <td style="border: 0em !important;">
+            <input type="text" style="width: 100%;" autofocus>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-success" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#basicModal">Finish</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-warning" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#basicModal">Edit</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="/prescription" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
 

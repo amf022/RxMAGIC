@@ -1,5 +1,4 @@
 class PrescriptionController < ApplicationController
-  include Misc
 
   def index
     # This function serves the main table for prescriptions
@@ -27,7 +26,7 @@ class PrescriptionController < ApplicationController
     end
 
     (meds || []).each do |item|
-      @suggestions << {"id" => dash_formatter(item[0]),"lot_number" => dash_formatter(item[1]),
+      @suggestions << {"id" => Misc.dash_formatter(item[0]),"lot_number" => Misc.dash_formatter(item[1]),
                        "expiry_date" => (item[2].to_date.strftime('%b %d, %Y') rescue ""),"amount_remaining" => item[3]}
     end
 

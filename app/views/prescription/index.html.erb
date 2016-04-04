@@ -12,10 +12,10 @@
       <tr>
         <th>Patient</th>
         <th>Item</th>
-        <th style="width: 7.5%;">Quantity</th>
+        <th style="width: 5%;">Quantity</th>
         <th>Directions</th>
         <th>Provider</th>
-        <th style="width: 7.5%;">Actions</th>
+        <th style="width: 5%;">Actions</th>
       </tr>
       </thead>
 
@@ -29,7 +29,7 @@
             <td><%= prescription.directions %></td>
             <td><%= prescription.prescribed_by %></td>
             <td>
-              <a href="#" data-href="/void_prescriptions/<%= prescription.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+              <a href="#" data-href="/void_prescriptions/<%= prescription.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void Item"></a>
               <%= link_to image_tag('/assets/dispense_small.png'), prescription %>
             </td>
           </tr>
