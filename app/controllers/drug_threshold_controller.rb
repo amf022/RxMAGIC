@@ -1,6 +1,21 @@
 class DrugThresholdController < ApplicationController
   def index
     @thresholds = DrugThreshold.where("voided = ?", false)
+    @unique_items = Prescription.where("voided =?", false).pluck(:rxaui).length
+    @understocked = []
+
+    items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+
+    (@thresholds || []).each do |threshold|
+
+      if items[threshold.rxaui].blank?
+        @understocked << threshold.rxaui
+      else
+        if items[threshold.rxaui] <= threshold.threshold
+          @understocked << threshold.rxaui
+        end
+      end
+    end
   end
 
   def destroy
