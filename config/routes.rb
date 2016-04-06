@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get '/void_thresholds/:id' => 'drug_threshold#destroy'
+  get '/void_threshold/:id' => 'drug_threshold#destroy'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

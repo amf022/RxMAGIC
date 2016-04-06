@@ -13,6 +13,7 @@ class PrescriptionController < ApplicationController
       redirect_to "/prescription"
     end
 
+    @category = "PMAP"
     meds = PmapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
                                    @prescription.patient_id, @prescription.rxaui, 0,
                                    false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
@@ -20,6 +21,7 @@ class PrescriptionController < ApplicationController
 
     @suggestions =[]
     if meds.blank?
+      @category = "General"
       meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", @prescription.rxaui,0,
                                        false).order(expiration_date: :asc).limit(5).pluck(:gn_identifier, :lot_number,
                                                                                          :expiration_date,:current_quantity)

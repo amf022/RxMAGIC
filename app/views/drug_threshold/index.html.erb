@@ -27,7 +27,8 @@
             <td style="text-align: center"><%= number_with_delimiter(threshold.threshold) %></td>
             <td><%= threshold.updated_at.strftime('%b %d, %Y') %></td>
             <td>
-              <a href="#" data-href="/void_threshold/<%= threshold.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void Item"></a>
+              <a href="#" class="edit" data-toggle="modal" data-target="#basicModal" data-nm="<%= threshold.drug_name %>" data-qn="<%= threshold.threshold%>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Threshold"></a>
+              <a href="#" data-href="/void_threshold/<%= threshold.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void Threshold"></a>
             </td>
           </tr>
       <% end %>
@@ -72,10 +73,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 style=" font-size: 20px;" class="panel-title">Cancel Prescription</h3>
+        <h3 style=" font-size: 20px;" class="panel-title">Delete Threshold</h3>
       </div>
       <div class="modal-body">
-        Are you sure you want to cancel this prescription?
+        Are you sure you want to remove this threshold?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
@@ -140,5 +141,10 @@
 
     $('.delete').on('click', function(e) {
         $('#btnYes').attr('href',$(this).data('href'));
+    });
+
+    $('.edit').on('click', function(e) {
+        $('#drugName').attr('value',$(this).data('nm'));
+        $('#drug_threshold_item_threshold').attr('value',$(this).data('qn'));
     });
 </script>

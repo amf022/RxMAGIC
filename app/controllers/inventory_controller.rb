@@ -7,7 +7,7 @@ class InventoryController < ApplicationController
 
     inventory = params[:id].match(/gn/i)? "General" : "PMAP"
 
-    entry = (inventory == "PMAP"? PapInventory.where("pap_identifier = ?", params[:id]).first : GeneralInventory.where("gn_identifier = ?", params[:id]).first)
+    entry = (inventory == "PMAP"? PmapInventory.where("pap_identifier = ?", params[:id]).first : GeneralInventory.where("gn_identifier = ?", params[:id]).first)
 
     if ((Time.now - entry.created_at) < 240)
       flash[:success] = "#{entry.drug_name} was successfully added to inventory."
