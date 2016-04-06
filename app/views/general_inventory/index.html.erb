@@ -25,14 +25,14 @@
 
         <% (@inventory || []).each do |item| %>
             <tr>
-              <td><%= item.rxnconso.name.downcase.titleize %></td>
+              <td id="drug<%= item.id %>" ><%= item.rxnconso.name.downcase.titleize %></td>
               <td><%= item.gn_identifier %></td>
-              <td><%= item.lot_number %></td>
-              <td><%= item.current_quantity %></td>
-              <td><%= item.expiration_date.strftime('%b-%Y') %></td>
+              <td id="lot<%= item.id %>"><%= item.lot_number %></td>
+              <td id="qn<%= item.id %>"><%= item.current_quantity %></td>
+              <td id="date<%= item.id %>"><%= item.expiration_date.strftime('%b-%Y') %></td>
               <td>
 
-                <img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item">
+                <a href="#" class="edit" data-toggle="modal" data-target="#basicModal" data-uid="<%= item.id %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
                 <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
                 <a href="#" data-href="/void_general_inventory/<%= item.gn_identifier %>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
               </td>
@@ -103,7 +103,7 @@
               <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker1'>
-                  <input name="general_inventory[expiration_date]" type='text' placeholder="Expiry date" class="form-control" autocomplete="off" required/>
+                  <input name="general_inventory[expiration_date]" id="general_inventory_expiration_date" type='text' placeholder="Expiry date" class="form-control" autocomplete="off" required/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -118,7 +118,7 @@
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
-
+            <%= f.hidden_field :inventory_id, :value => nil %>
             <div class="form-group">
               <div class="col-lg-offset-7 col-lg-10">
                 <%= f.submit "Save", :class => 'btn btn-success' %>
@@ -210,4 +210,16 @@
         $('#btnYes').attr('href',$(this).data('href'));
     });
 
+    $('.edit').on('click', function(e) {
+        $('#drugName').attr('value',$('#drug'+$(this).data('uid'))[0].innerHTML);
+        $('#general_inventory_lot_number').attr('value',$('#lot'+$(this).data('uid'))[0].innerHTML);
+        $('#general_inventory_received_quantity').attr('value',$('#qn'+$(this).data('uid'))[0].innerHTML);
+        $('#general_inventory_expiration_date')[0].value = $('#date'+$(this).data('uid'))[0].innerHTML;
+        $('#general_inventory_inventory_id')[0].value = $(this).data('uid')
+        $('#myModalLabel')[0].innerHTML = "Edit Item";
+    });
+
+    $('a.btn.btn-lg.btn-primary').on('click', function(e) {
+        $('#myModalLabel')[0].innerHTML = "Add Item";
+    });
 </script>
