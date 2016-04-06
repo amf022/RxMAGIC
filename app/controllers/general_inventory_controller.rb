@@ -1,6 +1,33 @@
 class GeneralInventoryController < ApplicationController
   def index
-    @inventory = GeneralInventory.where("current_quantity > 0 and voided = ?", false).order(date_received: :asc)
+    @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
+
+    thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold)
+
+    @expired = GeneralInventory.where("voided = ? AND expiration_date <= ? ", false, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
+
+    @aboutToExpire = GeneralInventory.where("voided = ? AND expiration_date  BETWEEN ? AND ?",false,
+                                            Date.today.strftime('%Y-%m-%d'),
+                                            Date.today.advance(:months => 6).end_of_month.strftime('%Y-%m-%d'))
+
+    @underStocked = []
+
+    @wellStocked = []
+
+
+    items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+
+    (thresholds || []).each do |threshold|
+
+      if items[threshold[0]].blank?
+        @underStocked << threshold[0]
+      elsif items[threshold[0]] <= threshold[1]
+        @underStocked << threshold[0]
+      else
+        @wellStocked << threshold[0]
+      end
+    end
+
   end
 
   def new
