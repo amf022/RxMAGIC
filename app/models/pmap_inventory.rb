@@ -1,4 +1,4 @@
-class PapInventory < ActiveRecord::Base
+class PmapInventory < ActiveRecord::Base
   belongs_to :rxnconso, :foreign_key => :rxaui
   belongs_to :patient, :foreign_key => :patient_id
 

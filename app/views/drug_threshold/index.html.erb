@@ -1,0 +1,144 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+
+
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h3><%=t '.title', :default => "Medication Thresholds" %></h3>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-10 col-sm-10">
+    <table id="thresholds" class="table table-striped table-bordered" width="100%" cellspacing="0">
+      <thead>
+      <tr>
+        <th>Medication</th>
+        <th style="width: 20%;">Medication Threshold</th>
+        <th style="width: 20%;">Date Updated</th>
+        <th style="width: 10%;">Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <% (@thresholds || []).each do |threshold| %>
+          <tr>
+            <td><%= threshold.drug_name.downcase.titleize %></td>
+            <td style="text-align: center"><%= number_with_delimiter(threshold.threshold) %></td>
+            <td><%= threshold.updated_at.strftime('%b %d, %Y') %></td>
+            <td>
+              <a href="#" data-href="/void_threshold/<%= threshold.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void Item"></a>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-xs-2 col-sm-2">
+    <div class="panel panel-info" >
+      <div class="panel-heading">
+        <h3 style=" font-size: 15px;" class="panel-title">Summary</h3>
+      </div>
+      <div class="panel-body">
+        <a href="#" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h4 style="font-weight: bold;" class="list-group-item-heading">Items Ever Dispensed</h4>
+            <%= 0 %>
+          </div>
+        </a>
+        <a href="#" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h4 style="font-weight: bold;" class="list-group-item-heading">Items with Thresholds</h4>
+            <%= 0 %>
+          </div>
+        </a>
+        <a href="#" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h4 style="font-weight: bold;" class="list-group-item-heading">Items Below Threshold</h4>
+            <%= 0 %>
+          </div>
+        </a>
+      </div>
+    </div>
+    <a href="#" class="btn btn-default btn-primary" style="width: 100%;"
+       data-toggle="modal"
+       data-target="#basicModal">New Threshold</a><br/><br/>
+    <a href="/" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
+  </div>
+</div>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title">Cancel Prescription</h3>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this prescription?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <a class="btn btn-danger btn-ok" id="btnYes">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Threshold</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :drug_threshold, :html => { :class => "form-horizontal general_inventory" }, :url => drug_threshold_index_path  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="drug_threshold[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :item_threshold, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :item_threshold,:placeholder => "Enter item threshold" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $('#thresholds').DataTable({"bLengthChange": false});
+    } );
+
+    $( "#drugName" ).autocomplete({
+        source: "/suggestions",
+        minLength: 2
+    });
+
+    $('.delete').on('click', function(e) {
+        $('#btnYes').attr('href',$(this).data('href'));
+    });
+</script>

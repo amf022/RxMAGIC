@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/void_thresholds/:id' => 'drug_threshold#destroy'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -15,12 +17,13 @@ Rails.application.routes.draw do
 
   get "/void_general_inventory/:id" => "general_inventory#destroy"
 
-  get "/void_pap_inventory/:id" => "pap_inventory#destroy"
+  get "/void_pmap_inventory/:id" => "pmap_inventory#destroy"
+  get "/move_pmap_inventory/:id" => "pmap_inventory#move_inventory"
 
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
 
   resources :general_inventory
-  resources :pap_inventory
+  resources :pmap_inventory
   resources :drug_threshold
   resources :patient
   resources :prescription

@@ -13,7 +13,7 @@ class PrescriptionController < ApplicationController
       redirect_to "/prescription"
     end
 
-    meds = PapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
+    meds = PmapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
                                    @prescription.patient_id, @prescription.rxaui, 0,
                                    false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
                                                                              :expiration_date,:current_quantity)
@@ -51,8 +51,8 @@ class PrescriptionController < ApplicationController
     #Dispense according to inventory while paying attention to possible race conditions
     case bottle
       when "PMAP"
-        PapInventory.transaction do
-          item = PapInventory.where("pap_identifier = ? ", params[:bottle_id]).lock(true).first
+        PmapInventory.transaction do
+          item = PmapInventory.where("pap_identifier = ? ", params[:bottle_id]).lock(true).first
           item.current_quantity -= params[:quantity]
           item.save
         end
