@@ -38,24 +38,24 @@
   <div class="col-xs-2 col-sm-2">
     <div class="panel panel-info" >
       <div class="panel-heading">
-        <h3 style=" font-size: 15px;font-weight: bold" class="panel-title">Summary</h3>
+        <h4 class="panel-title">Summary</h4>
       </div>
       <div class="panel-body">
         <a href="#" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
-            <h4  class="list-group-item-heading">Items ever Prescribed</h4>
+            <h5  class="list-group-item-heading">Items ever Prescribed</h5>
             <span style="font-size: 16px;"><%= @unique_items %></span>
           </div>
         </a>
         <a href="#" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
-            <h4 class="list-group-item-heading">Items with Thresholds</h4>
+            <h5 class="list-group-item-heading">Items with Thresholds</h5>
             <span class="highlighted"><%= @thresholds.length %></span>
           </div>
         </a>
         <a href="#" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
-            <h4 class="list-group-item-heading">Items Below Threshold</h4>
+            <h5 class="list-group-item-heading">Items Below Threshold</h5>
             <span class="highlighted"><%= @understocked.length %></span>
           </div>
         </a>
