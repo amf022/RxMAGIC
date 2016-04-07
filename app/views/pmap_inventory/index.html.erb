@@ -7,7 +7,7 @@
 <div class="row row-offcanvas row-offcanvas-right">
 
   <div class="col-xs-12 col-sm-10">
-    <table id="example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+    <table id="pmapMeds" class="table table-striped table-bordered" width="100%" cellspacing="0">
       <thead>
       <tr>
         <th>Item</th>
@@ -33,8 +33,8 @@
             <td>
               <img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item">
               <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.pap_identifier %>'" title="Print Barcode">
-              <a href="#" data-href="/move_pap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-move" class="moveItem"><img src="/assets/move.png" title="Move Item to general inventory"></a>
-              <a href="#" data-href="/void_pap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+              <a href="#" data-href="/move_pmap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-move" class="moveItem"><img src="/assets/move.png" title="Move Item to general inventory"></a>
+              <a href="#" data-href="/void_pmap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
             </td>
           </tr>
       <% end %>
@@ -131,10 +131,13 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#example').DataTable({"bLengthChange": false});
+        $('#pmapMeds').DataTable({"bLengthChange": false});
     } );
 
     $('.delete').on('click', function(e) {
         $('#btnYes').attr('href',$(this).data('href'));
     });
+    $('#pmapMeds')
+            .removeClass( 'display' )
+            .addClass('table table-striped table-bordered');
 </script>

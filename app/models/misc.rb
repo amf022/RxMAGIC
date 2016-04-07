@@ -32,7 +32,7 @@ module Misc
     label.draw_multi_text("#{item}", {})
     label.draw_multi_text("#{patient_name}")
     label.draw_multi_text("Type : #{type}")
-    label.draw_multi_text("Bottle # :#{bottle_id} ")
+    label.draw_multi_text("Bottle # :#{Misc.dash_formatter(bottle_id)} ")
     label.draw_multi_text("Lot # :#{lot_number} ")
     label.draw_multi_text("Exp :#{expiration_date.strftime('%m/%y')}", {})
     label.print(1)
