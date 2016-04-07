@@ -10,4 +10,7 @@ class MainController < ApplicationController
     render :layout => false
   end
 
+	def about
+		#This page displays application details
+	end
 end

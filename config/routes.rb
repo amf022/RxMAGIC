@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
 
+  get "/main/about"
+
   resources :general_inventory
   resources :pmap_inventory
   resources :drug_threshold
