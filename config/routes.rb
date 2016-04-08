@@ -1,28 +1,47 @@
 Rails.application.routes.draw do
-  get '/void_threshold/:id' => 'drug_threshold#destroy'
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
   root 'main#index'
 
+  ###################### Patient Controller ##############################
+  get 'patient/new'
+
+  get 'patient/create'
+
+  get 'patient/destroy'
+
+  get 'patient/show'
+
+  get 'patient/index'
+
+  post '/patient/ajax_patient'
+
+
+  ###################### Drug Threshold Controller ##############################
+  get '/void_threshold/:id' => 'drug_threshold#destroy'
+
+  ###################### Main Controller ##############################
 
   get '/dashboard' => "main#dashboard"
+  get "/main/about"
 
+  ###################### Rxnconso Controller ##############################
   get "/suggestions" => "rxnconso#suggestions"
 
+  ###################### Prescription Controller ##############################
   get "/void_prescriptions/:id" => "prescription#destroy"
   get "/prescriptions" => "prescription#ajax_prescriptions"
 
+  ###################### General Inventory Controller ##############################
   get "/void_general_inventory/:id" => "general_inventory#destroy"
 
+  ###################### PMAP Inventory Controller ##############################
   get "/void_pmap_inventory/:id" => "pmap_inventory#destroy"
   get "/move_pmap_inventory/:id" => "pmap_inventory#move_inventory"
 
+  ###################### Inventory Controller ##############################
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
 
-  get "/main/about"
+
 
   resources :general_inventory
   resources :pmap_inventory

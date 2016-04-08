@@ -1,94 +1,148 @@
 <a href="#" class="list-group-item">
-  <table style="width: 100%">
+  <table style="width: 100%" >
     <tr>
       <td><img src="/assets/dispense_small.png"></td>
-      <td><h5 class="list-group-item-heading">New Prescription</h5></td>
+      <td valign="bottom"><h5 class="list-group-item-heading">New Prescription</h5></td>
+      <td valign="top" style="float: right"><a><img src="/assets/close.png"> </a></td>
     </tr>
     <tr>
-      <td colspan="2">
-        <p class="list-group-item-text">90 tablets of Tenormin 50 Mg Oral Tablet for Douglas Cook</p>
+      <td colspan="3">
+        <p class="list-group-item-text"><%= "90 tablets of Clozaril 25 Mg Oral Tablet for Gerald Cook" %></p>
       </td>
     </tr>
     <tr>
-      <td colspan="2">
-        <button style="width: 60%;float: right" class="btn btn-xs btn-info" type="button">Dispense</button>
-      </td>
-    </tr>
-  </table>
-</a>
-<a href="#" class="list-group-item">
-  <table style="width: 100%">
-    <tr>
-      <td><img src="/assets/expiring.png"></td>
-      <td><h5 class="list-group-item-heading">Item about to expire</h5></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <p class="list-group-item-text">Naprosyn 250 MG Oral Tablet with lot number: LK-965 expires in 6 days.</p>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <button style="width: 60%;float: right" class="btn btn-xs btn-danger" type="button">Void</button>
+      <td colspan="3" style="text-align:center;padding-top: 2px;">
+        <a style="width: 60%;"  href="/prescription/<%= 2 %>" class="btn btn-xs btn-success" type="button">Dispense</a>
       </td>
     </tr>
   </table>
 </a>
-<a href="#" class="list-group-item">
-  <table style="width: 100%">
-    <tr>
-      <td><img src="/assets/pmap.png"></td>
-      <td><h5 class="list-group-item-heading">PMAP: Low Inventory</h5></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <p class="list-group-item-text">Mario Christiansen has 90 tablets of Clozaril 25 Mg Oral Tablet remaining. Consider re-ordering. </p>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <button  class="btn btn-xs btn-danger" type="button">Dismiss</button>
-        <button style="width:60%;float: right;" class="btn btn-xs btn-info" type="button">Add to Activity Sheet</button>
-      </td>
-    </tr>
-  </table>
-</a>
-<a href="#" class="list-group-item">
-  <table style="width: 100%">
-    <tr>
-      <td><img src="/assets/general_inventory_small.png"></td>
-      <td><h5 class="list-group-item-heading">General: Low Inventory</h5></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <p class="list-group-item-text">Zestril 5 Mg Oral Tablet stock below minimum required level.</p>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <button style="" class="btn btn-xs btn-danger" type="button">Dismiss</button>
-        <button style="width:60%;float: right;" class="btn btn-xs btn-info" type="button">Add to Activity Sheet</button>
-      </td>
-    </tr>
-  </table>
-</a>
-<a href="#" class="list-group-item">
-  <table style="width: 100%">
-    <tr>
-      <td><img src="/assets/move.png"></td>
-      <td><h5 class="list-group-item-heading">Unutilized PMAP Item</h5></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <p class="list-group-item-text">Consider moving Tenormin 50 Mg Oral Tablet for Felisa Hopkins to General stock.</p>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <button  class="btn btn-xs btn-danger" type="button">Dismiss</button>
-        <button style="width:60%; float: right;" class="btn btn-xs btn-info" type="button">Transfer Item</button>
+<% (@alerts || []).each do |alert| %>
 
-      </td>
-    </tr>
-  </table>
-</a>
+    <% case alert.type %>
+        <% when "new prescription" %>
+        <a href="#" class="list-group-item">
+          <table style="width: 100%">
+            <tr>
+              <td><img src="/assets/dispense_small.png"></td>
+              <td><h5 class="list-group-item-heading">New Prescription</h5><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p class="list-group-item-text"><%= alert.message %></p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 2px;">
+                <a style="width: 60%;float: right"  href="/prescription/<%= alert.id %>" class="btn btn-xs btn-success" type="button">Dispense</a>
+              </td>
+            </tr>
+          </table>
+        </a>
+
+        <% when "low pmap stock" %>
+        <a href="#" class="list-group-item">
+          <table style="width: 100%">
+            <tr>
+              <td><img src="/assets/pmap.png"></td>
+              <td><h5 class="list-group-item-heading">PMAP: Low Inventory</h5></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p class="list-group-item-text"><%= alert.message %></p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 2px;">
+                <button  class="btn btn-xs btn-danger" type="button">Dismiss</button>
+                <button style="width:60%;float: right;" class="btn btn-xs btn-success" type="button">Add to Activity Sheet</button>
+              </td>
+            </tr>
+          </table>
+        </a>
+
+        <% when "low general stock" %>
+        <a href="#" class="list-group-item">
+          <table style="width: 100%">
+            <tr>
+              <td><img src="/assets/general_inventory_small.png"></td>
+              <td><h5 class="list-group-item-heading">General: Low Inventory</h5></td>
+            </tr>
+            <tr>
+              <td colspan="2" >
+                <p class="list-group-item-text"><%= alert.message %></p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 2px;">
+                <button style="" class="btn btn-xs btn-danger" type="button">Dismiss</button>
+                <button style="width:60%;float: right;" class="btn btn-xs btn-success" type="button">Add to Activity Sheet</button>
+              </td>
+            </tr>
+          </table>
+        </a>
+        <% when "expiring item" %>
+        <a href="#" class="list-group-item">
+          <table style="width: 100%">
+            <tr>
+              <td><img src="/assets/expiring.png"></td>
+              <td><h5 class="list-group-item-heading">Item about to expire</h5></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p class="list-group-item-text"><%= alert.id %></p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 2px;">
+                <button style="width: 60%;float: right" class="btn btn-xs btn-danger" type="button">Void</button>
+              </td>
+            </tr>
+          </table>
+        </a>
+
+        <% when "expired item" %>
+        <a href="#" class="list-group-item">
+          <table style="width: 100%">
+            <tr>
+              <td><img src="/assets/expired.png"></td>
+              <td><h5 class="list-group-item-heading">Item has expired</h5></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p class="list-group-item-text"><%= alert.id %></p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 2px;">
+                <button style="width: 60%;float: right" class="btn btn-xs btn-danger" type="button">Void</button>
+              </td>
+            </tr>
+          </table>
+        </a>
+        <% when "under utilized item" %>
+
+        <a href="#" class="list-group-item">
+          <table style="width: 100%">
+            <tr>
+              <td><img src="/assets/move.png"></td>
+              <td><h5 class="list-group-item-heading">Unutilized PMAP Item</h5></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p class="list-group-item-text"><%= alert.id %></p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 2px;">
+                <button  class="btn btn-xs btn-danger" type="button">Dismiss</button>
+                <button style="width:60%; float: right;" class="btn btn-xs btn-success" type="button">Transfer Item</button>
+
+              </td>
+            </tr>
+          </table>
+        </a>
+
+    <% end %>
+<% end %>
+

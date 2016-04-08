@@ -88,4 +88,4 @@ function getData(link)
     xmlhttp.open("GET",link ,true);
         xmlhttp.send();
 
-    }
+}
