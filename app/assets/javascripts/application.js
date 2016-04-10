@@ -89,3 +89,9 @@ function getData(link)
         xmlhttp.send();
 
 }
+
+function hideNotice()
+{
+    $('#errorModal').removeClass('show');
+    $("#errorModal")[0].style["display"] = "none"
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406133327) do
+ActiveRecord::Schema.define(version: 20160410015558) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 20160406133327) do
     t.boolean  "voided",            limit: 1,   default: false
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+    t.string   "void_reason",       limit: 255
+    t.integer  "voided_by",         limit: 4
   end
 
   create_table "news", primary_key: "news_id", force: :cascade do |t|

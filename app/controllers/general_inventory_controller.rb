@@ -42,7 +42,7 @@ class GeneralInventoryController < ApplicationController
     #Delete an item from general inventory
 
     item = GeneralInventory.find_by_gn_identifier(params[:id])
-    item.update_attributes(:voided => true)
+    item.update_attributes(:voided => true, :void_reason => params[:reason])
     flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully deleted."
     redirect_to "/general_inventory"
   end
@@ -85,7 +85,6 @@ class GeneralInventoryController < ApplicationController
       flash[:errors] = @new_stock_entry.errors
       redirect_to "/general_inventory"
     end
-
   end
 
 end

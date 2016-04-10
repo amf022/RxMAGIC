@@ -41,14 +41,14 @@ class PrescriptionController < ApplicationController
     # This function voids a prescription and marks it as deleted
 
     prescription = Prescription.find(params[:id])
-    prescription.update_attributes(:voided => true)
+    prescription.update_attributes(:voided => true, :void_reason => params[:reason])
     redirect_to "/prescription"
   end
 
   def dispense
 
     # First we check which inventory we are dispensing from
-    bottle = params[:bottl_id].match(/gn/i)? "General" : "PMAP"
+    bottle = params[:bottl_id].match(/g/i)? "General" : "PMAP"
 
     #Dispense according to inventory while paying attention to possible race conditions
     case bottle
@@ -57,6 +57,8 @@ class PrescriptionController < ApplicationController
           item = PmapInventory.where("pap_identifier = ? ", params[:bottle_id]).lock(true).first
           item.current_quantity -= params[:quantity]
           item.save
+
+          dispensation = Dispensation.create({})
         end
 
 
@@ -65,10 +67,12 @@ class PrescriptionController < ApplicationController
           item = GeneralInventory.where("gn_identifier = ? ", params[:bottle_id]).lock(true).first
           item.current_quantity -= params[:quantity]
           item.save
-        end
 
+          dispensation = Dispensation.create({})
+        end
     end
 
+    redirect_to "/prescription/"
   end
 
   def ajax_prescriptions

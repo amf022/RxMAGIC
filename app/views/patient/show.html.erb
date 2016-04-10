@@ -1,2 +1,281 @@
-<h1>Patient#show</h1>
-<p>Find me in app/views/patient/show.html.erb</p>
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+
+<br/>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-8 col-sm-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading primary">
+        <h3 class="panel-title">Patient Details</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+          <tr style="padding-top:0px; ">
+            <td colspan="6" style="padding: 0px;">
+              <div style="float: left" class="<%= @patient.patient_gender.downcase %>"><img style="height: 30px;" src="/assets/<%= @patient.patient_gender.downcase %>.png"></div>
+              <div style="vertical-align: text-top;"><h4><strong><%= @patient.fullname %></strong></h4></div>
+            </td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>
+              Birthdate
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.fullname %>
+            </td>
+            <th>
+              Age
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.age %>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Street Address
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.address %>
+            </td>
+            <th>
+              City
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.city.titleize rescue "Unknown" %>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              State
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.state.upcase rescue "Unknown" %>
+            </td>
+            <th>
+              Zip Code
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= (@patient.zip.blank? ? "Unknown" : @patient.zip) %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 style="font-weight: bold;" class="panel-title">Dispensation History</h3>
+      </div>
+      <div class="panel-body">
+        <% if @history.blank? %>
+            <h4>No previous dispensations available.</h4>
+        <% else %>
+            <table class="table">
+              <thead>
+                <th>Item</th>
+                <th>Amount Dispensed</th>
+                <th>Date Dispensed</th>
+              </thead>
+              <tbody>
+                <% (@history || []).each do |dispensation| %>
+                    <tr>
+                      <td>
+                        <%= dispensation.drug_name %>
+                      </td>
+                      <td>
+                        <%= dispensation.quantity %>
+                      </td>
+                      <td>
+                        <%= dispensation.dispensation_date.strftime('%b %d, %Y') %>
+                      </td>
+                    </tr>
+                <% end %>
+              </tbody>
+            </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4">
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 style="font-weight: bold;" class="panel-title">PMAP Details</h3>
+      </div>
+      <div class="panel-body" style="height: 30vh;overflow:auto;">
+        <table class="table">
+          <tbody>
+          <tr>
+            <th colspan="2">
+              <h5><strong>Pfizer</strong></h5>
+            </th>
+          </tr>
+          <tr>
+            <td>
+              Tenormin 50 Mg Oral Tablet
+            </td>
+            <td>
+              80
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Zofran 4 Mg Oral Tablet
+            </td>
+            <td>
+              60
+            </td>
+          </tr>
+          <tr>
+            <th colspan="2">
+              <h5><strong>Eli Lilly</strong></h5>
+            </th>
+          </tr>
+          <tr>
+            <td>
+              Tenormin 50 Mg Oral Tablet
+            </td>
+            <td>
+              80
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Zofran 4 Mg Oral Tablet
+            </td>
+            <td>
+              60
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="width: 60%;float: right;">
+      <table class="table" style="width: 100%;">
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-primary" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#basicModal">Add PMAP Item</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-warning" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#basicModal">Refill Prescription</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="/patient" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add PMAP Item</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :pmap_inventory, :html => { :class => "form-horizontal pmap_inventory" }, :url => pmap_inventory_index_path  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="pmap_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='expiryDatePicker'>
+                  <input name="pmap_inventory[expiration_date]" id="pmap_inventory_expiration_date" type='text' placeholder="Expiry date" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :reorder_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='reorderDatePicker'>
+                  <input name="pmap_inventory[reorder_date]" id="pmap_inventory_reorder_date" type='text' placeholder="Reorder date" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :received_quantity, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+            <%= f.hidden_field :patient_id, :value => @patient.id %>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    // Date picker activation
+    $(function () {
+        $('#expiryDatePicker').datetimepicker({format: 'MMM YYYY'});
+        $('#reorderDatePicker').datetimepicker({format: 'MMM YYYY'});
+    });
+
+    $( "#drugName" ).autocomplete({
+        source: "/suggestions",
+        minLength: 2
+    });
+
+
+</script>

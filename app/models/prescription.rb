@@ -22,4 +22,8 @@ class Prescription < ActiveRecord::Base
   def prescribed_by
     self.provider.fullname.titleize
   end
+
+  def amount_dispensed
+    return Dispensation.where("voided = ? AND rx_id = ?", false, self.id).sum(:quantity)
+  end
 end

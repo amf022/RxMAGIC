@@ -9,6 +9,8 @@ class PatientController < ApplicationController
   end
 
   def show
+    @patient = Patient.find(params[:id])
+    @history = Dispensation.where("patient_id = ? and voided = ?",params[:id],false).limit(10)
   end
 
   def index

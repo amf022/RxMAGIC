@@ -5,7 +5,7 @@ class InventoryController < ApplicationController
   def print_bottle_barcode
     #This function prints bottle barcode labels for both inventory types
 
-    inventory = params[:id].match(/gn/i)? "General" : "PMAP"
+    inventory = params[:id].match(/g/i)? "General" : "PMAP"
 
     entry = (inventory == "PMAP"? PmapInventory.where("pap_identifier = ?", params[:id]).first : GeneralInventory.where("gn_identifier = ?", params[:id]).first)
 
