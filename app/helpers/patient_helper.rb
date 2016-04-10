@@ -13,5 +13,4 @@ module PatientHelper
 
     return results
   end
-
 end

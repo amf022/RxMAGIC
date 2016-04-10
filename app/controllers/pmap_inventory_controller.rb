@@ -17,6 +17,7 @@ class PmapInventoryController < ApplicationController
     @new_stock_entry.lot_number = params[:pmap_inventory][:lot_number].upcase
     @new_stock_entry.expiration_date = params[:pmap_inventory][:expiration_date].to_date rescue nil
     @new_stock_entry.reorder_date = params[:pmap_inventory][:reorder_date].to_date rescue nil
+    @new_stock_entry.manufacturer = params[:pmap_inventory][:manufacturer]
     @new_stock_entry.received_quantity = params[:pmap_inventory][:received_quantity]
     @new_stock_entry.rxaui = Rxnconso.where("STR = ?", params[:pmap_inventory][:item]).first.RXAUI rescue nil
     @new_stock_entry.patient_id = params[:pmap_inventory][:patient_id]

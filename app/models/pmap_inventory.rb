@@ -6,6 +6,7 @@ class PmapInventory < ActiveRecord::Base
 
   validates :lot_number, :presence => true
   validates :reorder_date, :presence => true
+  validates :manufacturer, :presence => true
   validates :received_quantity, :presence => true
   validates :received_quantity, :numericality => { :only_integer => true }
   validates :received_quantity, :numericality => { :greater_than => 0 }
@@ -21,6 +22,10 @@ class PmapInventory < ActiveRecord::Base
     #this method handles the need to access the drug name associated to the inventory entry
 
     self.rxnconso.STR
+  end
+
+  def made_by
+    self.manufacturer.blank? ? "Unknown" : self.manufacturer
   end
 
   private

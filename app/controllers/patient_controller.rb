@@ -11,6 +11,12 @@ class PatientController < ApplicationController
   def show
     @patient = Patient.find(params[:id])
     @history = Dispensation.where("patient_id = ? and voided = ?",params[:id],false).limit(10)
+    rawPmapMeds = PmapInventory.where("voided = ? AND patient_id = ? AND current_quantity > ?", false,params[:id],0)
+    @pmap_meds = {}
+    (rawPmapMeds || []).each do |med|
+      @pmap_meds[med.made_by] = [] if @pmap_meds[med.made_by].blank?
+      @pmap_meds[med.made_by] << ["#{med.drug_name}", med.current_quantity]
+    end
   end
 
   def index

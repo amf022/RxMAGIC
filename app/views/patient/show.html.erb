@@ -112,52 +112,31 @@
         <h3 style="font-weight: bold;" class="panel-title">PMAP Details</h3>
       </div>
       <div class="panel-body" style="height: 30vh;overflow:auto;">
-        <table class="table">
+        <% if @pmap_meds.blank? %>
+            <h4>Patient has no PMAP medication</h4>
+        <% else %>
+            <table class="table">
           <tbody>
-          <tr>
-            <th colspan="2">
-              <h5><strong>Pfizer</strong></h5>
-            </th>
-          </tr>
-          <tr>
-            <td>
-              Tenormin 50 Mg Oral Tablet
-            </td>
-            <td>
-              80
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Zofran 4 Mg Oral Tablet
-            </td>
-            <td>
-              60
-            </td>
-          </tr>
-          <tr>
-            <th colspan="2">
-              <h5><strong>Eli Lilly</strong></h5>
-            </th>
-          </tr>
-          <tr>
-            <td>
-              Tenormin 50 Mg Oral Tablet
-            </td>
-            <td>
-              80
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Zofran 4 Mg Oral Tablet
-            </td>
-            <td>
-              60
-            </td>
-          </tr>
+          <% (@pmap_meds.keys || []).each do |company| %>
+              <tr>
+                <th colspan="2">
+                  <h5><strong><%= company%></strong></h5>
+                </th>
+              </tr>
+              <% (@pmap_meds[company] || []).each do |item| %>
+                  <tr>
+                    <td>
+                      <%= item[0]%>
+                    </td>
+                    <td>
+                      <%= item[1]%>
+                    </td>
+                  </tr>
+              <% end %>
+          <% end %>
           </tbody>
         </table>
+        <% end %>
       </div>
     </div>
 
@@ -210,6 +189,13 @@
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <input type="text" name="pmap_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :manufacturer, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="pmap_inventory[manufacturer]" id="company" data-provide="typeahead" placeholder="Enter manaufacturer name" class ='form-control' required >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -267,6 +253,11 @@
 
 <script type="text/javascript">
     // Date picker activation
+
+    var manufacturers = [];
+    <% (manufacturers || []).each do |company|%>
+        manufacturers.push('<%= company.html_safe %>')
+    <% end %>
     $(function () {
         $('#expiryDatePicker').datetimepicker({format: 'MMM YYYY'});
         $('#reorderDatePicker').datetimepicker({format: 'MMM YYYY'});
@@ -277,5 +268,8 @@
         minLength: 2
     });
 
+    $("#company").autocomplete({
+        source: manufacturers
+    })
 
 </script>
