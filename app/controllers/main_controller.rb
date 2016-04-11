@@ -2,7 +2,7 @@ class MainController < ApplicationController
 
   def index
     #This is the landing page for the application
-
+    @alerts = News.where({:resolved => false}).order(created_at: :desc)
   end
 
   def dashboard

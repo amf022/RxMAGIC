@@ -4,9 +4,9 @@ class GeneralInventoryController < ApplicationController
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold)
 
-    @expired = GeneralInventory.where("voided = ? AND expiration_date <= ? ", false, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
+    @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
 
-    @aboutToExpire = GeneralInventory.where("voided = ? AND expiration_date  BETWEEN ? AND ?",false,
+    @aboutToExpire = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
                                             Date.today.strftime('%Y-%m-%d'),
                                             Date.today.advance(:months => 6).end_of_month.strftime('%Y-%m-%d'))
 

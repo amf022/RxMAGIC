@@ -245,8 +245,9 @@ module ZebraPrinter #:nodoc:
     end
 
     def sanitize(string)
-      substitutions = [['Ñ','¥'],['ñ','¤'],['É',''],['Á','µ'],['é',''],['Ú','é'],['ü', ''],
-                       ['ú','£'],['ó','¢'],['í','¡'],['Ü', ''],['Á','µ'],['Ó','à'],['á',' ']]
+      #substitutions = [['Ñ','¥'],['ñ','¤'],['É',''],['Á','µ'],['é',''],['Ú','é'],['ü', ''],
+      #                 ['ú','£'],['ó','¢'],['í','¡'],['Ü', ''],['Á','µ'],['Ó','à'],['á',' ']]
+      substitutions = []
       substitutions.each do |replacement|
         string = string.gsub(replacement[0],replacement[1])
       end

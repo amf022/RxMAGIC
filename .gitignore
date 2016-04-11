@@ -20,4 +20,4 @@
 config/*.yml
 test/fixtures/*.yml
 *.lock
-
+.ruby-version
