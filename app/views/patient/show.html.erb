@@ -1,6 +1,7 @@
 <%= javascript_include_tag 'jquery-1.12.0.min.js' %>
 <%= javascript_include_tag 'jquery-ui.min.js' %>
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'jquery.slimscroll.js' %>
 
 <br/>
 <div class="row row-offcanvas row-offcanvas-right">
@@ -111,7 +112,7 @@
       <div class="panel-heading info">
         <h3 style="font-weight: bold;" class="panel-title">PMAP Details</h3>
       </div>
-      <div class="panel-body" style="height: 30vh;overflow:auto;">
+      <div id="pmapDetails" class="panel-body" style="overflow:auto;">
         <% if @pmap_meds.blank? %>
             <h4>Patient has no PMAP medication</h4>
         <% else %>
@@ -272,4 +273,9 @@
         source: manufacturers
     })
 
+    $(function() {
+        $('#pmapDetails').slimScroll({
+            height: '30vh'
+        })
+    })
 </script>

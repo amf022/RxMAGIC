@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery.slimscroll.js' %>
 <style>
     img.main{
         height: 35px !important;
@@ -156,10 +158,18 @@
       <div class="panel-heading">
         <h3 style=" font-size: 20px;" class="panel-title">Alerts</h3>
       </div>
-      <div style="height: 90%;overflow: auto;" class="panel-body">
+      <div id="alerts" style="overflow: auto;" class="panel-body">
         <%= render '/news/feed' %>
       </div>
     </div>
   </div>
   </div><!--/.sidebar-offcanvas-->
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#alerts').slimScroll({
+            height: '95%'
+        })
+    })
+</script>

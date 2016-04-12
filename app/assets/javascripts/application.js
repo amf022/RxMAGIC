@@ -17,6 +17,7 @@
 //= require moment
 //= require bootstrap-datetimepicker
 
+
 function reloadTable(section, data, keys, container)
 {
     if (container.trim() == "" )

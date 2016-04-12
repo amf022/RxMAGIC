@@ -179,5 +179,10 @@
     $('.edit').on('click', function(e) {
         $('#drugName').attr('value',$(this).data('nm'));
         $('#drug_threshold_item_threshold').attr('value',$(this).data('qn'));
+        $('#myModalLabel')[0].innerHTML = "Edit Threshold";
+    });
+
+    $('a.btn.btn-default.btn-primary').on('click', function(e) {
+        $('#myModalLabel')[0].innerHTML = "Add Threshold";
     });
 </script>
