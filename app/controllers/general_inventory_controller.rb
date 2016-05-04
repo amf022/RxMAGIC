@@ -41,9 +41,15 @@ class GeneralInventoryController < ApplicationController
   def destroy
     #Delete an item from general inventory
 
-    item = GeneralInventory.find_by_gn_identifier(params[:id])
-    item.update_attributes(:voided => true, :void_reason => params[:reason])
-    flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully deleted."
+    item = GeneralInventory.find_by_gn_identifier(params[:general_inventory][:gn_id])
+    item.voided = true
+    item.void_reason = (params[:general_inventory][:specific_reason].blank? ? params[:general_inventory][:reason] : "#{params[:general_inventory][:specific_reason]} (#{params[:pmap_inventory][:reason]})")
+    if item.save
+      flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully deleted."
+    else
+      flash[:errors] = item.errors
+    end
+
     redirect_to "/general_inventory"
   end
 

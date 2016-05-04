@@ -41,7 +41,7 @@ class PmapInventoryController < ApplicationController
   end
 
   def destroy
-    #Delete an item from general inventory
+    #Delete an item from pmap inventory
 
     item = PmapInventory.find_by_pap_identifier(params[:pmap_inventory][:pmap_id])
     item.voided = true

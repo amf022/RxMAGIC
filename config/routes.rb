@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   post "/refill" => "prescription#refill"
 
   ###################### General Inventory Controller ##############################
-  get "/void_general_inventory/:id" => "general_inventory#destroy"
+  post "/void_general_inventory" => "general_inventory#destroy"
 
   ###################### PMAP Inventory Controller ##############################
   post "/void_pmap_inventory" => "pmap_inventory#destroy"
