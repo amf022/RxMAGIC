@@ -17,6 +17,7 @@ class PatientController < ApplicationController
       @pmap_meds[med.made_by] = [] if @pmap_meds[med.made_by].blank?
       @pmap_meds[med.made_by] << ["#{med.drug_name}", med.current_quantity]
     end
+    @providers = Provider.all.collect{|x| "#{x.first_name} #{x.last_name}"}
   end
 
   def index

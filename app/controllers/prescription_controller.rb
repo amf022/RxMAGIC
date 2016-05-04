@@ -48,31 +48,93 @@ class PrescriptionController < ApplicationController
   def dispense
 
     # First we check which inventory we are dispensing from
-    bottle = params[:bottl_id].match(/g/i)? "General" : "PMAP"
+    #bottle = params[:bottl_id].match(/g/i)? "General" : "PMAP"
 
     #Dispense according to inventory while paying attention to possible race conditions
+    case params[:type]
+      when "PMAP"
+        PmapInventory.transaction do
+          item = PmapInventory.where("pap_identifier = ? AND voided = ?", params[:bottle_id], false).lock(true).first
+          if !item.blank?
+            item.current_quantity -= params[:quantity]
+            item.save
+
+            dispensation = Dispensation.create({})
+          end
+        end
+
+      when "General"
+        GeneralInventory.transaction do
+          item = GeneralInventory.where("gn_identifier = ? AND voided = ?", params[:bottle_id], false).lock(true).first
+          if !item.blank?
+            item.current_quantity -= params[:quantity]
+            item.save
+
+            dispensation = Dispensation.create({})
+          end
+        end
+    end
+
+    redirect_to "/prescription/"
+  end
+
+  def refill
+    @patient = Patient.find(params[:prescription][:patient_id])
+    bottle = params[:prescription][:bottle_id].match(/g/i)? "General" : "PMAP"
+
+    if bottle == "PMAP"
+      temp = PmapInventory.where("pap_identifier = ? ", params[:prescription][:bottle_id]).pluck(:voided).first
+      bottle = (temp == false ? "PMAP" : "General")
+    end
+
+    provider = Provider.where("first_name = ? AND last_name = ?",
+                              params[:prescription][:prescribed_by].split(" ")[0],
+                              params[:prescription][:prescribed_by].split(" ")[1]).first
+    if provider.blank?
+      provider = Provider.new
+      provider.first_name = params[:prescription][:prescribed_by].split(" ")[0]
+      provider.last_name = params[:prescription][:prescribed_by].split(" ")[1]
+      provider.save
+    end
+
+
     case bottle
       when "PMAP"
         PmapInventory.transaction do
-          item = PmapInventory.where("pap_identifier = ? ", params[:bottle_id]).lock(true).first
-          item.current_quantity -= params[:quantity]
+          item = PmapInventory.where("pap_identifier = ? AND voided = ?", params[:prescription][:bottle_id], false).lock(true).first
+          item.current_quantity = item.current_quantity.to_i - params[:prescription][:quantity_dispensed].to_i
           item.save
 
-          dispensation = Dispensation.create({})
+          new_prescription = Prescription.new
+          new_prescription.patient_id = @patient.id
+          new_prescription.rxaui = item.rxaui
+          new_prescription.directions = params[:prescription][:directions] + " [Refill]"
+          new_prescription.quantity = params[:prescription][:quantity_dispensed]
+          new_prescription.provider_id = provider.id
+          new_prescription.date_prescribed = Time.now
+          new_prescription.save
+          #dispensation = Dispensation.create({})
         end
 
 
       when "General"
         GeneralInventory.transaction do
-          item = GeneralInventory.where("gn_identifier = ? ", params[:bottle_id]).lock(true).first
-          item.current_quantity -= params[:quantity]
+          item = GeneralInventory.where("gn_identifier = ? ", params[:prescription][:bottle_id]).lock(true).first
+          item.current_quantity = item.current_quantity.to_i - params[:prescription][:quantity_dispensed].to_i
           item.save
 
-          dispensation = Dispensation.create({})
+          new_prescription = Prescription.new
+          new_prescription.patient_id = @patient.id
+          new_prescription.rxaui = item.rxaui
+          new_prescription.directions = params[:prescription][:directions] + " [Refill]"
+          new_prescription.quantity = params[:prescription][:quantity_dispensed]
+          new_prescription.provider_id = provider.id
+          new_prescription.date_prescribed = Time.now
+          new_prescription.save
+          #dispensation = Dispensation.create({})
         end
     end
-
-    redirect_to "/prescription/"
+    redirect_to @patient
   end
 
   def ajax_prescriptions

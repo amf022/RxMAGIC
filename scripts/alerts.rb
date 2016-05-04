@@ -19,11 +19,11 @@ def check_low_general_stock
   (thresholds || []).each do |threshold|
 
     if items[threshold.rxaui].blank?
-      message = "#{threshold.drug_name} stock below par levels"
+      message = "#{threshold.drug_name} stock below par level"
       create_alert(message, "low general stock")
     else
       if items[threshold.rxaui] <= threshold.threshold
-        message = "#{threshold.drug_name} stock below par levels"
+        message = "#{threshold.drug_name} stock below par level"
         create_alert(message, "low general stock")
       end
     end

@@ -30,12 +30,13 @@ Rails.application.routes.draw do
   ###################### Prescription Controller ##############################
   get "/void_prescriptions/:id" => "prescription#destroy"
   get "/prescriptions" => "prescription#ajax_prescriptions"
+  post "/refill" => "prescription#refill"
 
   ###################### General Inventory Controller ##############################
   get "/void_general_inventory/:id" => "general_inventory#destroy"
 
   ###################### PMAP Inventory Controller ##############################
-  get "/void_pmap_inventory/:id" => "pmap_inventory#destroy"
+  post "/void_pmap_inventory" => "pmap_inventory#destroy"
   get "/move_pmap_inventory/:id" => "pmap_inventory#move_inventory"
 
   ###################### Inventory Controller ##############################
