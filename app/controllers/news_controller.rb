@@ -6,4 +6,11 @@ class NewsController < ApplicationController
   def feed
 
   end
+
+  def destroy
+    news = News.find(params[:id])
+    news.resolved = true
+    news.save
+    redirect_to "/"
+  end
 end

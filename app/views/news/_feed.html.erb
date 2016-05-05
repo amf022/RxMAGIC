@@ -2,12 +2,16 @@
 
     <% case alert.news_type %>
         <% when "new prescription" %>
-        < class="list-group-item">
+        <a class="list-group-item">
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/dispense_small.png"></td>
-              <td><h5 class="list-group-item-heading">New Prescription</h5><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></td>
-              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right"><img src="/assets/close.png" onmousedown="handleNotice(this)" style="cursor: pointer"></td>
+              <td valign="middle" style="font-size: 115%;color: black">New Prescription<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></td>
+              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right">
+                <a href="#" data-href="/ignore_message/<%= alert.id %>" data-toggle="modal" class="ignore" data-target="#confirm-delete">
+                  <img src="/assets/close.png" style="cursor: pointer">
+                </a>
+              </td>
             </tr>
             <tr>
               <td colspan="3">
@@ -27,8 +31,12 @@
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/pmap.png"></td>
-              <td><h5 class="list-group-item-heading">PMAP: Low Inventory</h5></td>
-              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right"><img src="/assets/close.png" onmousedown="handleNotice(this)" style="cursor: pointer"></td>
+              <td valign="middle" style="font-size: 115%;color: black">PMAP: Low Inventory</td>
+              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right">
+                <a href="#" data-href="/ignore_message/<%= alert.id %>" data-toggle="modal" class="ignore" data-target="#confirm-delete">
+                  <img src="/assets/close.png" style="cursor: pointer">
+                </a>
+              </td>
             </tr>
             <tr>
               <td colspan="3">
@@ -44,12 +52,16 @@
         </a>
 
         <% when "low general stock" %>
-        < class="list-group-item">
+        <a class="list-group-item">
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/general_inventory_small.png"></td>
-              <td><h5 class="list-group-item-heading">General: Low Inventory</h5></td>
-              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right"><img src="/assets/close.png" onmousedown="handleNotice(this)" style="cursor: pointer"></td>
+              <td valign="middle" style="font-size: 115%;color: black">General: Low Inventory</td>
+              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right">
+                <a href="#" data-href="/ignore_message/<%= alert.id %>" data-toggle="modal" class="ignore" data-target="#confirm-delete">
+                  <img src="/assets/close.png" style="cursor: pointer">
+                </a>
+              </td>
             </tr>
             <tr>
               <td colspan="3" >
@@ -68,8 +80,12 @@
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/expiring.png"></td>
-              <td><h5 class="list-group-item-heading">Item about to expire</h5></td>
-              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right"><img src="/assets/close.png" onmousedown="handleNotice(this)" style="cursor: pointer"></td>
+              <td valign="middle" style="font-size: 115%;color: black">Item about to expire</td>
+              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right">
+                <a href="#" data-href="/ignore_message/<%= alert.id %>" data-toggle="modal" class="ignore" data-target="#confirm-delete">
+                  <img src="/assets/close.png" style="cursor: pointer">
+                </a>
+              </td>
             </tr>
             <tr>
               <td colspan="3">
@@ -84,8 +100,12 @@
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/expired.png"></td>
-              <td><h5 class="list-group-item-heading">Item has expired</h5></td>
-              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right"><img src="/assets/close.png" onmousedown="handleNotice(this)" style="cursor: pointer"></td>
+              <td valign="middle" style="font-size: 115%;color: black">Item has expired</td>
+              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right">
+                <a href="#" data-href="/ignore_message/<%= alert.id %>" data-toggle="modal" class="ignore" data-target="#confirm-delete">
+                  <img src="/assets/close.png" style="cursor: pointer">
+                </a>
+              </td>
             </tr>
             <tr>
               <td colspan="3">
@@ -105,8 +125,12 @@
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/move.png"></td>
-              <td><h5 class="list-group-item-heading">Unutilized PMAP Item</h5></td>
-              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right"><img src="/assets/close.png" onmousedown="handleNotice(this)" style="cursor: pointer"></td>
+              <td valign="middle" style="font-size: 115%;color: black">Unutilized PMAP Item</td>
+              <td valign="top" style="margin-top: -10px;margin-right:-15px; float: right">
+                <a href="#" data-href="/ignore_message/<%= alert.id %>" data-toggle="modal" class="ignore" data-target="#confirm-delete">
+                  <img src="/assets/close.png" style="cursor: pointer">
+                </a>
+              </td>
             </tr>
             <tr>
               <td colspan="3">
@@ -123,3 +147,8 @@
     <% end %>
 <% end %>
 
+<script type="text/javascript">
+    $('.ignore').on('click', function(e) {
+        document.getElementById('btnIgnore').href = $(this).data('href');
+    });
+</script>

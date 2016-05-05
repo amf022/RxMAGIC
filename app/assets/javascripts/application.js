@@ -96,3 +96,4 @@ function hideNotice()
     $('#errorModal').removeClass('show');
     $("#errorModal")[0].style["display"] = "none"
 }
+
