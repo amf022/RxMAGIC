@@ -229,6 +229,7 @@
     });
     $('.edit').on('click', function(e) {
         $('#drugName').attr('value',$('#drug'+$(this).data('uid'))[0].innerHTML);
+        $('#drugName').attr('disabled',true)
         $('#general_inventory_lot_number').attr('value',$('#lot'+$(this).data('uid'))[0].innerHTML);
         $('#general_inventory_received_quantity').attr('value',$('#qn'+$(this).data('uid'))[0].innerHTML);
         $('#general_inventory_expiration_date')[0].value = $('#date'+$(this).data('uid'))[0].innerHTML;
@@ -238,5 +239,11 @@
 
     $('a.btn.btn-lg.btn-primary').on('click', function(e) {
         $('#myModalLabel')[0].innerHTML = "Add Item";
+        $('#drugName').attr('disabled',false)
+        $('#drugName').attr('value','');
+        $('#general_inventory_lot_number').attr('value','');
+        $('#general_inventory_received_quantity').attr('value','');
+        $('#general_inventory_expiration_date')[0].value = "";
+        $('#general_inventory_inventory_id')[0].value = null
     });
 </script>
