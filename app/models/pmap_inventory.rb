@@ -31,8 +31,8 @@ class PmapInventory < ActiveRecord::Base
   private
 
   def complete_record
-    self.current_quantity = self.received_quantity if self.current_quantity.blank?
-    self.date_received = Date.today if self.date_received.blank?
+    self.current_quantity = self.received_quantity
+    self.date_received = Date.today
     unless !self.pap_identifier.blank?
       last_id = PmapInventory.order(pap_inventory_id: :desc).first.id rescue "0"
       next_number = (last_id.to_i+1).to_s.rjust(6,"0")
