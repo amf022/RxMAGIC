@@ -84,4 +84,23 @@ class PmapInventoryController < ApplicationController
 
     redirect_to "/pmap_inventory"
   end
+
+  def reorders
+    reorders = PmapInventory.where("reorder_date between ? AND ? AND voided = ?",
+                                   Date.today.beginning_of_week.strftime("%Y-%m-%d"),
+                                   Date.today.end_of_week.strftime("%Y-%m-%d"),false )
+
+    @reorders = view_context.reorders(reorders)
+  end
+
+  def detailed_search
+    reorders = PmapInventory.where("reorder_date between ? AND ? AND voided = ?",
+                                   params[:pmap_inventory][:startDate].to_date.strftime("%Y-%m-%d"),
+                                   params[:pmap_inventory][:endDate].to_date.strftime("%Y-%m-%d"),false )
+
+    @reorders = view_context.reorders(reorders)
+
+    render "reorders"
+
+  end
 end

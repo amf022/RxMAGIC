@@ -22,7 +22,7 @@ class Patient < ActiveRecord::Base
     end
   end
 
-  def birthdat_formatted
+  def birthdate_formatted
     self.birthdate.to_date.strftime("%b %d, %Y") rescue "Unknown"
   end
 

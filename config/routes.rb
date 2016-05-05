@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   ###################### PMAP Inventory Controller ##############################
   post "/void_pmap_inventory" => "pmap_inventory#destroy"
   get "/move_pmap_inventory/:id" => "pmap_inventory#move_inventory"
+  get "/reorders" => "pmap_inventory#reorders"
+  post "/ajax_reorders" => "pmap_inventory#detailed_search"
 
   ###################### Inventory Controller ##############################
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
