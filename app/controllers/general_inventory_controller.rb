@@ -8,7 +8,7 @@ class GeneralInventoryController < ApplicationController
 
     @aboutToExpire = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
                                             Date.today.strftime('%Y-%m-%d'),
-                                            Date.today.advance(:months => 6).end_of_month.strftime('%Y-%m-%d'))
+                                            Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
 
     @underStocked = []
 
@@ -98,6 +98,16 @@ class GeneralInventoryController < ApplicationController
     #This funtion retrieves all the expired items
 
     items = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d'))
+
+    @expired = view_context.expired_items(items)
+  end
+
+  def expiring_items
+    #this function retrieves all the items that will expire in the next two months
+
+    items = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
+                                                    Date.today.strftime('%Y-%m-%d'),
+                                                    Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
 
     @expired = view_context.expired_items(items)
   end
