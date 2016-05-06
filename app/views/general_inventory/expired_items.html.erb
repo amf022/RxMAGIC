@@ -110,4 +110,10 @@
     $('.delete').on('click', function(e) {
         document.getElementById('general_inventory_gn_id').value = $(this).data('id');
     });
+
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $('#expiredItems').DataTable({"bLengthChange": false});
+    } );
+
 </script>

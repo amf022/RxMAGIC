@@ -15,7 +15,7 @@ class GeneralInventoryController < ApplicationController
     @wellStocked = []
 
 
-    items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+    items = GeneralInventory.where("voided = ? AND current_quantity > 0", false).group(:rxaui).sum(:current_quantity)
 
     (thresholds || []).each do |threshold|
 
@@ -28,6 +28,7 @@ class GeneralInventoryController < ApplicationController
       end
     end
 
+    @wellStocked = @wellStocked + (items.keys - thresholds.collect{|x| x[0]})
   end
 
   def new
@@ -111,4 +112,53 @@ class GeneralInventoryController < ApplicationController
 
     @expired = view_context.expired_items(items)
   end
+
+  def understocked
+    thresholds = DrugThreshold.where("voided = ?", false)
+    @underStocked = []
+
+    items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+
+    (thresholds || []).each do |threshold|
+      if items[threshold.rxaui].blank?
+        @underStocked << {
+            "drug_name" => threshold.drug_name,
+            "threshold" => threshold.threshold,
+            "available" => 0
+        }
+      elsif items[threshold.rxaui] <= threshold.threshold
+        @underStocked << {
+            "drug_name" => threshold.drug_name,
+            "threshold" => threshold.threshold,
+            "available" => items[threshold.rxaui]
+        }
+      end
+    end
+  end
+
+  def wellstocked
+
+    thresholds = Hash[*DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold).flatten(1)]
+
+    @wellStocked = []
+
+    items = GeneralInventory.select("rxaui,SUM(current_quantity) as current_quantity").where("voided = ? AND current_quantity > 0", false).group("rxaui")
+    (items || []).each do |item|
+
+      if !thresholds[item.rxaui].blank?
+        if item.current_quantity <= thresholds[item.rxaui]
+          next
+        end
+      end
+
+        @wellStocked << {
+            "drug_name" => item.drug_name,
+            "threshold" => (thresholds[item.rxaui].blank? ? "Unspecified" : thresholds[item.rxaui]),
+            "available" => item.current_quantity
+        }
+
+    end
+
+  end
+
 end
