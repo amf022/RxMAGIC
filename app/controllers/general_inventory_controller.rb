@@ -94,4 +94,11 @@ class GeneralInventoryController < ApplicationController
     end
   end
 
+  def expired_items
+    #This funtion retrieves all the expired items
+
+    items = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d'))
+
+    @expired = view_context.expired_items(items)
+  end
 end

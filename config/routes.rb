@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   ###################### General Inventory Controller ##############################
   post "/void_general_inventory" => "general_inventory#destroy"
+  get "general_inventory/expired_items"
 
   ###################### PMAP Inventory Controller ##############################
   post "/void_pmap_inventory" => "pmap_inventory#destroy"
