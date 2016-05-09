@@ -5,4 +5,8 @@ class Rxnconso < ActiveRecord::Base
   def name
     return self.STR
   end
+
+  def threshold
+    return (DrugThreshold.find_by_rxaui(self.RXAUI).threshold rescue "Unspecified")
+  end
 end

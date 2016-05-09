@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   ###################### Drug Threshold Controller ##############################
   get '/void_threshold/:id' => 'drug_threshold#destroy'
+  get "/drug_threshold/unique_prescriptions"
 
   ###################### Main Controller ##############################
 

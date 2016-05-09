@@ -1,7 +1,7 @@
 class DrugThresholdController < ApplicationController
   def index
     @thresholds = DrugThreshold.where("voided = ?", false)
-    @unique_items = Prescription.where("voided =?", false).pluck(:rxaui).length
+    @unique_items = Prescription.where("voided =?", false).pluck(:rxaui).uniq.length
     @understocked = []
 
     items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
@@ -47,5 +47,18 @@ class DrugThresholdController < ApplicationController
     end
 
     redirect_to "/drug_threshold"
+  end
+
+  def unique_prescriptions
+    unique_items = Prescription.where("voided =?", false).pluck(:rxaui).uniq
+    terms = Rxnconso.select("STR,RXAUI").where("RXAUI in (?)", unique_items)
+    @items = []
+    (terms || []).each do |term|
+      @items << {
+          "drug_name" => term.STR,
+          "threshold" => term.threshold
+      }
+
+    end
   end
 end

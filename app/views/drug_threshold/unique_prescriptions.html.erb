@@ -1,0 +1,87 @@
+<%- model_class = DrugThreshold -%>
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h3><%=t '.title', :default => 'Drug Thresholds: Items Ever Prescribed'.titleize %></h3>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-12 col-sm-12">
+    <table id="uniqueTerms" class="table table-striped table-bordered" width="100%" cellspacing="0">
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th >Threshold</th>
+        <th >Action</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <% (@items || []).each do |item| %>
+          <tr>
+            <td><%= item["drug_name"].titleize %></td>
+            <td style="padding-left: 10px;"><%= number_with_delimiter(item['threshold']) %></td>
+            <td style="text-align: center">
+              <a href="#" data-toggle="modal" data-name="<%= item["drug_name"]%>" class="add" data-target="#basicModal">Set Threshold</a>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Threshold</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :drug_threshold, :html => { :class => "form-horizontal general_inventory" }, :url => drug_threshold_index_path  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="drug_threshold[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :item_threshold, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :item_threshold,:placeholder => "Enter item threshold" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $('#uniqueTerms').DataTable({"bLengthChange": false});
+    } );
+    $('.add').on('click', function(e) {
+        $('#drugName').attr('value',$(this).data('name'));
+    });
+
+</script>
