@@ -47,13 +47,7 @@
             <span style="font-size: 16px;"><%= @unique_items %></span>
           </div>
         </a>
-        <a href="#" class="list-group-item">
-          <div style="width: 100%; text-align: center;" class="list-group-item-text">
-            <h5 class="list-group-item-heading">Items with Thresholds</h5>
-            <span class="highlighted"><%= @thresholds.length %></span>
-          </div>
-        </a>
-        <a href="#" class="list-group-item">
+        <a href="/general_inventory/understocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5 class="list-group-item-heading">Items Below Threshold</h5>
             <span class="highlighted"><%= @understocked.length %></span>
