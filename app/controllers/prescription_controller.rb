@@ -121,7 +121,10 @@ class PrescriptionController < ApplicationController
           new_prescription.provider_id = provider.id
           new_prescription.date_prescribed = Time.now
           new_prescription.save
-          #dispensation = Dispensation.create({})
+
+          dispensation = Dispensation.create({:rx_id => new_prescription.id, :inventory_id => item.bottle_id,
+                                              :patient_id => new_prescription.patient_id, :quantity => params[:prescription][:quantity_dispensed].to_i,
+                                              :dispensation_date => Time.now})
         end
 
 
@@ -140,7 +143,11 @@ class PrescriptionController < ApplicationController
           new_prescription.provider_id = provider.id
           new_prescription.date_prescribed = Time.now
           new_prescription.save
-          #dispensation = Dispensation.create({})
+
+          dispensation = Dispensation.create({:rx_id => new_prescription.id, :inventory_id => item.bottle_id,
+                                              :patient_id => new_prescription.patient_id, :quantity => params[:prescription][:quantity_dispensed].to_i,
+                                              :dispensation_date => Time.now})
+
         end
     end
     redirect_to @patient
