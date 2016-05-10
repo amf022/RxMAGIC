@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   get "/void_prescriptions/:id" => "prescription#destroy"
   get "/prescriptions" => "prescription#ajax_prescriptions"
   post "/refill" => "prescription#refill"
+  post "/prescription/dispense"
 
   ###################### General Inventory Controller ##############################
   post "/void_general_inventory" => "general_inventory#destroy"

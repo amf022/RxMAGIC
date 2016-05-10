@@ -3,10 +3,10 @@ class PmapInventory < ActiveRecord::Base
   belongs_to :patient, :foreign_key => :patient_id
 
   before_create :complete_record
+  before_save :complete_record
 
   validates :lot_number, :presence => true
   validates :reorder_date, :presence => true
-  validates :manufacturer, :presence => true
   validates :received_quantity, :presence => true
   validates :received_quantity, :numericality => { :only_integer => true }
   validates :received_quantity, :numericality => { :greater_than => 0 }
@@ -35,8 +35,9 @@ class PmapInventory < ActiveRecord::Base
   private
 
   def complete_record
-    self.current_quantity = self.received_quantity
-    self.date_received = Date.today
+    self.current_quantity = self.received_quantity if self.current_quantity.blank?
+    self.date_received = Date.today if self.date_received.blank?
+    self.manufacturer = "Unknown" if self.manufacturer.blank?
     unless !self.pap_identifier.blank?
       last_id = PmapInventory.order(pap_inventory_id: :desc).first.id rescue "0"
       next_number = (last_id.to_i+1).to_s.rjust(6,"0")

@@ -37,7 +37,7 @@
                     <% end %>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onMouseDown="hideLayer('dispense')">Close</button>
+                    <button type="button" class="btn btn-danger" onMouseDown="hideLayer('shadow', 'question')">Close</button>
                   </div>
                 </div>
               </div>
@@ -77,7 +77,7 @@
         <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
         <% if !flash[:errors].blank? || !flash[:success].blank? %>
             <script type="text/javascript">
-              showLayer();
+              showLayer("shadow", "question");
             </script>
         <% end %>
     </body>

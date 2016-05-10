@@ -3,7 +3,7 @@ class PrescriptionController < ApplicationController
   def index
     # This function serves the main table for prescriptions
 
-    @prescriptions = Prescription.where("voided = ? ", false).order(created_at: :asc)
+    @prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(created_at: :asc)
   end
 
   def show
@@ -31,8 +31,7 @@ class PrescriptionController < ApplicationController
       @suggestions << {"id" => Misc.dash_formatter(item[0]),"lot_number" => Misc.dash_formatter(item[1]),
                        "expiry_date" => (item[2].to_date.strftime('%b %d, %Y') rescue ""),"amount_remaining" => item[3]}
     end
-    flash[:errors] = {}
-    flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
+
   end
 
   def edit
@@ -49,22 +48,24 @@ class PrescriptionController < ApplicationController
   def dispense
 
     # First we check which inventory we are dispensing from
-    bottle = params[:prescription][:bottle_id].match(/g/i)? "General" : "PMAP"
+    bottle = params[:dispensation][:dispense_from].match(/g/i)? "General" : "PMAP"
+
+    bottle_id = params[:dispensation][:dispense_from].gsub("$", "")
 
     if bottle == "PMAP"
-      temp = PmapInventory.where("pap_identifier = ? ", params[:prescription][:bottle_id]).pluck(:voided).first
+      temp = PmapInventory.where("pap_identifier = ? ", bottle_id).pluck(:voided).first
       bottle = (temp == false ? "PMAP" : "General")
     end
 
-    prescription = Prescription.find(params[:prescription][:prescription])
+    @prescription = Prescription.find(params[:dispensation][:prescription])
 
     #Dispense according to inventory while paying attention to possible race conditions
-    case params[:type]
+    case bottle
       when "PMAP"
         PmapInventory.transaction do
-          item = PmapInventory.where("pap_identifier = ? AND voided = ?", params[:bottle_id], false).lock(true).first
+          item = PmapInventory.where("pap_identifier = ? AND voided = ?", bottle_id, false).first
           if !item.blank?
-              dispense_item(item,prescription,params[:prescription][:amount])
+              dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
           else
             flash[:error] = "Item not found"
           end
@@ -72,16 +73,16 @@ class PrescriptionController < ApplicationController
 
       when "General"
         GeneralInventory.transaction do
-          item = GeneralInventory.where("gn_identifier = ? AND voided = ?", params[:bottle_id], false).lock(true).first
+          item = GeneralInventory.where("gn_identifier = ? AND voided = ?", bottle_id, false).first
           if !item.blank?
-            dispense_item(item,prescription,params[:prescription][:amount])
+            dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
           else
             flash[:error] = "Item not found"
           end
         end
     end
 
-    render prescription
+    redirect_to @prescription
   end
 
   def refill
@@ -157,10 +158,11 @@ class PrescriptionController < ApplicationController
   def dispense_item(inventory,prescription,dispense_amount)
 
     Dispensation.transaction do
-      inventory.current_quantity -= params[:quantity]
+
+      inventory.current_quantity -= dispense_amount.to_i
       inventory.save
 
-      prescription.amount_dispensed += dispense_amount
+      prescription.amount_dispensed += dispense_amount.to_i
       prescription.save
 
       dispensation = Dispensation.create({:rx_id => prescription.id, :inventory_id => inventory.bottle_id,

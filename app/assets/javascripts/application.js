@@ -117,9 +117,9 @@ function getBrowserHeight() {
     return { width: parseInt(intW), height: parseInt(intH) };
 }
 
-function setLayerPosition() {
-    var shadow = document.getElementById("shadow");
-    var question = document.getElementById("question");
+function setLayerPosition(background, main) {
+    var shadow = document.getElementById(background);
+    var question = document.getElementById(main);
 
     var bws = getBrowserHeight();
     shadow.style.width = bws.width + "px";
@@ -132,11 +132,11 @@ function setLayerPosition() {
     question = null;
 }
 
-function showLayer() {
-    setLayerPosition();
+function showLayer(background, main) {
+    setLayerPosition(background, main);
 
-    var shadow = document.getElementById("shadow");
-    var question = document.getElementById("question");
+    var shadow = document.getElementById(background);
+    var question = document.getElementById(main);
 
     shadow.style.display = "block";
     question.style.display = "block";
@@ -145,9 +145,9 @@ function showLayer() {
     question = null;
 }
 
-function hideLayer() {
-    var shadow = document.getElementById("shadow");
-    var question = document.getElementById("question");
+function hideLayer(background,main) {
+    var shadow = document.getElementById(background);
+    var question = document.getElementById(main);
 
     shadow.style.display = "none";
     question.style.display = "none";
