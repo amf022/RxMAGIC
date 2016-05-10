@@ -30,4 +30,7 @@ class GeneralInventory < ActiveRecord::Base
     end
   end
 
+  def bottle_id
+    return self.gn_identifier
+  end
 end

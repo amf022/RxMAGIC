@@ -31,7 +31,8 @@ class PrescriptionController < ApplicationController
       @suggestions << {"id" => Misc.dash_formatter(item[0]),"lot_number" => Misc.dash_formatter(item[1]),
                        "expiry_date" => (item[2].to_date.strftime('%b %d, %Y') rescue ""),"amount_remaining" => item[3]}
     end
-
+    flash[:errors] = {}
+    flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
   end
 
   def edit
@@ -48,7 +49,14 @@ class PrescriptionController < ApplicationController
   def dispense
 
     # First we check which inventory we are dispensing from
-    #bottle = params[:bottl_id].match(/g/i)? "General" : "PMAP"
+    bottle = params[:prescription][:bottle_id].match(/g/i)? "General" : "PMAP"
+
+    if bottle == "PMAP"
+      temp = PmapInventory.where("pap_identifier = ? ", params[:prescription][:bottle_id]).pluck(:voided).first
+      bottle = (temp == false ? "PMAP" : "General")
+    end
+
+    prescription = Prescription.find(params[:prescription][:prescription])
 
     #Dispense according to inventory while paying attention to possible race conditions
     case params[:type]
@@ -56,10 +64,9 @@ class PrescriptionController < ApplicationController
         PmapInventory.transaction do
           item = PmapInventory.where("pap_identifier = ? AND voided = ?", params[:bottle_id], false).lock(true).first
           if !item.blank?
-            item.current_quantity -= params[:quantity]
-            item.save
-
-            dispensation = Dispensation.create({})
+              dispense_item(item,prescription,params[:prescription][:amount])
+          else
+            flash[:error] = "Item not found"
           end
         end
 
@@ -67,15 +74,14 @@ class PrescriptionController < ApplicationController
         GeneralInventory.transaction do
           item = GeneralInventory.where("gn_identifier = ? AND voided = ?", params[:bottle_id], false).lock(true).first
           if !item.blank?
-            item.current_quantity -= params[:quantity]
-            item.save
-
-            dispensation = Dispensation.create({})
+            dispense_item(item,prescription,params[:prescription][:amount])
+          else
+            flash[:error] = "Item not found"
           end
         end
     end
 
-    redirect_to "/prescription/"
+    render prescription
   end
 
   def refill
@@ -110,6 +116,7 @@ class PrescriptionController < ApplicationController
           new_prescription.rxaui = item.rxaui
           new_prescription.directions = params[:prescription][:directions] + " [Refill]"
           new_prescription.quantity = params[:prescription][:quantity_dispensed]
+          new_prescription.amount_dispensed = params[:prescription][:quantity_dispensed]
           new_prescription.provider_id = provider.id
           new_prescription.date_prescribed = Time.now
           new_prescription.save
@@ -128,6 +135,7 @@ class PrescriptionController < ApplicationController
           new_prescription.rxaui = item.rxaui
           new_prescription.directions = params[:prescription][:directions] + " [Refill]"
           new_prescription.quantity = params[:prescription][:quantity_dispensed]
+          new_prescription.amount_dispensed = params[:prescription][:quantity_dispensed]
           new_prescription.provider_id = provider.id
           new_prescription.date_prescribed = Time.now
           new_prescription.save
@@ -142,5 +150,23 @@ class PrescriptionController < ApplicationController
 
     prescriptions =  Prescription.where("voided = ? AND date_prescribed BETWEEN ? AND ?",FALSE, Time.now.advance(:minutes => -30).strftime('%Y-%m-%d %H:%M:%S'),Time.now.strftime('%Y-%m-%d %H:%M:%S'))
     render :text => view_context.prescriptions(prescriptions).to_json
+  end
+
+  private
+
+  def dispense_item(inventory,prescription,dispense_amount)
+
+    Dispensation.transaction do
+      inventory.current_quantity -= params[:quantity]
+      inventory.save
+
+      prescription.amount_dispensed += dispense_amount
+      prescription.save
+
+      dispensation = Dispensation.create({:rx_id => prescription.id, :inventory_id => inventory.bottle_id,
+                                          :patient_id => prescription.patient_id, :quantity => dispense_amount,
+                                          :dispensation_date => Time.now})
+    end
+
   end
 end

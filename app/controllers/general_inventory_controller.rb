@@ -66,7 +66,7 @@ class GeneralInventoryController < ApplicationController
       @new_stock_entry = GeneralInventory.find(params[:general_inventory][:inventory_id])
       name = @new_stock_entry.drug_name
       if (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity) > params[:general_inventory][:received_quantity].to_f
-        flash[:errors][:counts] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
+        flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
       else
           @new_stock_entry.current_quantity = params[:general_inventory][:received_quantity].to_f - (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
       end
@@ -151,14 +151,11 @@ class GeneralInventoryController < ApplicationController
         end
       end
 
-        @wellStocked << {
-            "drug_name" => item.drug_name,
-            "threshold" => (thresholds[item.rxaui].blank? ? "Unspecified" : thresholds[item.rxaui]),
-            "available" => item.current_quantity
-        }
-
+      @wellStocked << {
+          "drug_name" => item.drug_name,
+          "threshold" => (thresholds[item.rxaui].blank? ? "Unspecified" : thresholds[item.rxaui]),
+          "available" => item.current_quantity
+      }
     end
-
   end
-
 end

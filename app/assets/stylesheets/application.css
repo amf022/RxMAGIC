@@ -79,3 +79,32 @@ div.female{
     width: 45px;
     margin: 5px;
 }
+.opaqueLayer
+{
+    display:none;
+    position:absolute;
+    top:0px;
+    left:0px;
+    opacity:0.6;
+    filter:alpha(opacity=60);
+    background-color: #000000;
+    z-Index:1000;
+}
+
+.questionLayer
+{
+    position:absolute;
+    display:none;
+    margin-left: 25%;
+    z-Index:1001;
+
+
+}
+
+#shadow, #question {
+    -moz-user-select: none;
+}
+
+div {
+    -moz-user-select: none;
+}

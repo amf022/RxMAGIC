@@ -28,6 +28,10 @@ class PmapInventory < ActiveRecord::Base
     self.manufacturer.blank? ? "Unknown" : self.manufacturer
   end
 
+  def bottle_id
+    return self.pap_identifier
+  end
+
   private
 
   def complete_record
