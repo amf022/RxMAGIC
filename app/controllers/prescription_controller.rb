@@ -67,7 +67,8 @@ class PrescriptionController < ApplicationController
           if !item.blank?
               dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
           else
-            flash[:error] = "Item not found"
+            flash[:error] = {} if flash[:error].blank?
+            flash[:error][:missing] = "Item not found"
           end
         end
 
@@ -77,7 +78,8 @@ class PrescriptionController < ApplicationController
           if !item.blank?
             dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
           else
-            flash[:error] = "Item not found"
+            flash[:error] = {} if flash[:error].blank?
+            flash[:error][:missing] = "Item not found"
           end
         end
     end
