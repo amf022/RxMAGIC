@@ -10,6 +10,9 @@ class PmapInventory < ActiveRecord::Base
   validates :received_quantity, :presence => true
   validates :received_quantity, :numericality => { :only_integer => true }
   validates :received_quantity, :numericality => { :greater_than => 0 }
+  validates :current_quantity, :presence => true
+  validates :current_quantity, :numericality => { :only_integer => true }
+  validates :current_quantity, :numericality => { :greater_than => 0 }
   validates_associated :rxnconso
 
   include Misc

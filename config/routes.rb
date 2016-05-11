@@ -24,6 +24,9 @@ Rails.application.routes.draw do
 
   get '/dashboard' => "main#dashboard"
   get "/main/about"
+  get 'login' => "main#login"
+  post 'login' => "main#login"
+  get '/logout' => 'main#logout'
 
   ###################### Rxnconso Controller ##############################
   get "/suggestions" => "rxnconso#suggestions"

@@ -26,15 +26,29 @@ class DrugThresholdController < ApplicationController
   end
 
   def create
-    concept = Rxnconso.where("STR = ?", params[:drug_threshold][:item]).first.RXAUI rescue nil
+    #this function creates and edits drug thresholds
 
-    if concept.blank?
-      flash[:errors] = {} if flash[:errors].blank?
-      flash[:errors][:item_name] = [" not recognized"]
+    if params[:drug_threshold][:drug_threshold_id].blank?
+      #Create new threshold
+
+      concept = Rxnconso.where("STR = ?", params[:drug_threshold][:item]).first.RXAUI rescue nil
+
+      if concept.blank?
+        flash[:errors] = {} if flash[:errors].blank?
+        flash[:errors][:item_name] = [" not recognized"]
+      else
+        new_drug_threshold = DrugThreshold.where(rxaui: concept).first_or_initialize
+        new_drug_threshold.threshold = params[:drug_threshold][:item_threshold]
+        new_drug_threshold.voided = false
+      end
     else
-      new_drug_threshold = DrugThreshold.where(rxaui: concept).first_or_initialize
+      #this code block updates an existing drug threshold
+      new_drug_threshold = DrugThreshold.find(params[:drug_threshold][:drug_threshold_id])
       new_drug_threshold.threshold = params[:drug_threshold][:item_threshold]
       new_drug_threshold.voided = false
+    end
+
+    unless new_drug_threshold.blank?
       DrugThreshold.transaction do
         new_drug_threshold.save
       end
@@ -45,7 +59,7 @@ class DrugThresholdController < ApplicationController
         flash[:errors] = new_drug_threshold.errors
       end
     end
-
+    
     redirect_to "/drug_threshold"
   end
 

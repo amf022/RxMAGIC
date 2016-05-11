@@ -26,7 +26,7 @@
             <td style="text-align: center"><%= number_with_delimiter(threshold.threshold) %></td>
             <td><%= threshold.updated_at.strftime('%b %d, %Y') %></td>
             <td>
-              <a href="#" class="edit" data-toggle="modal" data-target="#basicModal" data-nm="<%= threshold.drug_name %>" data-qn="<%= threshold.threshold%>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Threshold"></a>
+              <a href="#" class="edit" data-toggle="modal" data-target="#basicModal" data-uid="<%= threshold.id%>" data-nm="<%= threshold.drug_name %>" data-qn="<%= threshold.threshold%>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Threshold"></a>
               <a href="#" data-href="/void_threshold/<%= threshold.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void Threshold"></a>
             </td>
           </tr>
@@ -103,7 +103,7 @@
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
-
+            <%= f.hidden_field :drug_threshold_id %>
             <div class="form-group">
               <div class="col-lg-offset-7 col-lg-10">
                 <%= f.submit "Save", :class => 'btn btn-success' %>
@@ -134,11 +134,17 @@
 
     $('.edit').on('click', function(e) {
         $('#drugName').attr('value',$(this).data('nm'));
+        $('#drugName').attr('disabled',true);
         $('#drug_threshold_item_threshold').attr('value',$(this).data('qn'));
+        $('#drug_threshold_drug_threshold_id').attr('value',$(this).data('uid'));
         $('#myModalLabel')[0].innerHTML = "Edit Threshold";
     });
 
     $('a.btn.btn-default.btn-primary').on('click', function(e) {
         $('#myModalLabel')[0].innerHTML = "Add Threshold";
+        $('#drugName').attr('disabled',false);
+        $('#drugName').attr('value','');
+        $('#drug_threshold_drug_threshold_id').attr('value',null);
+        $('#drug_threshold_item_threshold').attr('value','');
     });
 </script>

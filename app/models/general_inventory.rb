@@ -5,8 +5,11 @@ class GeneralInventory < ActiveRecord::Base
   validates :lot_number, :presence => true
   validates :expiration_date, :presence => true
   validates :received_quantity, :presence => true
+  validates :current_quantity, :presence => true
   validates :received_quantity, :numericality => { :only_integer => true }
   validates :received_quantity, :numericality => { :greater_than => 0 }
+  validates :current_quantity, :numericality => { :only_integer => true }
+  validates :current_quantity, :numericality => { :greater_than => 0 }
   validates_associated :rxnconso
 
   include Misc
@@ -15,6 +18,10 @@ class GeneralInventory < ActiveRecord::Base
     #this method handles the need to access the drug name associated to the inventory entry
 
     self.rxnconso.STR
+  end
+
+  def bottle_id
+    return self.gn_identifier
   end
 
   private
@@ -28,9 +35,5 @@ class GeneralInventory < ActiveRecord::Base
       check_digit = calculate_check_digit(next_number)
       self.gn_identifier = "G#{next_number}#{check_digit}"
     end
-  end
-
-  def bottle_id
-    return self.gn_identifier
   end
 end

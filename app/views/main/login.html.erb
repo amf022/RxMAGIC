@@ -1,0 +1,51 @@
+<style>
+    body {
+        background-color: #DEDBA7;
+    }
+
+    .myForm{
+        background-color: #ffffff;
+        margin-top: 10%;
+        margin-left: 30%;
+        margin-right: 30%;
+        border: outset;
+        border-radius: 5px;
+    }
+
+    .myInput{
+        width: 80%;
+    }
+
+</style>
+<div class="myForm">
+  <%= form_tag :controller => 'main', :action => 'login', :method => :post do %>
+      <div style="display: table; width: 100%;">
+        <div style="display: table-row;background-color: black;">
+          <div style="display: table-cell; text-align: center;padding: 5px;">
+            <h4 style="color: #FFFFFF;">LOGIN</h4>
+          </div>
+        </div>
+      </div>
+      <div style="display: table; width: 100%;">
+        <div style="display: table-row;">
+          <div style="display: table-cell; text-align: right;padding: 10px;">
+            <span style="font-family: verdana, arial, helvetica, sans-serif; font-size: 14px;">User Name</span>
+          </div>
+          <div style="display: table-cell;padding: 10px;">
+            <%=text_field(:user, :username, :textCase => "lower", :class => "myInput",:autocomplete => 'off', :required => true,:placeholder => "Enter username") %>
+          </div>
+        </div>
+        <div style="display: table-row">
+          <div style="display: table-cell;padding: 10px;text-align: right;">
+             <span style="font-family: verdana, arial, helvetica, sans-serif; font-size: 14px;">Password</span>
+          </div>
+          <div style="display: table-cell;padding: 10px;">
+            <%=password_field(:user, :password,:class => "myInput", :required => true,:placeholder => "Enter password") %>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;padding: 15px;">
+        <%= submit_tag "Login" ,:class => "btn btn-primary" , :style => "width:40%;"%>
+      </div>
+  <%end%>
+</div>

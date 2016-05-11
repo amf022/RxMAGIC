@@ -61,6 +61,7 @@ class GeneralInventoryController < ApplicationController
     if params[:general_inventory][:inventory_id].blank?
       @new_stock_entry = GeneralInventory.new
       @new_stock_entry.rxaui = Rxnconso.where("STR = ?", params[:general_inventory][:item]).first.RXAUI rescue nil
+      @new_stock_entry.current_quantity = params[:general_inventory][:received_quantity]
       name = params[:general_inventory][:item]
     else
       @new_stock_entry = GeneralInventory.find(params[:general_inventory][:inventory_id])
