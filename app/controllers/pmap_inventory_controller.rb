@@ -47,7 +47,7 @@ class PmapInventoryController < ApplicationController
     item = PmapInventory.find_by_pap_identifier(params[:pmap_inventory][:pmap_id])
     item.voided = true
     item.manufacturer = "Unknown" if item.manufacturer.blank?
-    item.void_reason = (params[:pmap_inventory][:specific_reason].blank? ? params[:pmap_inventory][:reason] : "#{params[:pmap_inventory][:specific_reason]} (#{params[:pmap_inventory][:reason]})")
+    item.void_reason =  params[:pmap_inventory][:reason]
     if item.save
       flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully deleted."
     else
