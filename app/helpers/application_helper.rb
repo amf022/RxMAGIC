@@ -5,4 +5,7 @@ module ApplicationHelper
   def manufacturers
     JSON.parse(File.open("#{Rails.root}/app/assets/data/manufacturers.json").read)
   end
+  def logged_user
+    session[:user]
+  end
 end
