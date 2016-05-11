@@ -231,7 +231,7 @@
         $('#drugName').attr('value',$('#drug'+$(this).data('uid'))[0].innerHTML);
         $('#drugName').attr('disabled',true)
         $('#general_inventory_lot_number').attr('value',$('#lot'+$(this).data('uid'))[0].innerHTML);
-        $('#general_inventory_received_quantity').attr('value',$('#qn'+$(this).data('uid'))[0].innerHTML);
+        $('#general_inventory_received_quantity').attr('value',parseInt($('#qn'+$(this).data('uid'))[0].innerHTML.replace(",","")));
         $('#general_inventory_expiration_date')[0].value = $('#date'+$(this).data('uid'))[0].innerHTML;
         $('#general_inventory_inventory_id')[0].value = $(this).data('uid')
         $('#myModalLabel')[0].innerHTML = "Edit Item";

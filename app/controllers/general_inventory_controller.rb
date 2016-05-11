@@ -69,7 +69,7 @@ class GeneralInventoryController < ApplicationController
       if (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity) > params[:general_inventory][:received_quantity].to_f
         flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
       else
-          @new_stock_entry.current_quantity = params[:general_inventory][:received_quantity].to_f - (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
+          @new_stock_entry.current_quantity = params[:general_inventory][:received_quantity].to_i - (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
       end
 
     end

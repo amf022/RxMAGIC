@@ -59,7 +59,7 @@ class DrugThresholdController < ApplicationController
         flash[:errors] = new_drug_threshold.errors
       end
     end
-    
+
     redirect_to "/drug_threshold"
   end
 
