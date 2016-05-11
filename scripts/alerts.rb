@@ -22,7 +22,7 @@ def check_low_pmap_stock
   (main_items || []).each do |main_item|
     if (main_item.current_quantity.to_f/main_item.received_quantity.to_f) < 0.67
       message = "#{main_item.patient_name} has #{main_item.current_quantity} of #{main_item.drug_name} remaining. Consider reordering."
-      create_alert(message, "low pmap stock")
+      create_alert(message, "low pmap stock", "#{main_item.patient_id}-#{main_item.rxaui}")
     end
   end
 end
@@ -37,11 +37,11 @@ def check_low_general_stock
 
     if items[threshold.rxaui].blank?
       message = "#{threshold.drug_name} stock below par level"
-      create_alert(message, "low general stock")
+      create_alert(message, "low general stock", threshold.rxaui)
     else
       if items[threshold.rxaui] <= threshold.threshold
         message = "#{threshold.drug_name} stock below par level"
-        create_alert(message, "low general stock")
+        create_alert(message, "low general stock", threshold.rxaui)
       end
     end
   end
@@ -57,7 +57,7 @@ def check_expiring_pmap_stock
 
   (items || []).each do |item|
     message = "#{item.drug_name} with lot number: #{item.lot_number} for #{item.patient_name} expires soon."
-    create_alert(message, "expiring item")
+    create_alert(message, "expiring item", item.pap_identifier)
   end
 
 end
@@ -72,7 +72,7 @@ def check_expiring_general_stock
 
   (items || []).each do |item|
     message = "#{item.drug_name} with lot number: #{item.lot_number} expires soon."
-    create_alert(message, "expiring item")
+    create_alert(message, "expiring item", item.gn_identifier)
   end
 
 end
@@ -91,7 +91,7 @@ def check_unutilized_pmap_stock
 
     if rx.blank?
       message = "Consider moving #{item.drug_name} for #{item.patient_name} to general stock."
-      create_alert(message, "under utilized item")
+      create_alert(message, "under utilized item", item.pap_identifier)
     end
 
   end
@@ -106,7 +106,7 @@ def check_expired_general_items
 
   (items || []).each do |item|
     message = "#{item.drug_name} with lot number: #{item.lot_number} has expired."
-    create_alert(message, "expired item")
+    create_alert(message, "expired item", item.gn_identifier)
   end
 end
 
@@ -119,15 +119,16 @@ def check_expired_pmap_items
 
   (items || []).each do |item|
     message = "#{item.drug_name} with lot number: #{item.lot_number} for #{item.patient_name} has expired."
-    create_alert(message, "expired item")
+    create_alert(message, "expired item", item.pap_identifier)
   end
 end
 
-def create_alert(message, type)
+def create_alert(message, type, key)
   news = News.where("message = ? AND news_type = ? AND resolved = ?",message, type,false).first
   news = News.new if news.blank?
   news.message = message
   news.news_type = type
+  news.references = key
   news.save
 end
 
