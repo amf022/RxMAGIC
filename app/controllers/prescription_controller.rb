@@ -41,7 +41,7 @@ class PrescriptionController < ApplicationController
     # This function voids a prescription and marks it as deleted
 
     prescription = Prescription.find(params[:id])
-    prescription.update_attributes(:voided => true, :void_reason => params[:reason])
+    prescription.update_attributes(:voided => true)
     redirect_to "/prescription"
   end
 
