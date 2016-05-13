@@ -128,7 +128,7 @@ def create_alert(message, type, key)
   news = News.new if news.blank?
   news.message = message
   news.news_type = type
-  news.references = key
+  news.refers_to = key
   news.save
 end
 
