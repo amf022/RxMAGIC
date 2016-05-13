@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511203135) do
+ActiveRecord::Schema.define(version: 20160512142253) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -104,12 +104,14 @@ ActiveRecord::Schema.define(version: 20160511203135) do
   end
 
   create_table "news", primary_key: "news_id", force: :cascade do |t|
-    t.string   "message",    limit: 255
-    t.string   "news_type",  limit: 255
-    t.boolean  "resolved",   limit: 1,   default: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "references", limit: 255
+    t.string   "message",       limit: 255
+    t.string   "news_type",     limit: 255
+    t.boolean  "resolved",      limit: 1,   default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "references",    limit: 255
+    t.string   "resolution",    limit: 255
+    t.date     "date_resolved"
   end
 
   create_table "patients", primary_key: "patient_id", force: :cascade do |t|

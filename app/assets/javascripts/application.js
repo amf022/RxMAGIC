@@ -156,4 +156,29 @@ function hideLayer(background,main) {
     question = null;
 }
 
+function updateNotice(reference, type,action)
+{
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }else{// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+            var results = xmlhttp.responseText;
+            if(results == 'undefined' || results == '' || results == 'null' || results == 'false') {
+                return ;
+            }else if(results == 'true'){
+                document.getElementById(reference).style.display="none";
+            }else{
+                //document.getElementById('reporter').innerHTML = "....";
+                return ;
+            }
+        }
+    }
+    xmlhttp.open("GET","/manage_notice?reference="+reference+ "&type="+type+"&resolution="+action ,true);
+    xmlhttp.send();
+
+}
+
 window.onresize = setLayerPosition;

@@ -24,6 +24,17 @@ class GeneralInventory < ActiveRecord::Base
     return self.gn_identifier
   end
 
+  def self.void_item(bottle_id, reason)
+    item = GeneralInventory.find_by_gn_identifier(bottle_id)
+    unless item.blank?
+      item.voided = true
+      item.void_reason = reason
+      item.save
+      return item
+    end
+
+    return false
+  end
   private
 
   def complete_record

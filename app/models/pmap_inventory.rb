@@ -35,6 +35,43 @@ class PmapInventory < ActiveRecord::Base
     return self.pap_identifier
   end
 
+  def self.void_item(bottle_id,reason)
+    item = PmapInventory.find_by_pap_identifier(bottle_id)
+    unless item.blank?
+      item.voided = true
+      item.manufacturer = "Unknown" if item.manufacturer.blank?
+      item.void_reason = reason
+      item.save
+      return item
+    end
+    return false
+  end
+
+  def self.move_to_general(bottle_id)
+    item = PmapInventory.find_by_pap_identifier(bottle_id)
+
+    unless item.blank?
+      PmapInventory.transaction do
+        item.voided = true
+        item.void_reason = "Moved to general inventory"
+        item.manufacturer = "Unknown" if item.manufacturer.blank?
+
+        if item.save
+          new_stock_entry = GeneralInventory.new
+          new_stock_entry.lot_number = item.lot_number.upcase
+          new_stock_entry.expiration_date = item.expiration_date rescue nil
+          new_stock_entry.received_quantity = item.current_quantity
+          new_stock_entry.current_quantity = item.current_quantity
+          new_stock_entry.rxaui = item.rxaui
+          new_stock_entry.gn_identifier= item.pap_identifier
+          new_stock_entry.save
+          return new_stock_entry
+        end
+      end
+    end
+    return false
+  end
+
   private
 
   def complete_record

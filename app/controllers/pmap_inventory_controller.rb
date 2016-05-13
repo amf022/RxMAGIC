@@ -68,12 +68,12 @@ class PmapInventoryController < ApplicationController
   def destroy
     #Delete an item from pmap inventory
 
-    item = PmapInventory.find_by_pap_identifier(params[:pmap_inventory][:pmap_id])
-    item.voided = true
-    item.manufacturer = "Unknown" if item.manufacturer.blank?
-    item.void_reason =  params[:pmap_inventory][:reason]
-    if item.save
-      flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully deleted."
+    item = PmapInventory.void_item(params[:pmap_inventory][:pmap_id],params[:pmap_inventory][:reason])
+    if item.blank?
+      flash[:errors] = {} if flash[:errors].blank?
+      flash[:errors][:missing] = "Item was not found"
+    elsif item.errors.blank?
+      flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
     else
       flash[:errors] = item.errors
     end
@@ -84,27 +84,15 @@ class PmapInventoryController < ApplicationController
   def move_inventory
     #Move pmap item to general inventory
 
+    result = PmapInventory.move_to_general(params[:id])
 
-    item = PmapInventory.find_by_pap_identifier(params[:id])
-    item.voided = true
-    item.void_reason = "Moved to general inventory"
-    item.manufacturer = "Unknown" if item.manufacturer.blank?
-
-    if item.save
-      new_stock_entry = GeneralInventory.new
-      new_stock_entry.lot_number = item.lot_number.upcase
-      new_stock_entry.expiration_date = item.expiration_date rescue nil
-      new_stock_entry.received_quantity = item.current_quantity
-      new_stock_entry.rxaui = item.rxaui
-      new_stock_entry.gn_identifier= item.pap_identifier
-
-      if new_stock_entry.save
-        flash[:success] = " #{item.drug_name} #{item.lot_number} was successfully moved to general inventory."
-      else
-        flash[:errors] = new_stock_entry.errors
-      end
+    if result.blank?
+      flash[:errors] = {} if flash[:errors].blank?
+      flash[:errors][:missing] = "Item was not found"
+    elsif result.errors.blank?
+      flash[:success] = " #{result.drug_name} #{result.lot_number} was successfully moved to general inventory."
     else
-      flash[:errors] = item.errors
+      flash[:errors] = result.errors
     end
 
     redirect_to "/pmap_inventory"

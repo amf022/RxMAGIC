@@ -53,10 +53,13 @@ Rails.application.routes.draw do
 
   ###################### Inventory Controller ##############################
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
+  get "/void_item/:bottle_id" => "inventory#void_inventory_item"
+  get "/move_item/:bottle_id" => "inventory#move_inventory_item"
 
   ###################### News Controller ##############################
 
   get "/ignore_message/:id" => "news#destroy"
+  post "/manage_notice" => "news#manage_notice"
 
   resources :general_inventory
   resources :pmap_inventory

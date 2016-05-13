@@ -78,7 +78,7 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#uniqueTerms').DataTable({"bLengthChange": false});
+        $('#uniqueTerms').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
     $('.add').on('click', function(e) {
         $('#drugName').attr('value',$(this).data('name'));

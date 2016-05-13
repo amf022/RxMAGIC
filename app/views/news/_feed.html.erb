@@ -20,14 +20,14 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <a style="width: 60%;"  href="/prescription/<%= alert.id %>" class="btn btn-xs btn-success" type="button">Dispense</a>
+                <a style="width: 60%;"  href="/prescription/<%= alert.refers_to %>" class="btn btn-xs btn-success" type="button">Dispense</a>
               </td>
             </tr>
           </table>
         </a>
 
         <% when "low pmap stock" %>
-        <a class="list-group-item">
+        <a class="list-group-item" id="<%= alert.refers_to %>">
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/pmap.png"></td>
@@ -45,14 +45,15 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <button class="btn btn-xs btn-success" type="button">Add to Activity Sheet</button>
+                <button class="btn btn-xs btn-primary" type="button" onmousedown="updateNotice('<%= alert.refers_to %>',
+                        '<%= alert.news_type %>', 'Added to activity sheet')">Add to Activity Sheet</button>
               </td>
             </tr>
           </table>
         </a>
 
         <% when "low general stock" %>
-        <a class="list-group-item">
+        <a class="list-group-item" id="<%= alert.refers_to %>">
           <table style="width: 100%">
             <tr>
               <td><img src="/assets/general_inventory_small.png"></td>
@@ -70,7 +71,8 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <button class="btn btn-xs btn-success" type="button">Add to Activity Sheet</button>
+                <button class="btn btn-xs btn-primary" type="button" onmousedown="updateNotice('<%= alert.refers_to %>',
+                        '<%= alert.news_type %>', 'Added to activity sheet')">Add to Activity Sheet</button>
               </td>
             </tr>
           </table>
@@ -114,7 +116,8 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <button style="width: 80%;" class="btn btn-xs btn-danger" type="button">Void</button>
+                <a href="#" data-href="/void_item/<%= alert.refers_to%>" style="width:60%;"
+                   class="btn btn-xs btn-danger" data-toggle="modal" data-target="#confirm-move">Void</a>
               </td>
             </tr>
           </table>
@@ -139,7 +142,9 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <button style="width:60%;" class="btn btn-xs btn-success" type="button">Transfer Item</button>
+                <a href="#" data-href="/move_item/<%= alert.refers_to%>" style="width:60%;"
+                   class="btn btn-xs btn-success" data-toggle="modal" data-target="#confirm-move">
+                  Transfer Item</a>
               </td>
             </tr>
           </table>
@@ -147,8 +152,37 @@
     <% end %>
 <% end %>
 
+<div class="modal fade" id="confirm-move" tabindex="-1" role="dialog" aria-labelledby="moveItem" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title" id="title">Move Item to General Inventory</h3>
+      </div>
+      <div class="modal-body" id="message">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <a class="btn btn-danger btn-ok" id="btnMove">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
     $('.ignore').on('click', function(e) {
         document.getElementById('btnIgnore').href = $(this).data('href');
+    });
+
+    $(".btn.btn-xs.btn-success").on('click', function(e) {
+        document.getElementById('title').innerHTML = "Move Item to General Inventory"
+        document.getElementById('message').innerHTML = "Are you sure you want to move this item to <strong>General Inventory</strong>?"
+        document.getElementById('btnMove').href = $(this).data('href');
+    });
+
+    $(".btn.btn-xs.btn-danger").on('click', function(e) {
+        document.getElementById('title').innerHTML = "Discard Expired Item"
+        document.getElementById('message').innerHTML = "Are you sure you want to discard this item?"
+        document.getElementById('btnMove').href = $(this).data('href');
     });
 </script>
