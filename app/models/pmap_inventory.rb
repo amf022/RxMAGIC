@@ -36,7 +36,7 @@ class PmapInventory < ActiveRecord::Base
   end
 
   def self.void_item(bottle_id,reason)
-    item = PmapInventory.find_by_pap_identifier(bottle_id)
+    item = PmapInventory.where("pap_identifier = ? and voided = ?",bottle_id, false).first
     unless item.blank?
       item.voided = true
       item.manufacturer = "Unknown" if item.manufacturer.blank?
@@ -48,7 +48,7 @@ class PmapInventory < ActiveRecord::Base
   end
 
   def self.move_to_general(bottle_id)
-    item = PmapInventory.find_by_pap_identifier(bottle_id)
+    item = PmapInventory.where("pap_identifier = ? AND voided = ?",bottle_id,false).first
 
     unless item.blank?
       PmapInventory.transaction do

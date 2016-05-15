@@ -39,17 +39,20 @@ Rails.application.routes.draw do
 
   ###################### General Inventory Controller ##############################
   post "/void_general_inventory" => "general_inventory#destroy"
-  get "general_inventory/expired_items"
-  get "general_inventory/expiring_items"
-  get "general_inventory/understocked"
-  get "general_inventory/wellstocked"
+  get "/general_inventory/expired_items"
+  get "/general_inventory/expiring_items"
+  get "/general_inventory/understocked"
+  get "/general_inventory/wellstocked"
 
   ###################### PMAP Inventory Controller ##############################
-  post "/void_pmap_inventory" => "pmap_inventory#destroy"
+
   get "/move_pmap_inventory/:id" => "pmap_inventory#move_inventory"
   get "/reorders" => "pmap_inventory#reorders"
+  get "/expired_pmap_items" => "pmap_inventory#expired_items"
+  get "/pmap_inventory/about_to_expire"
   post "/ajax_reorders" => "pmap_inventory#detailed_search"
   post "/pmap_inventory/edit"
+  post "/void_pmap_inventory" => "pmap_inventory#destroy"
 
   ###################### Inventory Controller ##############################
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"

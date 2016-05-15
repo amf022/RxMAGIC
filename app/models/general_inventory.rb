@@ -25,7 +25,7 @@ class GeneralInventory < ActiveRecord::Base
   end
 
   def self.void_item(bottle_id, reason)
-    item = GeneralInventory.find_by_gn_identifier(bottle_id)
+    item = GeneralInventory..where("gn_identifier = ? and voided = ?",bottle_id, false).first
     unless item.blank?
       item.voided = true
       item.void_reason = reason

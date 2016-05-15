@@ -50,28 +50,22 @@
         <span style=" font-size: 16px;font-weight: bold" class="panel-title">Stock Summary</span>
       </div>
       <div class="panel-body">
-        <a href="#" class="list-group-item">
+        <a class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items in Stock</h5>
-            <span class="highlighted"><%= 0 %></span>
+            <span class="highlighted"><%= @in_stock %></span>
           </div>
         </a>
-        <a href="#" class="list-group-item">
-          <div style="width: 100%; text-align: center;" class="list-group-item-text">
-            <h5  class="list-group-item-heading">Items to Re-order</h5>
-            <span class="highlighted"><%= 0 %></span>
-          </div>
-        </a>
-        <a href="#" class="list-group-item">
+        <a href="/pmap_inventory/about_to_expire" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items about to Expire</h5>
-            <span class="highlighted"><%= 0 %></span>
+            <span class="highlighted"><%= @aboutToExpire %></span>
           </div>
         </a>
-        <a href="#" class="list-group-item">
+        <a href="/expired_pmap_items" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Expired Items</h5>
-            <span class="highlighted"><%= 0 %></span>
+            <span class="highlighted"><%= @expired %></span>
           </div>
         </a>
       </div>

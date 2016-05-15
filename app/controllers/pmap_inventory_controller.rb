@@ -2,6 +2,17 @@ class PmapInventoryController < ApplicationController
 
   def index
     @inventory = PmapInventory.where("current_quantity > 0 and voided = ?", false).order(date_received: :asc)
+
+    @in_stock = PmapInventory.select("patient_id, rxaui, count(rxaui) as count").where("current_quantity > 0
+                                      and voided = ?",false).group(:patient_id,:rxaui).length
+
+    @aboutToExpire = PmapInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
+                                            Date.today.strftime('%Y-%m-%d'),
+                                            Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d')).length
+
+    @expired = PmapInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ",
+                                      false,0, Date.today.strftime('%Y-%m-%d')).pluck(:pap_identifier).length
+
   end
 
   def show
@@ -13,7 +24,7 @@ class PmapInventoryController < ApplicationController
 
     if @entry.blank?
       flash[:error] = {} if flash[:error].blank?
-      flash[:error][:missing] = "Item not found"
+      flash[:error][:missing] = ["Item not found"]
     else
       if (@entry.received_quantity - @entry.current_quantity) > params[:pmap_inventory][:amount_received].to_i
         flash[:error] = {} if flash[:error].blank?
@@ -71,7 +82,7 @@ class PmapInventoryController < ApplicationController
     item = PmapInventory.void_item(params[:pmap_inventory][:pmap_id],params[:pmap_inventory][:reason])
     if item.blank?
       flash[:errors] = {} if flash[:errors].blank?
-      flash[:errors][:missing] = "Item was not found"
+      flash[:errors][:missing] = ["Item was not found"]
     elsif item.errors.blank?
       flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
     else
@@ -114,6 +125,19 @@ class PmapInventoryController < ApplicationController
     @reorders = view_context.reorders(reorders)
 
     render "reorders"
+
+  end
+
+  def expired_items
+    @expired = PmapInventory.select("patient_id, rxaui,pap_identifier, date_received, expiration_date,current_quantity").where("voided = ? AND current_quantity > ? AND expiration_date <= ? ",
+                                   false,0, Date.today.strftime('%Y-%m-%d'))
+
+  end
+
+  def about_to_expire
+    @aboutToExpire = PmapInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
+                                         Date.today.strftime('%Y-%m-%d'),
+                                         Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
 
   end
 end
