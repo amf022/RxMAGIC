@@ -59,6 +59,7 @@ class PrescriptionController < ApplicationController
 
     @prescription = Prescription.find(params[:dispensation][:prescription])
 
+    item = nil
     #Dispense according to inventory while paying attention to possible race conditions
     case bottle
       when "PMAP"
@@ -84,7 +85,12 @@ class PrescriptionController < ApplicationController
         end
     end
 
-    redirect_to @prescription
+    if @prescription.quantity <= @prescription.amount_dispensed
+      print_and_redirect("/print_dispensation_label/#{@prescription.id}", "/prescription")
+    else
+      redirect_to @prescription
+    end
+
   end
 
   def refill

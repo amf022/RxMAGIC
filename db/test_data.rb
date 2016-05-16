@@ -19,22 +19,28 @@
                      'North Royalton','Olmsted Falls','Parma','Parma Heights']}
 
 
+  $manufacturers = JSON.parse(File.open("#{Rails.root}/app/assets/data/manufacturers.json").read)
+
+
   def start
 
-    (0..40).each do |i|
+    puts "Creating 40 General Inventory Stock Items"
+    (1..40).each do |i|
       create_general_stocks()
     end
 
-    (0..5).each do |p|
+    puts "Creating 10 general inventory prescriptions"
+    (1..10).each do |p|
       create_prescriptions()
     end
 
-    (0..10).each do |pap|
+    puts "Creating 15 PMAP stock items"
+    (1..15).each do |pap|
       create_pap_stocks()
     end
 
-
-    (0..5).each do |pap|
+    puts "Creating 10 PMAP prescriptions"
+    (1..10).each do |pap|
       create_pmap_prescriptions()
     end
   end
@@ -45,7 +51,8 @@
     new_stock_entry.lot_number = (0...5).map { (65 + rand(26)).chr }.join
     new_stock_entry.expiration_date = Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y')
     new_stock_entry.received_quantity = rand(2000)
-    new_stock_entry.gn_identifier = "GN-#{rand(9999).to_s.rjust(5,'0')}"
+    new_stock_entry.current_quantity = new_stock_entry.received_quantity
+    new_stock_entry.gn_identifier = "G#{rand(9999).to_s.rjust(7,'0')}"
     new_stock_entry.date_received = Date.today
     new_stock_entry.rxaui = random_drug
     new_stock_entry.save
@@ -80,7 +87,7 @@
   end
 
   def create_pmap_prescriptions()
-    pap_items = PapInventory.all
+    pap_items = PmapInventory.all
 
     rand_inventory = pap_items[rand(pap_items.length)]
 
@@ -97,16 +104,19 @@
   def create_pap_stocks
     patient_id = create_patient
 
-    new_stock_entry = PapInventory.new
+    new_stock_entry = PmapInventory.new
     new_stock_entry.patient_id = patient_id
     new_stock_entry.rxaui = random_drug
     new_stock_entry.lot_number = (0...5).map { (65 + rand(26)).chr }.join
     new_stock_entry.expiration_date = Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y')
     new_stock_entry.received_quantity = ((rand(3) + 1 ) * 30)
+    new_stock_entry.current_quantity = new_stock_entry.received_quantity
     new_stock_entry.reorder_date = Time.now.advance(:months => (new_stock_entry.received_quantity/30)).strftime('%b-%d-%Y')
     new_stock_entry.date_received = Date.today
-    new_stock_entry.pap_identifier = "PAP-#{rand(9999).to_s.rjust(5,'0')}"
+    new_stock_entry.pap_identifier = "P#{rand(9999).to_s.rjust(7,'0')}"
+    new_stock_entry.manufacturer = random_manufacturer
     new_stock_entry.save
+
   end
 
   def create_provider
@@ -151,7 +161,7 @@
 
   def random_city(state)
     rand_max = $states[state].length
-    return $states[state[rand(rand_max)]]
+    return $states[state][rand(rand_max)]
   end
 
   def random_directions
@@ -161,4 +171,7 @@
     return directions[rand(directions.length)]
   end
 
+  def random_manufacturer
+    return $manufacturers[rand($manufacturers.length)]
+  end
   start

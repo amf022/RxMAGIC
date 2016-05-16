@@ -3,6 +3,8 @@ class Prescription < ActiveRecord::Base
   belongs_to :provider, :foreign_key => :provider_id
   belongs_to :rxnconso, :foreign_key => :rxaui
 
+  has_many :dispensations, :foreign_key => :rx_id
+  
   def patient_name
     self.patient.fullname.titleize
   end
@@ -21,6 +23,15 @@ class Prescription < ActiveRecord::Base
 
   def prescribed_by
     self.provider.fullname.titleize
+  end
+
+  def lot_numbers
+    
+    keys = self.dispensations.collect { |x| x.inventory_id.to_s }.join("','")
+    
+    GeneralInventory.find_by_sql("(SELECT lot_number FROM general_inventories WHERE (gn_identifier in ('#{keys}') AND
+                                  voided = 0)) UNION (SELECT lot_number FROM pmap_inventories WHERE
+                                  (pap_identifier in ('#{keys}') AND voided = 0))").collect { |x| x.lot_number }.join(",") rescue ""
   end
   
 end

@@ -17,6 +17,18 @@ class InventoryController < ApplicationController
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false, :filename=>"#{entry.lot_number}#{rand(10000)}.lbl", :disposition => "inline")
   end
 
+  def print_dispensation_label
+    #This function prints bottle barcode labels for both inventory types
+
+    @prescription = Prescription.find(params[:id])
+    print_string = create_dispensation_label(@prescription.drug_name,@prescription.amount_dispensed,
+                                             @prescription.lot_numbers, @prescription.directions, @prescription.patient_name,
+                                             @prescription.prescribed_by)
+
+    send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false, :filename=>"#{('a'..'z').to_a.shuffle[0,8].join}.lbl", :disposition => "inline")
+  end
+
+
   def void_inventory_item
     #Delete an expired item from inventory
 

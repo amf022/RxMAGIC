@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   ###################### Inventory Controller ##############################
   get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
+  get "/print_dispensation_label/:id" => "inventory#print_dispensation_label"
   get "/void_item/:bottle_id" => "inventory#void_inventory_item"
   get "/move_item/:bottle_id" => "inventory#move_inventory_item"
 
