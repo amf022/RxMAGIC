@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   get "/main/about"
   get 'login' => "main#login"
   post 'login' => "main#login"
-  get '/logout' => 'main#logout'
+  get '/logout' => "main#logout"
+  get '/pharmacy_sheet/:date' => "main#activity_sheet"
 
   ###################### Rxnconso Controller ##############################
   get "/suggestions" => "rxnconso#suggestions"

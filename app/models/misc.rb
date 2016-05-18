@@ -65,6 +65,46 @@ module Misc
     end
   end
 
+  def self.source_of_meds(patient_id,inventory_id)
+
+    if inventory_id.match(/g/i)
+      return "General"
+    else
+      pmap_med = PmapInventory.where("pap_identifier = ? AND voided = ?", inventory_id, false).pluck(:patient_id)
+
+      if pmap_med.blank?
+        return "General"
+      else
+        if pmap_med.include?(patient_id)
+          return "PMAP"
+        else
+          return "Borrowed"
+        end
+      end
+    end
+  end
+
+  def self.reorder_meds(patient_id, drug_code)
+
+    max_date = PmapInventory.select("MAX(date_received) as date_received").where("voided = ? AND rxaui = ? AND patient_id = ?",
+                                                                                 false, drug_code, patient_id)
+
+    if max_date.blank?
+      return false
+    else
+      pmap_med = PmapInventory.select("sum(received_quantity) as received_quantity, sum(current_quantity) as
+                                       current_quantity").where("voided = ? AND rxaui = ? AND patient_id =  ? AND
+                                       date_received = ?", false, drug_code, patient_id,max_date.first.date_received)
+
+      (pmap_med || []).each do |main_item|
+        if (main_item.current_quantity.to_f/main_item.received_quantity.to_f) < 0.50
+          return true
+        end
+      end
+      return false
+    end
+  end
+
   private
 
   def get_facility_name

@@ -20,7 +20,7 @@ def check_low_pmap_stock
                                           group by patient_id, rxaui")
 
   (main_items || []).each do |main_item|
-    if (main_item.current_quantity.to_f/main_item.received_quantity.to_f) < 0.67
+    if (main_item.current_quantity.to_f/main_item.received_quantity.to_f) < 0.50
       message = "#{main_item.patient_name} has #{main_item.current_quantity} of #{main_item.drug_name} remaining. Consider reordering."
       create_alert(message, "low pmap stock", "#{main_item.patient_id}-#{main_item.rxaui}")
     end

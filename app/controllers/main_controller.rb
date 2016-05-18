@@ -46,4 +46,19 @@ class MainController < ApplicationController
     end
   end
 
+  def activity_sheet
+    #code block for generatinng activity sheet
+
+    report_date = params[:date].to_date rescue Date.today
+    @date = report_date.strftime("%b %d, %Y")
+    dispensations = Dispensation.where("voided = ? AND dispensation_date BETWEEN ? AND ?", false,
+                                       report_date.strftime("%Y-%m-%d 00:00:00"),
+                                       report_date.strftime("%Y-%m-%d 23:59:59"))
+
+    @records = view_context.activities(dispensations)
+
+    low_stock_items = News.where("date_resolved = ? AND resolution = ? AND news_type = ?",@date, true,
+                                 "low general stock").pluck(:refers_to)
+    @low_stock = Rxnconso.where("RXAUI in (?)", low_stock_items).pluck(:STR)
+  end
 end

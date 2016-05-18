@@ -86,6 +86,9 @@
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
           <div class="container">
             <a class="navbar-brand" href="/">RxMAGIC @ <%= facility_name %></a>
+            <a class="navbar-brand navbar-right">
+              <%= Date.today.strftime("%A, %b %d, %Y ")%>
+            </a>
           </div>
         </nav>
         <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
