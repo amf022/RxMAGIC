@@ -120,7 +120,7 @@
           <tbody>
           <% (@pmap_meds.keys || []).each do |company| %>
               <tr>
-                <th colspan="2">
+                <th colspan="3">
                   <h5><strong><%= company%></strong></h5>
                 </th>
               </tr>
@@ -131,6 +131,9 @@
                     </td>
                     <td>
                       <%= item[1]%>
+                    </td>
+                    <td>
+                      <img style="cursor:pointer ;padding-right: 5px;" src="/assets/add.png" onmousedown="chooseItem('<%= company%>','<%= item[0]%>')" title="Select Item">
                     </td>
                   </tr>
               <% end %>
@@ -180,7 +183,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onmousedown="chooseItem('','')">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Add PMAP Item</h4>
       </div>
       <div class="modal-body">
@@ -242,7 +245,7 @@
             <div class="form-group">
               <div class="col-lg-offset-7 col-lg-10">
                 <%= f.submit "Save", :class => 'btn btn-success' %>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onmousedown="chooseItem('','')">Close</button>
               </div>
             </div>
 
@@ -306,6 +309,8 @@
 <script type="text/javascript">
     // Date picker activation
 
+    var firm = "";
+    var item = "";
     var manufacturers = [];
     <% (manufacturers || []).each do |company|%>
         manufacturers.push('<%= company.html_safe %>')
@@ -344,5 +349,18 @@
     function removeCursor(element)
     {
         element.value = element.value.replace("$", "")
+    }
+
+    $('a.btn.btn-default.btn-primary').on('click', function(e) {
+      if (firm.trim() != ""){
+        document.getElementById('company').value = firm;
+        document.getElementById('drugName').value = item;
+      }
+    });
+
+    function chooseItem(company,drug)
+    {
+      firm = company;
+      item = drug;
     }
 </script>

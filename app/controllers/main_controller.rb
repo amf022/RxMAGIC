@@ -61,4 +61,8 @@ class MainController < ApplicationController
                                  "low general stock").pluck(:refers_to)
     @low_stock = Rxnconso.where("RXAUI in (?)", low_stock_items).pluck(:STR)
   end
+
+  def contact
+
+  end
 end
