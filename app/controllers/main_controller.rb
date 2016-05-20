@@ -64,5 +64,12 @@ class MainController < ApplicationController
 
   def contact
 
+    if request.method == "POST"
+      CSV.open("#{Rails.root}/log/reports.csv", "ab") do |csv|
+        csv << [params[:contact][:name],params[:contact][:email],Time.now,params[:contact][:message] ]
+      end
+      flash[:success] = "Message sent to RxMAGIC Team"
+    end
+
   end
 end
