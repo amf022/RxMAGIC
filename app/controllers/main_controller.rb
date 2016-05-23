@@ -22,8 +22,8 @@ class MainController < ApplicationController
       status = RestClient.post(login_link, {"username" => params[:user][:username], "password" => params[:user][:password]})
 
       if status.match(/error/i)
-        flash[:errors][:invalid_credentials] = {} if flash[:errors][:invalid_credentials].blank?
-        flash[:errors][:invalid_credentials] = status.gsub("Error: ", "")
+        flash[:errors] = {} if flash[:errors].blank?
+        flash[:errors][:invalid_credentials] = [status.gsub("Error: ", "")]
       else
         session[:user_token] = status
         session[:user] = params[:user][:username]

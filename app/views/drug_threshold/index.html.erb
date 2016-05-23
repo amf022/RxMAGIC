@@ -3,7 +3,7 @@
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => "Medication Thresholds" %></h3>
+  <h3><%=t '.title', :default => "PAR Levels" %></h3>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
@@ -12,7 +12,7 @@
       <thead>
       <tr>
         <th>Medication</th>
-        <th style="width: 20%;">Medication Threshold</th>
+        <th style="width: 20%;">PAR level</th>
         <th style="width: 20%;">Date Updated</th>
         <th style="width: 10%;">Actions</th>
       </tr>
@@ -26,8 +26,8 @@
             <td style="text-align: center"><%= number_with_delimiter(threshold.threshold) %></td>
             <td><%= threshold.updated_at.strftime('%b %d, %Y') %></td>
             <td>
-              <a href="#" class="edit" data-toggle="modal" data-target="#basicModal" data-uid="<%= threshold.id%>" data-nm="<%= threshold.drug_name %>" data-qn="<%= threshold.threshold%>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Threshold"></a>
-              <a href="#" data-href="/void_threshold/<%= threshold.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void Threshold"></a>
+              <a href="#" class="edit" data-toggle="modal" data-target="#basicModal" data-uid="<%= threshold.id%>" data-nm="<%= threshold.drug_name %>" data-qn="<%= threshold.threshold%>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit PAR Level"></a>
+              <a href="#" data-href="/void_threshold/<%= threshold.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void PAR Level"></a>
             </td>
           </tr>
       <% end %>
@@ -49,7 +49,7 @@
         </a>
         <a href="/general_inventory/understocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
-            <h5 class="list-group-item-heading">Items Below Threshold</h5>
+            <h5 class="list-group-item-heading">Items Below PAR Level</h5>
             <span class="highlighted"><%= @understocked.length %></span>
           </div>
         </a>
@@ -57,7 +57,7 @@
     </div>
     <a href="#" class="btn btn-default btn-primary" style="width: 100%;"
        data-toggle="modal"
-       data-target="#basicModal">New Threshold</a><br/><br/>
+       data-target="#basicModal">New PAR Level</a><br/><br/>
     <a href="/" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
   </div>
 </div>
@@ -66,10 +66,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 style=" font-size: 20px;" class="panel-title">Delete Threshold</h3>
+        <h3 style=" font-size: 20px;" class="panel-title">Delete PAR Level</h3>
       </div>
       <div class="modal-body">
-        Are you sure you want to remove this threshold?
+        Are you sure you want to remove this PAR level?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
@@ -84,7 +84,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Add Threshold</h4>
+        <h4 class="modal-title" id="myModalLabel">Add PAR Level</h4>
       </div>
       <div class="modal-body">
         <%= form_for :drug_threshold, :html => { :class => "form-horizontal general_inventory" }, :url => drug_threshold_index_path  do |f| %>
@@ -97,9 +97,9 @@
               <%#=f.error_span(:lot_number) %>
             </div>
             <div class="form-group">
-              <%= f.label :item_threshold, :class => 'control-label col-lg-4' %>
+              <%= f.label :par_level, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :item_threshold,:placeholder => "Enter item threshold" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+                <%= f.text_field :item_threshold,:placeholder => "Enter item PAR level" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
@@ -137,11 +137,11 @@
         $('#drugName').attr('disabled',true);
         $('#drug_threshold_item_threshold').attr('value',$(this).data('qn'));
         $('#drug_threshold_drug_threshold_id').attr('value',$(this).data('uid'));
-        $('#myModalLabel')[0].innerHTML = "Edit Threshold";
+        $('#myModalLabel')[0].innerHTML = "Edit PAR Level";
     });
 
     $('a.btn.btn-default.btn-primary').on('click', function(e) {
-        $('#myModalLabel')[0].innerHTML = "Add Threshold";
+        $('#myModalLabel')[0].innerHTML = "Add PAR Level";
         $('#drugName').attr('disabled',false);
         $('#drugName').attr('value','');
         $('#drug_threshold_drug_threshold_id').attr('value',null);

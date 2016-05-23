@@ -4,7 +4,7 @@
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => 'Drug Thresholds: Items Ever Prescribed'.titleize %></h3>
+  <h3><%=t '.title', :default => 'PAR Levels: Items Ever Prescribed'%></h3>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
@@ -13,7 +13,7 @@
       <thead>
       <tr>
         <th>Item</th>
-        <th >Threshold</th>
+        <th >PAR Level</th>
         <th >Action</th>
       </tr>
       </thead>
@@ -25,7 +25,7 @@
             <td><%= item["drug_name"].titleize %></td>
             <td style="padding-left: 10px;"><%= number_with_delimiter(item['threshold']) %></td>
             <td style="text-align: center">
-              <a href="#" data-toggle="modal" data-name="<%= item["drug_name"]%>" class="add" data-target="#basicModal">Set Threshold</a>
+              <a href="#" data-toggle="modal" data-name="<%= item["drug_name"]%>" class="add" data-target="#basicModal">Set PAR Level</a>
             </td>
           </tr>
       <% end %>
@@ -39,7 +39,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Add Threshold</h4>
+        <h4 class="modal-title" id="myModalLabel">Add PAR Level</h4>
       </div>
       <div class="modal-body">
         <%= form_for :drug_threshold, :html => { :class => "form-horizontal general_inventory" }, :url => drug_threshold_index_path  do |f| %>
@@ -52,9 +52,9 @@
               <%#=f.error_span(:lot_number) %>
             </div>
             <div class="form-group">
-              <%= f.label :item_threshold, :class => 'control-label col-lg-4' %>
+              <%= f.label :par_level, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :item_threshold,:placeholder => "Enter item threshold" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+                <%= f.text_field :item_threshold,:placeholder => "Enter item PAR Level" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
