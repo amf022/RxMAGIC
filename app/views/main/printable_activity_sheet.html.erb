@@ -1,0 +1,134 @@
+<style>
+  th{
+    text-align: center;
+    padding: 1px;
+    border: 1px solid black;
+  }
+
+  td{
+
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    line-height: 1.42857;
+    border: 1px solid black;
+  }
+</style>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div style="width: 100%">
+    <table style="width: 100%;" border="collapse">
+      <caption>Pharmacy Activity Sheet</caption>
+      <tr>
+        <td><b>Date</b></td>
+        <td>:</td>
+        <td><%= @date%></td>
+        <td>Pharmacist</td>
+        <td>:</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><b>Clinic</b></td>
+        <td>:</td>
+        <td><%= facility_name %></td>
+        <td>Student</td>
+        <td>:</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-xs-12 col-sm-12">
+    <div>
+      <table style="margin-top: 5px;width: 100%;">
+        <thead style="background-color: silver;">
+        <tr>
+          <th rowspan="2" width="5%">Initials</th>
+          <th rowspan="2">Patient Name</th>
+          <th rowspan="2">Medication</th>
+          <th rowspan="2" width="5%">QTY</th>
+          <th rowspan="2" width="15%">Directions</th>
+          <th colspan="3" width="15%">Med Source</th>
+          <th colspan="4" width="15%">PMAP</th>
+          <th>&nbsp;</th>
+        </tr>
+        <tr>
+          <th>Borrowed</th>
+          <th>PMAP</th>
+          <th>Stock</th>
+          <th>New Med</th>
+          <th>Reorder</th>
+          <th>Dose Change</th>
+          <th>Re-Enrollment / New App</th>
+          <th>Comments</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% (@records || {}).each do |patient_id, patient| %>
+            <% (patient ||{}).each do |drug_name, record| %>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td><%= record['patient_name'] %></td>
+                  <td><%= drug_name %></td>
+                  <td><%= record['quantity'] %></td>
+                  <td><%= record['directions'] %></td>
+                  <td style="text-align: center;"><%= record['source'].include?('Borrowed') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
+                  <td style="text-align: center;"><%= record['source'].include?('PMAP') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
+                  <td style="text-align: center;"><%= record['source'].include?('General') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
+                  <td>&nbsp;</td>
+                  <td style="text-align: center;"><%= record['reorder'].blank? ? '&nbsp;'.html_safe : '&#10004;'.html_safe%></td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+            <% end %>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <strong>Stock meds to be replenished:</strong>
+
+      <div style="display: table">
+        <% i = 0 %>
+        <% while i < @low_stock.length  do%>
+            <div style="display: table-row">
+              <div style="display: table-cell">
+                <%= i + 1 %>
+              </div>
+              <div style="display: table-cell">
+                <%= @low_stock[i].titleize rescue "&nbsp;".html_safe %>
+              </div>
+              <div style="display: table-cell">
+                <strong><%= i + 2 %></strong>
+              </div>
+              <div style="display: table-cell">
+                <%= @low_stock[i+1].titleize rescue "&nbsp;".html_safe %>
+              </div>
+            </div>
+            <% i += 2 %>
+        <% end %>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Date picker activation
+  $(function () {
+    $('#datetimepicker1').datetimepicker({format: 'MMM D YYYY'});
+  });
+
+  function genNextReport()
+  {
+    var date = document.getElementById("report_date").value.toString().trim()
+    if(date == "")
+    {
+      alert("Please select a date")
+    }
+    else{
+      window.location = "/pharmacy_sheet/"+date
+    }
+
+  }
+
+</script>

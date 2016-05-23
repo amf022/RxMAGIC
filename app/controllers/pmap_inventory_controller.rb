@@ -23,11 +23,11 @@ class PmapInventoryController < ApplicationController
     @entry = PmapInventory.find_by_pap_identifier(params[:pmap_inventory][:pmap_inventory_id])
 
     if @entry.blank?
-      flash[:error] = {} if flash[:error].blank?
-      flash[:error][:missing] = ["Item not found"]
+      flash[:errors] = {} if flash[:errors].blank?
+      flash[:errors][:missing] = ["Item not found"]
     else
       if (@entry.received_quantity - @entry.current_quantity) > params[:pmap_inventory][:amount_received].to_i
-        flash[:error] = {} if flash[:error].blank?
+        flash[:errors] = {} if flash[:errors].blank?
         flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
       else
         @entry.current_quantity = params[:pmap_inventory][:amount_received].to_i - (@entry.received_quantity - @entry.current_quantity)

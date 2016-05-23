@@ -9,7 +9,7 @@ class GeneralInventory < ActiveRecord::Base
   validates :received_quantity, :numericality => { :only_integer => true }
   validates :received_quantity, :numericality => { :greater_than => 0 }
   validates :current_quantity, :numericality => { :only_integer => true }
-  validates :current_quantity, :numericality => { :greater_than => 0 }
+  validates :current_quantity, :numericality => { :greater_than => -1 }
   validates_associated :rxnconso
 
   include Misc

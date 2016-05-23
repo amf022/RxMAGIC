@@ -22,8 +22,8 @@ class MainController < ApplicationController
       status = RestClient.post(login_link, {"username" => params[:user][:username], "password" => params[:user][:password]})
 
       if status.match(/error/i)
-        flash[:error][:invalid_credentials] = []
-        flash[:error][:invalid_credentials] = status.gsub("Error: ", "")
+        flash[:errors][:invalid_credentials] = {} if flash[:errors][:invalid_credentials].blank?
+        flash[:errors][:invalid_credentials] = status.gsub("Error: ", "")
       else
         session[:user_token] = status
         session[:user] = params[:user][:username]
@@ -47,7 +47,7 @@ class MainController < ApplicationController
   end
 
   def activity_sheet
-    #code block for generatinng activity sheet
+    #code block for generating activity sheet
 
     report_date = params[:date].to_date rescue Date.today
     @date = report_date.strftime("%b %d, %Y")
@@ -60,6 +60,24 @@ class MainController < ApplicationController
     low_stock_items = News.where("date_resolved = ? AND resolution = ? AND news_type = ?",@date, true,
                                  "low general stock").pluck(:refers_to)
     @low_stock = Rxnconso.where("RXAUI in (?)", low_stock_items).pluck(:STR)
+  end
+
+  def print_activity_sheet
+    #code block for generating printable activity sheet
+
+    report_date = params[:date].to_date rescue Date.today
+    @date = report_date.strftime("%b %d, %Y")
+    dispensations = Dispensation.where("voided = ? AND dispensation_date BETWEEN ? AND ?", false,
+                                       report_date.strftime("%Y-%m-%d 00:00:00"),
+                                       report_date.strftime("%Y-%m-%d 23:59:59"))
+
+    @records = view_context.activities(dispensations)
+
+    low_stock_items = News.where("date_resolved = ? AND resolution = ? AND news_type = ?",@date, true,
+                                 "low general stock").pluck(:refers_to)
+    @low_stock = Rxnconso.where("RXAUI in (?)", low_stock_items).pluck(:STR)
+
+    render :layout => false, :action => "/printable_activity_sheet"
   end
 
   def contact

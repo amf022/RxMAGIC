@@ -5,3 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+puts "Loading seed drug thresholds"
+
+CSV.foreach("#{Rails.root}/db/seed_thresholds.csv") do |csv|
+  
+end

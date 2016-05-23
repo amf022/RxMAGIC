@@ -1,0 +1,100 @@
+RXCUI,Medication,Form (i.e. ,THRESHOLD (avg +ACo-2)
+995253,Hydroxyzine 25 mg,oral capsules,114
+995278,Hydroxyzine 50 mg,oral capsules,96
+200371,Citalopram 20 mg,tablet,287
+309314,Citalopram 40 mg,tablet,98
+310385,Fluoxetine 20 mg,capsules,245
+313989,Fluoxetine 40 mg,capsules,165
+856373,Trazodone 100 mg,tablets,141
+993518,Bupropion SR 150 mg,tablets,253
+856834,Amitriptyline 25 mg,tablet,177
+630208,Albuterol Inhaler,,29
++ACI-746762, 746763+ACI-,Proventil,,29
+801095,Ventolin,,29
+896185,Advair 100/50,,7
+896212,Advair 250/50,,4
+896229,Advair 500/50,,9
++ACI-1303107 , 1607112+ACI-,Tudorza,,3
+1099571,Depakote ER 500 mg,tablets,180
+1099871,Depakote DR 500mg,tablets,120
+1099679,Depakote DR 250 mg,tablets,60
+211322,Remeron 15 mg,tablet,102
+211323,Remeron 30 mg,tablet,87
+261135,Remeron 45 mg,tablet,60
+729929,Effexor XR 75 mg,capsules,165
+729931,Effexor XR 150 mg,capsules,171
++ACI-153048 , 314154+ACI-,Olanzapine 10 mg (Zyprexa),tablets,60
++ACI-283639 , 284514+ACI-,Olanzapine 20 mg,tablets,40
+807834,Keppra XR 500 mg,tablets,240
++ACI-1049160, 1049161, 1049162+ACI-,Pseudoephedrine 30 mg,tablet,55
++ACI-153376, 746201+ACI-,Nasonex,,10
+311372,Loratadine 10 mg,tablet?,386
++ACI-349420 , 352086+ACI-,Desloratadine 5 mg (Clarinex),tablet,128
+1014678,Cetirizine 10 mg,tablet,152
++ACI-1049630 , 1049631 , 1049632 , 1049909 , 1049910+ACI-,Diphenhydramine 25 mg (Benadryl),+ACI-capsules, tablets+ACI-,66
+314076,Lisinopril 10 mg,tablet,320
+314077,Lisinopril 20 mg,tablet,404
+197884,Lisinopril 40 mg,tablet,378
+979492,Losartan 50 mg,tablet,174
+979480,Losartan 100 mg,tablet,234
+866924,Metoprolol 25 mg,tablet,430
+866514,Metoprolol 50 mg,tablet,421
+866511,Metoprolol 100 mg,tablet,141
+310798,HCTZ 25 mg,tablet,1058
+197380,Atenolol 25 mg,tablet,162
+197381,Atenolol 50 mg,tablet,129
+198316,Triamterene/HCTZ 37.5/25 mg,capsule,71
+313096,Spironolactone 25 mg,tablets,89
+312961,Simvastatin 20 mg,tablet,460
+198211,Simvastatin 40 mg,tablet,652
+859426,Crestor 5 mg,tablet,244
+859749,Crestor 10 mg,tablet,235
+859753,Crestor 20 mg,tablet,456
+197361,Amlodipine 5 mg,tablet,434
+308135,Amlodipine 10 mg,tablet,814
+309362,Clopidogrel 75 mg,tablet,80
+207773,Procardia XL 60 mg,tablet,60
+207774,Procardia XL 90 mg,tablet,151
+308191,Amoxicillin 500 mg,capsule,139
+562508,Augmentin 875 mg (amoxicillin/clavulanate 875/125),tablet,63
+849580,Bactrim DS 800/160 mg,tablet,65
+309309,Ciprofloxacin 500 mg,tablet,73
+308460,Azithromycin 250 mg,tablet,23
+248656,Azithromycin 500 mg,tablet,20
+309112,Cephalexin 250 mg,capsules,50
+309114,Cephalexin 500 mg,capsules,104
+311681,Metronidazole 500 mg,tablet,68
+1649990,Doxycycline 100 mg,capsules,44
+197699,Fluconazole 150 mg,tablet,8
++ACI-243670 , 308416 , 318272+ACI-,ASA 81mg EC (Aspirin 81 mg),+ACI-tablet , chewables+ACI-,684
+847232,Lantus Pens,,156
+285018,Lantus Vials,,6
+1653204,Novolog Pens,,60
+351926,Novolog Vials,,4
+977840,Novolog 70/30 Pens,,20
+1652640,Humalog Pens,,18
+865098,Humalog Vials,,2
+847254,Humalog 75/25 Pens,,18
+310490,Glipizide 5 mg,tablet,196
+310488,Glipizide 10 mg,tablet,435
+861007,Metformin 500 mg,tablet,828
+861004,Metformin 1000 mg,tablet,2148
++ACI-892246 , 966404+ACI-,Levothyroxine 100 mcg,+ACI-tablet , capsules+ACI-,64
+1115005,Docusate 100 mg,soft gels,172
+310273,Famotidine 20 mg,tablet,296
++ACI-198051 , 402014+ACI-,Omeprazole 20 mg,+ACI-capsules, tablets+ACI-,684
+284400,Protonix 40 mg,tablet,217
+213269,Viagra 25 mg,tablet,24
+213270,Viagra 50 mg,tablet,32
+213271,Viagra 100 mg,tablet,50
+198145,Prednisone 10 mg,tablet,66
+310965,Ibuprofen 200 mg,Tablet,279
+197806,Ibuprofen 600 mg,Tablet ,533
+198014,Naproxen 500 mg,Tablet +AC0- /Aleve?,422
+198440,Acetaminophen 500 mg,Tablet,369
+312840,Rizatriptan 5 mg,tablet,36
+309367,Clotrimazole 1+ACU-,cream,108
+106258,Hydrocortisone 1+ACU-,cream,147
+1366116,Bacitracin,ointment,14
+204602,Triple Abx Ung,cream,100
+1014314,Triamcinolone 0.1+ACU- / 15 g,cream,130

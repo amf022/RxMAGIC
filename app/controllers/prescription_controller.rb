@@ -13,24 +13,7 @@ class PrescriptionController < ApplicationController
       redirect_to "/prescription"
     end
 
-    @category = "PMAP"
-    meds = PmapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
-                                   @prescription.patient_id, @prescription.rxaui, 0,
-                                   false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
-                                                                             :expiration_date,:current_quantity)
-
-    @suggestions =[]
-    if meds.blank?
-      @category = "General"
-      meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", @prescription.rxaui,0,
-                                       false).order(expiration_date: :asc).limit(5).pluck(:gn_identifier, :lot_number,
-                                                                                         :expiration_date,:current_quantity)
-    end
-
-    (meds || []).each do |item|
-      @suggestions << {"id" => Misc.dash_formatter(item[0]),"lot_number" => Misc.dash_formatter(item[1]),
-                       "expiry_date" => (item[2].to_date.strftime('%b %d, %Y') rescue ""),"amount_remaining" => item[3]}
-    end
+    @category, @suggestions = get_suggestions(@prescription.patient_id, @prescription.rxaui)
 
   end
 
@@ -66,10 +49,15 @@ class PrescriptionController < ApplicationController
         PmapInventory.transaction do
           item = PmapInventory.where("pap_identifier = ? AND voided = ?", bottle_id, false).first
           if !item.blank?
-              dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
+              if dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
+                flash[:success] = "Item successfuly dispensed"
+              else
+                flash[:errors] = {} if flash[:errors].blank?
+                flash[:errors][:insufficient_quantity] = ["Item could not be dispensed"]
+              end
           else
-            flash[:error] = {} if flash[:error].blank?
-            flash[:error][:missing] = "Item not found"
+            flash[:errors] = {} if flash[:errors].blank?
+            flash[:errors][:missing] = ["Item not found"]
           end
         end
 
@@ -77,13 +65,19 @@ class PrescriptionController < ApplicationController
         GeneralInventory.transaction do
           item = GeneralInventory.where("gn_identifier = ? AND voided = ?", bottle_id, false).first
           if !item.blank?
-            dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
+            if dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
+              flash[:success] = "Item successfuly dispensed"
+            else
+              flash[:errors] = {} if flash[:errors].blank?
+              flash[:errors][:insufficient_quantity] = ["Item could not be dispensed"]
+            end
           else
-            flash[:error] = {} if flash[:error].blank?
-            flash[:error][:missing] = "Item not found"
+            flash[:errors] = {} if flash[:errors].blank?
+            flash[:errors][:missing] = ["Item not found"]
           end
         end
     end
+
 
     if @prescription.quantity <= @prescription.amount_dispensed
       print_and_redirect("/print_dispensation_label/#{@prescription.id}", "/prescription")
@@ -175,15 +169,41 @@ class PrescriptionController < ApplicationController
     Dispensation.transaction do
 
       inventory.current_quantity -= dispense_amount.to_i
-      inventory.save
 
-      prescription.amount_dispensed += dispense_amount.to_i
-      prescription.save
+      if inventory.save
 
-      dispensation = Dispensation.create({:rx_id => prescription.id, :inventory_id => inventory.bottle_id,
-                                          :patient_id => prescription.patient_id, :quantity => dispense_amount,
-                                          :dispensation_date => Time.now})
+        prescription.amount_dispensed += dispense_amount.to_i
+        prescription.save
+
+        dispensation = Dispensation.create({:rx_id => prescription.id, :inventory_id => inventory.bottle_id,
+                                            :patient_id => prescription.patient_id, :quantity => dispense_amount,
+                                            :dispensation_date => Time.now})
+      else
+        return false
+      end
+    end
+  end
+
+  def get_suggestions(patient_id, drug)
+
+    category = "PMAP"
+    meds = PmapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
+                               patient_id, drug, 0, false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
+                                                                                              :expiration_date,
+                                                                                              :current_quantity)
+
+    suggestions =[]
+    if meds.blank?
+      category = "General"
+      meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", drug.rxaui,0,
+                                    false).order(expiration_date: :asc).limit(5).pluck(:gn_identifier, :lot_number,
+                                                                                       :expiration_date,:current_quantity)
     end
 
+    (meds || []).each do |item|
+      suggestions << {"id" => Misc.dash_formatter(item[0]),"lot_number" => Misc.dash_formatter(item[1]),
+                       "expiry_date" => (item[2].to_date.strftime('%b %d, %Y') rescue ""),"amount_remaining" => item[3]}
+    end
+    return [category,suggestions]
   end
 end

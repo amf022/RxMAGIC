@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post 'login' => "main#login"
   get '/logout' => "main#logout"
   get '/pharmacy_sheet/:date' => "main#activity_sheet"
+  get '/print_pharmacy_sheet/:date' => "main#print_activity_sheet"
   get '/main/contact'
   post '/main/contact'
 
