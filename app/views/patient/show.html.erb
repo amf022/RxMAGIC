@@ -133,7 +133,8 @@
                       <%= item[1]%>
                     </td>
                     <td>
-                      <img style="cursor:pointer ;padding-right: 5px;" src="/assets/add.png" onmousedown="chooseItem('<%= company%>','<%= item[0]%>')" title="Select Item">
+                      <a href="#" style="width: 100%;" data-toggle="modal" class="autoAdd" data-target="#basicModal" data-it="<%= item[0]%>" data-cp="<%= company%>">
+                        <img style="cursor:pointer ;padding-right: 5px;" src="/assets/add.png"  title="Select Item"></a>
                     </td>
                   </tr>
               <% end %>
@@ -309,8 +310,6 @@
 <script type="text/javascript">
     // Date picker activation
 
-    var firm = "";
-    var item = "";
     var manufacturers = [];
     <% (manufacturers || []).each do |company|%>
         manufacturers.push('<%= company.html_safe %>')
@@ -351,16 +350,9 @@
         element.value = element.value.replace("$", "")
     }
 
-    $('a.btn.btn-default.btn-primary').on('click', function(e) {
-      if (firm.trim() != ""){
-        document.getElementById('company').value = firm;
-        document.getElementById('drugName').value = item;
-      }
+    $('a.autoAdd').on('click', function(e) {
+        document.getElementById('company').value = $(this).data('cp');;
+        document.getElementById('drugName').value = $(this).data('it');;
     });
 
-    function chooseItem(company,drug)
-    {
-      firm = company;
-      item = drug;
-    }
 </script>
