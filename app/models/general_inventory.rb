@@ -17,7 +17,7 @@ class GeneralInventory < ActiveRecord::Base
   def drug_name
     #this method handles the need to access the drug name associated to the inventory entry
 
-    self.rxnconso.STR
+    self.rxnconso.STR rescue ""
   end
 
   def bottle_id
@@ -25,7 +25,7 @@ class GeneralInventory < ActiveRecord::Base
   end
 
   def self.void_item(bottle_id, reason)
-    item = GeneralInventory..where("gn_identifier = ? and voided = ?",bottle_id, false).first
+    item = GeneralInventory.where("gn_identifier = ? and voided = ?",bottle_id, false).first
     unless item.blank?
       item.voided = true
       item.void_reason = reason

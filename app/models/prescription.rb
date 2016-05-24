@@ -6,7 +6,7 @@ class Prescription < ActiveRecord::Base
   has_many :dispensations, :foreign_key => :rx_id
   
   def patient_name
-    self.patient.fullname.titleize
+    self.patient.fullname
   end
 
   def drug_name

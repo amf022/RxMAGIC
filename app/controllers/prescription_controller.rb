@@ -102,7 +102,7 @@ class PrescriptionController < ApplicationController
     if provider.blank?
       provider = Provider.new
       provider.first_name = params[:prescription][:prescribed_by].split(" ")[0]
-      provider.last_name = params[:prescription][:prescribed_by].split(" ")[1]
+      provider.last_name = params[:prescription][:prescribed_by].split(" ")[1] rescue params[:prescription][:prescribed_by].split(" ")[0]
       provider.save
     end
 

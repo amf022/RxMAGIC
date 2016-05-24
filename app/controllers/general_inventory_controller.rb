@@ -79,11 +79,19 @@ class GeneralInventoryController < ApplicationController
     @new_stock_entry.expiration_date = params[:general_inventory][:expiration_date].to_date rescue nil
     @new_stock_entry.received_quantity = params[:general_inventory][:received_quantity]
 
-    GeneralInventory.transaction do
-      @new_stock_entry.save
+    if @new_stock_entry.rxaui.blank?
+      flash[:errors] = {} if flash[:errors].blank?
+      flash[:errors][:missing] = ["Item #{name} was not found"]
+    else
+      GeneralInventory.transaction do
+        @new_stock_entry.save
+      end
     end
 
-    if @new_stock_entry.errors.blank?
+
+    if @new_stock_entry.rxaui.blank?
+      redirect_to "/general_inventory"
+    elsif @new_stock_entry.errors.blank?
       #print barcode for new bottles
       if params[:general_inventory][:inventory_id].blank?
         print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.gn_identifier}", "/general_inventory")

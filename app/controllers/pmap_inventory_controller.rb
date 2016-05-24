@@ -58,6 +58,12 @@ class PmapInventoryController < ApplicationController
     @new_stock_entry.rxaui = Rxnconso.where("STR = ?", params[:pmap_inventory][:item]).first.RXAUI rescue nil
     @new_stock_entry.patient_id = params[:pmap_inventory][:patient_id]
 
+    if @new_stock_entry.rxaui.blank?
+      flash[:errors] = {} if flash[:errors].blank?
+      flash[:errors][:missing] = "Item #{params[:pmap_inventory][:item]} was not found"
+      redirect_to "/patient/#{params[:pmap_inventory][:patient_id]}"
+    end
+
     PmapInventory.transaction do
       @new_stock_entry.save
     end
