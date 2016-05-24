@@ -261,7 +261,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Refill Prescription</h4>
+        <h4 class="modal-title" id="myModalLabel">Dispense (No Rx)</h4>
       </div>
       <div class="modal-body">
         <%= form_for :prescription, :html => { :class => "form-horizontal pmap_inventory" }, :url => "/refill"  do |f| %>
@@ -282,7 +282,7 @@
             <div class="form-group">
               <%= f.label :prescribed_by, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <input type="text" name="prescription[prescribed_by]" id="provider" placeholder="Refilled by" class ='form-control' required >
+                <input type="text" name="prescription[prescribed_by]" id="provider" placeholder="Prescribed by" class ='form-control' required >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
