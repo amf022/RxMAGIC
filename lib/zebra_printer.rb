@@ -200,6 +200,7 @@ module ZebraPrinter #:nodoc:
       @font_reverse = options[:font_reverse] unless options[:font_reverse].nil?
       @char_width, @char_height = get_char_sizes(@font_size, @font_horizontal_multiplier, @font_vertical_multiplier)
       @hanging_indent = options[:hanging_indent] || 0
+      @column_width = options[:column_width] unless options[:column_width].blank?
       # Print each line separately
       data.split("\n").each {|line|
         next if line.blank?

@@ -42,7 +42,7 @@ class GeneralInventory < ActiveRecord::Base
     self.date_received = Date.today
     unless !self.gn_identifier.blank?
       last_id = GeneralInventory.order(gn_inventory_id: :desc).first.id rescue "0"
-      next_number = (last_id.to_i+1).to_s.rjust(7,"0")
+      next_number = (last_id.to_i+1).to_s.rjust(6,"0")
       check_digit = calculate_check_digit(next_number)
       self.gn_identifier = "G#{next_number}#{check_digit}"
     end
