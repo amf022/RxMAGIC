@@ -195,7 +195,7 @@ class PrescriptionController < ApplicationController
     suggestions =[]
     if meds.blank?
       category = "General"
-      meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", drug.rxaui,0,
+      meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", drug,0,
                                     false).order(expiration_date: :asc).limit(5).pluck(:gn_identifier, :lot_number,
                                                                                        :expiration_date,:current_quantity)
     end

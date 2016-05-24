@@ -24,12 +24,12 @@
 
   def start
 
-    puts "Creating 40 General Inventory Stock Items"
+    puts "Creating 20 General Inventory Stock Items"
     (1..40).each do |i|
       create_general_stocks()
     end
 
-    puts "Creating 10 general inventory prescriptions"
+    puts "Creating 15 general inventory prescriptions"
     (1..10).each do |p|
       create_prescriptions()
     end
@@ -39,7 +39,7 @@
       create_pap_stocks()
     end
 
-    puts "Creating 10 PMAP prescriptions"
+    puts "Creating 15 PMAP prescriptions"
     (1..10).each do |pap|
       create_pmap_prescriptions()
     end
