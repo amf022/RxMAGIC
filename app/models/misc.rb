@@ -28,7 +28,7 @@ module Misc
     label.font_horizontal_multiplier = 1
     label.font_vertical_multiplier = 1
     label.left_margin = 50
-    label.draw_barcode(610,5,1,1,4,10,80,false,"#{bottle_id}")
+    label.draw_barcode(610,20,1,1,3,10,80,false,"#{bottle_id}")
     label.draw_multi_text("#{item}", {:column_width => 609})
     label.draw_multi_text("Patient: #{patient_name}",{:column_width => 609}) unless patient_name.blank?
     label.draw_multi_text("Type: #{type}",{:column_width => 609})
