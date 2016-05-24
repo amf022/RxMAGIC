@@ -49,11 +49,10 @@
 
     new_stock_entry = GeneralInventory.new
     new_stock_entry.lot_number = (0...5).map { (65 + rand(26)).chr }.join
-    new_stock_entry.expiration_date = Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y')
+    new_stock_entry.expiration_date = Time.now.advance(:days => (rand(365))).strftime('%b-%d-%Y')
     new_stock_entry.received_quantity = rand(2000)
     new_stock_entry.current_quantity = new_stock_entry.received_quantity
-    new_stock_entry.gn_identifier = "G#{rand(9999).to_s.rjust(7,'0')}"
-    new_stock_entry.date_received = Date.today
+    new_stock_entry.date_received = Time.now.advance(:days => -(rand(365))).strftime('%b-%d-%Y')
     new_stock_entry.rxaui = random_drug
     new_stock_entry.save
   end
@@ -84,6 +83,12 @@
     new_prescription.quantity = ((rand(3) + 1 ) * 30)
     new_prescription.save
 
+    news = News.new
+    news.message = "#{new_prescription.quantity} of #{new_prescription.drug_name} for #{new_prescription.patient_name}"
+    news.news_type = "new prescription"
+    news.refers_to = new_prescription.id
+    news.save
+
   end
 
   def create_pmap_prescriptions()
@@ -99,6 +104,12 @@
     new_prescription.date_prescribed = Time.now.advance(:days => (rand(5)*-1)).strftime('%b-%d-%Y')
     new_prescription.quantity = ((rand(3) + 1 ) * 30)
     new_prescription.save
+
+    news = News.new
+    news.message = "#{new_prescription.quantity} of #{new_prescription.drug_name} for #{new_prescription.patient_name}"
+    news.news_type = "new prescription"
+    news.refers_to = new_prescription.id
+    news.save
   end
 
   def create_pap_stocks
@@ -108,12 +119,11 @@
     new_stock_entry.patient_id = patient_id
     new_stock_entry.rxaui = random_drug
     new_stock_entry.lot_number = (0...5).map { (65 + rand(26)).chr }.join
-    new_stock_entry.expiration_date = Time.now.advance(:days => (rand(9000))).strftime('%b-%d-%Y')
+    new_stock_entry.expiration_date = Time.now.advance(:days => (rand(365))).strftime('%b-%d-%Y')
     new_stock_entry.received_quantity = ((rand(3) + 1 ) * 30)
     new_stock_entry.current_quantity = new_stock_entry.received_quantity
     new_stock_entry.reorder_date = Time.now.advance(:months => (new_stock_entry.received_quantity/30)).strftime('%b-%d-%Y')
-    new_stock_entry.date_received = Date.today
-    new_stock_entry.pap_identifier = "P#{rand(9999).to_s.rjust(7,'0')}"
+    new_stock_entry.date_received = Time.now.advance(:days => -(rand(365))).strftime('%b-%d-%Y')
     new_stock_entry.manufacturer = random_manufacturer
     new_stock_entry.save
 

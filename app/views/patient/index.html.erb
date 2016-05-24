@@ -23,8 +23,8 @@
 
       <% (@patients || []).each do |patient| %>
           <tr>
-            <td><%= patient["first_name"] %></td>
-            <td><%= patient["last_name"] %></td>
+            <td><%= link_to patient["first_name"],"/patient/#{patient['id']}"  %></td>
+            <td><%= link_to patient["last_name"],"/patient/#{patient['id']}"  %></td>
             <td><%= patient["gender"] %></td>
             <td><%= patient["birthdate"] %></td>
             <td style="text-align: center;"><%= patient["state"] %></td>

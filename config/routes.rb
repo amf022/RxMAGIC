@@ -67,7 +67,7 @@ Rails.application.routes.draw do
   ###################### News Controller ##############################
 
   get "/ignore_message/:id" => "news#destroy"
-  post "/manage_notice" => "news#manage_notice"
+  get "/manage_notice" => "news#manage_notice"
 
   resources :general_inventory
   resources :pmap_inventory
