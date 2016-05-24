@@ -27,7 +27,7 @@
             <tr>
               <td id="drug<%= item.id %>" ><%= item.rxnconso.name.downcase.titleize rescue "" %></td>
               <td><%= Misc.dash_formatter(item.gn_identifier) %></td>
-              <td id="lot<%= item.id %>"><%= item.lot_number %></td>
+              <td id="lot<%= item.id %>"><%= Misc.dash_formatter(item.lot_number) %></td>
               <td id="qn<%= item.id %>"><%= number_with_delimiter(item.current_quantity) %></td>
               <td id="date<%= item.id %>"><%= item.expiration_date.strftime('%b-%Y') %></td>
               <td>
@@ -205,7 +205,15 @@
 
     $( "#drugName" ).autocomplete({
         source: "/suggestions",
-        minLength: 2
+        minLength: 2,
+      change: function(event,ui)
+      {
+        if (ui.item==null)
+        {
+          $("#drugName").val('');
+          $("#drugName").focus();
+        }
+      }
     });
 
     $('.delete').on('click', function(e) {
