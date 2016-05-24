@@ -71,6 +71,7 @@ class PmapInventoryController < ApplicationController
     if @new_stock_entry.errors.blank?
       #print barcode for new bottles
       if params[:pmap_inventory][:inventory_id].blank?
+        flash[:success] = "#{params[:pmap_inventory][:item]} was successfully added to inventory."
         print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.pap_identifier}", "/patient/#{params[:pmap_inventory][:patient_id]}")
       else
         flash[:success] = "#{params[:pmap_inventory][:item]} (Lot #: #{@new_stock_entry.lot_number}) was successfully updated."

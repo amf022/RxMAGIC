@@ -197,28 +197,40 @@
   {
       var barcodeTxt = document.getElementById("barcode");
       if (barcodeTxt.value.trim().match(/[A-Z0-9]+\$/)) {
+
+        if ((barcodeTxt.value.trim().replace(/\$/, "")).replace(/\-/,"").toUpperCase().length == 8)
+        {
           showLayer("backGround", "dispenseForm")
-          document.getElementById("dispensation_dispense_from").value = barcodeTxt.value.trim().replace(/\$/, "").toUpperCase();
+          document.getElementById("dispensation_dispense_from").value = (barcodeTxt.value.trim().replace(/\$/, "")).replace(/\-/,"").toUpperCase();
           barcodeTxt.value = "";
+        }
+        else
+        {
+          barcodeTxt.value = "";
+          initializeListener();
+        }
+
       }
       else
       {
-          document.getElementById("barcode").focus();
-          timerHand = setTimeout(function () {
-              checkBarcode();
-          }, 1000);
+        initializeListener();
       }
   }
 
   function cancelDispense()
   {
-      document.getElementById("barcode").focus();
-      timerHand = setTimeout(function () {
-          checkBarcode();
-      }, 1000);
-      hideLayer('backGround','dispenseForm')
+    initializeListener();
+    hideLayer('backGround','dispenseForm')
   }
 
 
+  function initializeListener()
+  {
+    document.getElementById("barcode").focus();
+    timerHand = setTimeout(function () {
+      checkBarcode();
+    }, 1000);
+
+  }
   setTimeout(checkBarcode(),10000)
 </script>

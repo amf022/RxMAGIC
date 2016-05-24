@@ -94,6 +94,7 @@ class GeneralInventoryController < ApplicationController
     elsif @new_stock_entry.errors.blank?
       #print barcode for new bottles
       if params[:general_inventory][:inventory_id].blank?
+        flash[:success] = "#{name} was successfully added to inventory."
         print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.gn_identifier}", "/general_inventory")
       else
         flash[:success] = "#{name} (Lot #: #{@new_stock_entry.lot_number}) was successfully updated."
