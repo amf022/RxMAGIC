@@ -126,13 +126,15 @@ class GeneralInventoryController < ApplicationController
         @underStocked << {
             "drug_name" => threshold.drug_name,
             "threshold" => threshold.threshold,
-            "available" => 0
+            "available" => 0,
+            "rxaui" => threshold.rxaui
         }
       elsif items[threshold.rxaui] <= threshold.threshold
         @underStocked << {
             "drug_name" => threshold.drug_name,
             "threshold" => threshold.threshold,
-            "available" => items[threshold.rxaui]
+            "available" => items[threshold.rxaui],
+            "rxaui" => threshold.rxaui
         }
       end
     end

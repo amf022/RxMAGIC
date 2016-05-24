@@ -15,6 +15,7 @@
         <th>Item</th>
         <th >Threshold</th>
         <th >Amount Available</th>
+        <th >Action</th>
       </tr>
       </thead>
 
@@ -25,6 +26,9 @@
             <td><%= item["drug_name"].titleize %></td>
             <td style="padding-left: 10px;"><%= number_with_delimiter(item['threshold']) %></td>
             <td style="padding-left: 10px;"><%= number_with_delimiter(item['available']) %></td>
+            <td style="text-align: center">
+              <%= link_to "Add to Activity Sheet", "/add_to_activity_sheet/#{item['rxaui']}"  %>
+            </td>
           </tr>
       <% end %>
       </tbody>

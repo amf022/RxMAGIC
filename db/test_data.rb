@@ -148,15 +148,33 @@
   def random_first_name
     names = ['Harry','Jeremiah','Alfonso','Marion','Douglas','Johnnie','Darlene','Martin','Mario','Lana','Pablo',
              'Estefana','Lewis','Maurine','Jaleesa','Moises','Trinh','Eliza','Felisa','Mignon','Rey','Theo','Ria',
-             'Kassandra','Olene','Lahoma','Anjelica','Ehtel','Tanisha','Willette','Gail']
+             'Kassandra','Olene','Lahoma','Anjelica','Ehtel','Tanisha','Willette','Gail',"Denna","Mellissa","Bess",
+             "Abigail","Alexandra","Alison","Amanda","Amelia","Amy","Andrea","Angela","Anna","Anne","Audrey","Ava",
+             "Bella","Bernadette","Carol","Caroline","Carolyn","Chloe","Claire","Deirdre","Diana","Diane","Donna",
+             "Dorothy","Elizabeth","Ella","Emily","Emma","Faith","Felicity","","Megan","Melanie","Michelle","Molly",
+             "Natalie","Nicola","Olivia","Penelope","Pippa","Rachel","Rebecca","Rose","Ruth","Sally","Samantha","Sarah",
+             "Sonia","Sophie","Stephanie","Sue","Theresa","Tracey","Una","Vanessa","Victoria","Virginia","Wanda","Adam",
+             "Adrian","Alan","Alexander","Andrew","Anthony","Austin","Benjamin","Blake","Boris","Brandon","Brian",
+             "Cameron","Carl","Charles","Christian","Christopher","Colin","Connor","Dan","David","Dominic","Dylan",
+             "Edward","Eric","Evan","Frank","Gavin","Gordon","Harry", "Denise","Berneice","Arlie","Gaynelle",
+             "Fidelia","Vanetta","Julie","Mary","Sherie","Keisha","Piedad", "Dina","Danna"]
 
     return names[rand(names.length)]
 
   end
 
   def random_last_name
-    names = ['Gulley','Conn','Ledbetter','Christiansen','Morrow','Suggs','Burris','Mortensen','Mccffrey','Bethel',
+    names = ["Ball","Bell","Berry","Black","Blake","Bond","Bower","Brown","Buckland","Burgess","Butler","Cameron",
+             "Campbell","Carr","Chapman","Churchill","Clark","Clarkson","Coleman","Cornish","Davidson","Davies",
+             "Dickens","Dowd","Duncan","Dyer","Edmunds","Ellison","Ferguson","Fisher","Forsyth","Fraser","Gibson",
+             "Gill","Glover","Graham","Grant","Gray","Greene","Hamilton","Hardacre","Harris","Hart","Hemmings",
+             "Henderson","Hill","Hodges","Howard","Hudson","Hughes","Hunter","Ince","Jackson","James","Johnston","Jones",
+             "Kelly","Kerr","King","Knox","Lambert","Langdon","Lawrence","Lee","Lewis","Lyman","MacDonald","Mackay",
+             "Mackenzie","MacLeod","Manning","Marshall","Martin","Mathis","May","McDonald","McLean","McGrath",'Gulley',
+             'Conn','Ledbetter','Christiansen','Morrow','Suggs','Burris','Mortensen','Mccffrey','Bethel',
              'Bullard','Fallon','Winkler','Hoff','Dabney','Swain','Osburn','Truit','Hook','Trotter','Douglas','Bennett',
+             "WESTBAY","WEPPLER","WAMBOLDT","WALDROOP","VONDRASEK","VLAHAKIS","VINSANT","VANO","VANDERWEELE","TUFARO",
+             "TUCKERMAN","TRUEHEART","TRETTIN","STAVISH","STARIN","SOOKRAM","SONNENFEL",
              'Lambert','Hopkins','Blair','Black','Norman','Gomez','Shelton','Martin']
 
     return names[rand(names.length)]

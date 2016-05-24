@@ -74,4 +74,22 @@ class InventoryController < ApplicationController
 
     redirect_to "/"
   end
+
+  def add_to_activity_sheet
+
+    drug = Rxnconso.where("RXAUI = ?", params[:drug]).pluck(:STR).first
+    news = News.new
+    news.message = "#{drug} stock below par level"
+    news.news_type = "low general stock"
+    news.refers_to = params[:drug]
+    news.resolved = true
+    news.date_resolved= Date.today
+    news.resolution = 'Added to activity sheet'
+
+    if news.save
+      flash[:success] = "Item successfully added to activity sheet"
+    end
+
+    redirect_to "/general_inventory/understocked"
+  end
 end
