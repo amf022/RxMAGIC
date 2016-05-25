@@ -77,7 +77,7 @@
       <div class="panel-heading info">
         <h3 style="font-weight: bold;" class="panel-title">Dispensation History</h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" id="dispensations" >
         <% if @history.blank? %>
             <h4>No previous dispensations available.</h4>
         <% else %>
@@ -93,7 +93,7 @@
                       <td>
                         <%= dispensation.drug_name %>
                       </td>
-                      <td>
+                      <td style="padding-left: 5%;">
                         <%= dispensation.quantity %>
                       </td>
                       <td>
@@ -351,6 +351,10 @@
         $('#pmapDetails').slimScroll({
             height: '30vh'
         })
+      $('#dispensations').slimScroll({
+        height: '35vh'
+      })
+
     })
 
     function removeCursor(element)
