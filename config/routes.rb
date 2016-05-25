@@ -45,6 +45,7 @@ Rails.application.routes.draw do
 
   ###################### General Inventory Controller ##############################
   post "/void_general_inventory" => "general_inventory#destroy"
+  post "/edit_general_inventory" => "general_inventory#edit"
   get "/general_inventory/expired_items"
   get "/general_inventory/expiring_items"
   get "/general_inventory/understocked"
