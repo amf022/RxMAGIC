@@ -106,7 +106,7 @@ class PmapInventoryController < ApplicationController
 
     if result.blank?
       flash[:errors] = {} if flash[:errors].blank?
-      flash[:errors][:missing] = "Item was not found"
+      flash[:errors][:missing] = ["Item with bottle ID #{params[:id]} was not found"]
     elsif result.errors.blank?
       flash[:success] = " #{result.drug_name} #{result.lot_number} was successfully moved to general inventory."
     else

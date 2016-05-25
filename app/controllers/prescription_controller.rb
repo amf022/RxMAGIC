@@ -50,14 +50,14 @@ class PrescriptionController < ApplicationController
           item = PmapInventory.where("pap_identifier = ? AND voided = ?", bottle_id, false).first
           if !item.blank?
               if dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
-                flash[:success] = "Item successfuly dispensed"
+                flash[:success] = "#{params[:dispensation][:amount_dispensed]} of #{item.drug_name} successfuly dispensed"
               else
                 flash[:errors] = {} if flash[:errors].blank?
-                flash[:errors][:insufficient_quantity] = ["Item could not be dispensed"]
+                flash[:errors][:insufficient_quantity] = ["#{item.drug_name} could not be dispensed"]
               end
           else
             flash[:errors] = {} if flash[:errors].blank?
-            flash[:errors][:missing] = ["Item not found"]
+            flash[:errors][:missing] = ["Item with bottle ID #{params[:id]} could not be found"]
           end
         end
 
@@ -66,14 +66,14 @@ class PrescriptionController < ApplicationController
           item = GeneralInventory.where("gn_identifier = ? AND voided = ?", bottle_id, false).first
           if !item.blank?
             if dispense_item(item,@prescription,params[:dispensation][:amount_dispensed])
-              flash[:success] = "Item successfuly dispensed"
+              flash[:success] = "#{params[:dispensation][:amount_dispensed]} of #{item.drug_name} successfuly dispensed"
             else
               flash[:errors] = {} if flash[:errors].blank?
-              flash[:errors][:insufficient_quantity] = ["Item could not be dispensed"]
+              flash[:errors][:insufficient_quantity] = ["#{item.drug_name} could not be dispensed"]
             end
           else
             flash[:errors] = {} if flash[:errors].blank?
-            flash[:errors][:missing] = ["Item not found"]
+            flash[:errors][:missing] = ["Item with bottle ID #{params[:id]} could not be found"]
           end
         end
     end
@@ -161,7 +161,7 @@ class PrescriptionController < ApplicationController
   def ajax_prescriptions
     # this function services the application dashboard
 
-    prescriptions =  Prescription.where("voided = ? AND date_prescribed BETWEEN ? AND ?",FALSE, Time.now.advance(:minutes => -30).strftime('%Y-%m-%d %H:%M:%S'),Time.now.strftime('%Y-%m-%d %H:%M:%S'))
+    prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(created_at: :asc)
     render :text => view_context.prescriptions(prescriptions).to_json
   end
 

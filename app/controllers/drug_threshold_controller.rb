@@ -21,7 +21,7 @@ class DrugThresholdController < ApplicationController
   def destroy
     threshold = DrugThreshold.find(params[:id])
     threshold.update_attributes(:voided => TRUE)
-    flash[:success] = "par level for #{threshold.drug_name} was successfully deleted."
+    flash[:success] = "PAR level for #{threshold.drug_name} was successfully deleted."
     redirect_to "/drug_threshold"
   end
 
@@ -54,7 +54,7 @@ class DrugThresholdController < ApplicationController
       end
 
       if new_drug_threshold.errors.blank?
-        flash[:success] = "New par level for #{new_drug_threshold.drug_name} created"
+        flash[:success] = "New PAR level for #{new_drug_threshold.drug_name} created"
       else
         flash[:errors] = new_drug_threshold.errors
       end

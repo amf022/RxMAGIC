@@ -45,7 +45,7 @@ class GeneralInventoryController < ApplicationController
     item = GeneralInventory.void_item(params[:general_inventory][:gn_id],params[:general_inventory][:reason])
     if item.blank?
       flash[:errors] = {} if flash[:errors].blank?
-      flash[:errors][:missing] = ["Item was not found"]
+      flash[:errors][:missing] = ["Item with bottle id #{params[:general_inventory][:gn_id]} could not be found"]
     elsif item.errors.blank?
       flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
     else
