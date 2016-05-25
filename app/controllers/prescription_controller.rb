@@ -114,18 +114,18 @@ class PrescriptionController < ApplicationController
           item.current_quantity = item.current_quantity.to_i - params[:prescription][:quantity_dispensed].to_i
           item.save
 
-          new_prescription = Prescription.new
-          new_prescription.patient_id = @patient.id
-          new_prescription.rxaui = item.rxaui
-          new_prescription.directions = params[:prescription][:directions] + " [Refill]"
-          new_prescription.quantity = params[:prescription][:quantity_dispensed]
-          new_prescription.amount_dispensed = params[:prescription][:quantity_dispensed]
-          new_prescription.provider_id = provider.id
-          new_prescription.date_prescribed = Time.now
-          new_prescription.save
+          @new_prescription = Prescription.new
+          @new_prescription.patient_id = @patient.id
+          @new_prescription.rxaui = item.rxaui
+          @new_prescription.directions = params[:prescription][:directions] + " [Refill]"
+          @new_prescription.quantity = params[:prescription][:quantity_dispensed]
+          @new_prescription.amount_dispensed = params[:prescription][:quantity_dispensed]
+          @new_prescription.provider_id = provider.id
+          @new_prescription.date_prescribed = Time.now
+          @new_prescription.save
 
-          dispensation = Dispensation.create({:rx_id => new_prescription.id, :inventory_id => item.bottle_id,
-                                              :patient_id => new_prescription.patient_id, :quantity => params[:prescription][:quantity_dispensed].to_i,
+          @dispensation = Dispensation.create({:rx_id => @new_prescription.id, :inventory_id => item.bottle_id,
+                                              :patient_id => @new_prescription.patient_id, :quantity => @new_prescription.amount_dispensed,
                                               :dispensation_date => Time.now})
         end
 
@@ -136,23 +136,26 @@ class PrescriptionController < ApplicationController
           item.current_quantity = item.current_quantity.to_i - params[:prescription][:quantity_dispensed].to_i
           item.save
 
-          new_prescription = Prescription.new
-          new_prescription.patient_id = @patient.id
-          new_prescription.rxaui = item.rxaui
-          new_prescription.directions = params[:prescription][:directions] + " [Refill]"
-          new_prescription.quantity = params[:prescription][:quantity_dispensed]
-          new_prescription.amount_dispensed = params[:prescription][:quantity_dispensed]
-          new_prescription.provider_id = provider.id
-          new_prescription.date_prescribed = Time.now
-          new_prescription.save
+          @new_prescription = Prescription.new
+          @new_prescription.patient_id = @patient.id
+          @new_prescription.rxaui = item.rxaui
+          @new_prescription.directions = params[:prescription][:directions] + " [Refill]"
+          @new_prescription.quantity = params[:prescription][:quantity_dispensed]
+          @new_prescription.amount_dispensed = params[:prescription][:quantity_dispensed]
+          @new_prescription.provider_id = provider.id
+          @new_prescription.date_prescribed = Time.now
+          @new_prescription.save
 
-          dispensation = Dispensation.create({:rx_id => new_prescription.id, :inventory_id => item.bottle_id,
-                                              :patient_id => new_prescription.patient_id, :quantity => params[:prescription][:quantity_dispensed].to_i,
+          @dispensation = Dispensation.create({:rx_id => @new_prescription.id, :inventory_id => item.bottle_id,
+                                              :patient_id => @new_prescription.patient_id, :quantity => @new_prescription.amount_dispensed,
                                               :dispensation_date => Time.now})
 
         end
     end
-    redirect_to @patient
+
+    if @dispensation.errors.blank?
+      print_and_redirect("/print_dispensation_label/#{@new_prescription.id}", "/patient/#{@patient.id}")
+    end
   end
 
   def ajax_prescriptions
