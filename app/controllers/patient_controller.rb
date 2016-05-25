@@ -27,7 +27,7 @@ class PatientController < ApplicationController
 
 
     rawPatients = Patient.where("voided = ? AND patient_id in (?)", false,
-                              reorders.join(",")).pluck(:first_name, :last_name, :gender,:birthdate,:state,:city,:patient_id)
+                              reorders).pluck(:first_name, :last_name, :gender,:birthdate,:state,:city,:patient_id)
 
     @patients = view_context.patients(rawPatients)
 
