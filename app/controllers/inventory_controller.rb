@@ -43,7 +43,7 @@ class InventoryController < ApplicationController
 
     if item.blank?
       flash[:errors] = {} if flash[:errors].blank?
-      flash[:errors][:missing] = "Item was not found"
+      flash[:errors][:missing] = ["Item with id #{params[:bottle_id]} was not found"]
     elsif item.errors.blank?
       flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
       News.resolve(params[:bottle_id],"expired item","Item discarded")
@@ -60,7 +60,7 @@ class InventoryController < ApplicationController
 
     if result.blank?
       flash[:errors] = {} if flash[:errors].blank?
-      flash[:errors][:missing] = ["Item was not found"]
+      flash[:errors][:missing] = ["Item with id #{params[:bottle_id]} was not found"]
     elsif result.errors.blank?
       flash[:success] = " #{result.drug_name} #{result.lot_number} was successfully moved to general inventory."
       News.resolve(params[:bottle_id],"under utilized item","Moved to general inventory")
@@ -73,7 +73,7 @@ class InventoryController < ApplicationController
 
   def add_to_activity_sheet
 
-    drug = Rxnconso.where("RXAUI = ?", params[:drug]).pluck(:STR).first
+    drug = Rxnconso.where("RXAUI = ?", params[:drug]).pluck(:STR).first rescue ""
     news = News.new
     news.message = "#{drug} stock below par level"
     news.news_type = "low general stock"
@@ -83,7 +83,7 @@ class InventoryController < ApplicationController
     news.resolution = 'Added to activity sheet'
 
     if news.save
-      flash[:success] = "Item successfully added to activity sheet"
+      flash[:success] = "#{drug} successfully added to activity sheet"
     end
 
     redirect_to "/general_inventory/understocked"

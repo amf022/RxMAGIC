@@ -45,8 +45,7 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <button class="btn btn-xs btn-primary" type="button" onmousedown="updateNotice('<%= alert.refers_to %>',
-                        '<%= alert.news_type %>', 'Added to activity sheet')">Add to Activity Sheet</button>
+                <a href="/alert_to_activity_sheet/<%= alert.id %>" class="btn btn-xs btn-primary" type="button" >Add to Activity Sheet</a>
               </td>
             </tr>
           </table>
@@ -71,8 +70,7 @@
             </tr>
             <tr>
               <td colspan="3" style="text-align:center;padding-top: 2px;">
-                <button class="btn btn-xs btn-primary" type="button" onmousedown="updateNotice('<%= alert.refers_to %>',
-                        '<%= alert.news_type %>', 'Added to activity sheet')">Add to Activity Sheet</button>
+                <a href="/alert_to_activity_sheet/<%= alert.id %>" class="btn btn-xs btn-primary" type="button">Add to Activity Sheet</a>
               </td>
             </tr>
           </table>
@@ -169,6 +167,7 @@
   </div>
 </div>
 
+<%  %>
 <script type="text/javascript">
     $('.ignore').on('click', function(e) {
         document.getElementById('btnIgnore').href = $(this).data('href');

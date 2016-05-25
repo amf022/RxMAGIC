@@ -12,6 +12,17 @@ class NewsController < ApplicationController
     render :text => result.to_s
   end
 
+  def alert_add_to_activity_sheet
+    result = News.find(params[:id])
+    unless result.blank?
+      result.resolved = true
+      result.resolution = 'Added to activity sheet'
+      result.date_resolved = Date.today
+      result.save
+    end
+    redirect_to "/"
+  end
+
   def destroy
     news = News.find(params[:id])
     news.resolved = true
