@@ -12,6 +12,9 @@
         <h3 class="panel-title">Current Inventory</h3>
       </div>
       <div class="panel-body" id="inventory">
+        <% if @inventory.blank? %>
+            <h5><%= "#{@patient.fullname} has no current inventory of #{@item.drug_name}" %></h5>
+        <% else %>
         <table class="table">
           <thead>
           <tr style="padding-top:0px; ">
@@ -24,14 +27,15 @@
           </thead>
           <tbody>
             <% (@inventory || []).each do |item| %>
-              <td><%= Misc.dash_formatter(item.bottle_id) %></td>
-              <td><%= Misc.dash_formatter(item.lot_number) %></td>
-              <td><%= item.date_received.to_date.strftime("%b %d, %Y") %></td>
-              <td><%= item.expiration_date.to_date.strftime("%b %d, %Y")  %></td>
-              <td style="padding-left: 5%;"><%= item.current_quantity %></td>
+                <td><%= Misc.dash_formatter(item.bottle_id) %></td>
+                <td><%= Misc.dash_formatter(item.lot_number) %></td>
+                <td><%= item.date_received.to_date.strftime("%b %d, %Y") %></td>
+                <td><%= item.expiration_date.to_date.strftime("%b %d, %Y")  %></td>
+                <td style="padding-left: 5%;"><%= item.current_quantity %></td>
             <% end %>
           </tbody>
         </table>
+        <% end %>
       </div>
     </div>
 
