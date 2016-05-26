@@ -16,6 +16,18 @@ class PmapInventoryController < ApplicationController
   end
 
   def show
+
+    @item = PmapInventory.find(params[:id]) rescue nil
+
+    if @item.blank?
+      redirect_to "/reorders"
+    else
+      @inventory = PmapInventory.where("voided = ? AND current_quantity > 0 AND patient_id = ? AND rxaui = ?",
+                                       false, @item.patient_id, @item.rxaui).order(date_received: :asc)
+      @prescriptions = Prescription.where("voided = ? AND patient_id = ? AND rxaui = ?", false, @item.patient_id,
+                                          @item.rxaui).order(date_prescribed: :asc)
+      @patient = @item.patient
+    end
   end
 
   def edit
