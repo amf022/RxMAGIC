@@ -27,11 +27,13 @@
           </thead>
           <tbody>
             <% (@inventory || []).each do |item| %>
+		<tr>
                 <td><%= Misc.dash_formatter(item.bottle_id) %></td>
                 <td><%= Misc.dash_formatter(item.lot_number) %></td>
                 <td><%= item.date_received.to_date.strftime("%b %d, %Y") %></td>
                 <td><%= item.expiration_date.to_date.strftime("%b %d, %Y")  %></td>
                 <td style="padding-left: 5%;"><%= item.current_quantity %></td>
+		</tr>
             <% end %>
           </tbody>
         </table>
