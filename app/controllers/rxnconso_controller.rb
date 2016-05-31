@@ -10,7 +10,7 @@ class RxnconsoController < ApplicationController
 
   def suggestions
 
-    @items = Rxnconso.where("STR like ? and TTY = 'PSN'", "%#{params[:term]}%").limit(10).collect{|x| x.STR}
+    @items = Rxnconso.where("STR like ? and TTY = 'PSN'", "%#{params[:term]}%").limit(10).collect{|x| x.STR.titleize}
     render :text => @items
   end
 

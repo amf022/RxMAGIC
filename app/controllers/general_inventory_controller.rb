@@ -77,6 +77,14 @@ class GeneralInventoryController < ApplicationController
       flash[:errors][:missing] = ["Item with bottle id #{params[:general_inventory][:gn_id]} could not be found"]
     elsif item.errors.blank?
       flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
+      news = News.where("refers_to = ? AND resolved = ?",
+                        params[:general_inventory][:gn_id], false).first
+      unless news.blank?
+        news.resolved = true
+        news.resolution = "Item was voided"
+        news.date_resolved= Date.today
+        news.save
+      end
     else
       flash[:errors] = item.errors
     end

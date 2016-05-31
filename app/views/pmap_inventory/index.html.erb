@@ -214,6 +214,7 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
+        $.fn.dataTable.moment( 'MMM-YYYY' );
         $('#pmapMeds').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
 

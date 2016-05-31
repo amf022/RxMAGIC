@@ -120,7 +120,8 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#thresholds').DataTable({"bLengthChange": false, "bDestroy": true});
+      $.fn.dataTable.moment( 'MMM D, YYYY' );
+      $('#thresholds').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
 
     $( "#drugName" ).autocomplete({

@@ -2,8 +2,8 @@ def start
 
   check_low_pmap_stock
   check_low_general_stock
-  check_expiring_pmap_stock
-  check_expiring_general_stock
+  #check_expiring_pmap_stock
+  #check_expiring_general_stock
   check_unutilized_pmap_stock
   check_expired_general_items
   check_expired_pmap_items

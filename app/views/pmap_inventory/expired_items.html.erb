@@ -96,7 +96,8 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#expiredItems').DataTable({"bLengthChange": false, "bDestroy": true});
+      $.fn.dataTable.moment( 'MMM D, YYYY' );
+      $('#expiredItems').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
 
 </script>

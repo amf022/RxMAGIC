@@ -7,6 +7,6 @@ class Dispensation < ActiveRecord::Base
   end
 
   def drug_name
-    inventory.rxnconso.STR
+    inventory.rxnconso.STR.titleize rescue ""
   end
 end

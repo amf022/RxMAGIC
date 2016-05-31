@@ -23,7 +23,7 @@ class PatientController < ApplicationController
   def index
     reorders = PmapInventory.where("voided = ? AND reorder_date  BETWEEN ? AND ?",false,
                                     Date.today.strftime('%Y-%m-%d'),
-                                    Date.today.advance(:months => 6).end_of_month.strftime('%Y-%m-%d')).pluck(:patient_id)
+                                    Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d')).pluck(:patient_id)
 
 
     rawPatients = Patient.where("voided = ? AND patient_id in (?)", false,

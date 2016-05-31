@@ -47,7 +47,7 @@
             <div class="form-group">
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <input type="text" name="drug_threshold[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' required >
+                <input type="text" name="drug_threshold[item]" id="drugName" data-provide="typeahead" placeholder="Enter drug name" class ='form-control' disabled required >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -58,7 +58,7 @@
               </div>
               <%#=f.error_span(:current_stock) %>
             </div>
-
+            <%= f.hidden_field :item %>
             <div class="form-group">
               <div class="col-lg-offset-7 col-lg-10">
                 <%= f.submit "Save", :class => 'btn btn-success' %>
@@ -81,7 +81,8 @@
         $('#uniqueTerms').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
     $('.add').on('click', function(e) {
-        $('#drugName').attr('value',$(this).data('name'));
+      $('#drug_threshold_item').attr('value',$(this).data('name'));
+      $('#drugName').attr('value',$(this).data('name'));
     });
 
 </script>

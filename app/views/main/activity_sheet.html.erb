@@ -51,6 +51,7 @@
         <thead style="background-color: silver;">
         <tr>
           <th rowspan="2" width="5%">Initials</th>
+          <th rowspan="2">Rx #</th>
           <th rowspan="2">Patient Name</th>
           <th rowspan="2">Medication</th>
           <th rowspan="2" width="5%">QTY</th>
@@ -75,9 +76,10 @@
                 <% (patient ||{}).each do |drug_name, record| %>
                     <tr>
                       <td>&nbsp;</td>
+                      <td style="text-align: center;"><%= record['prescription'] %></td>
                       <td><%= record['patient_name'] %></td>
                       <td><%= drug_name %></td>
-                      <td><%= record['quantity'] %></td>
+                      <td style="text-align: center;"><%= record['quantity'] %></td>
                       <td><%= record['directions'] %></td>
                       <td style="text-align: center;"><%= record['source'].include?('Borrowed') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
                       <td style="text-align: center;"><%= record['source'].include?('PMAP') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>

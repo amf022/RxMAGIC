@@ -104,6 +104,14 @@ class PmapInventoryController < ApplicationController
       flash[:errors][:missing] = ["Item was not found"]
     elsif item.errors.blank?
       flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
+      news = News.where("refers_to = ? AND resolved = ?",
+                        params[:pmap_inventory][:pmap_id], false).first
+      unless news.blank?
+        news.resolved = true
+        news.resolution = "Item was voided"
+        news.date_resolved= Date.today
+        news.save
+      end
     else
       flash[:errors] = item.errors
     end
@@ -120,6 +128,7 @@ class PmapInventoryController < ApplicationController
       flash[:errors] = {} if flash[:errors].blank?
       flash[:errors][:missing] = ["Item with bottle ID #{params[:id]} was not found"]
     elsif result.errors.blank?
+      News.resolve(params[:id],"under utilized item","Moved to general inventory")
       flash[:success] = " #{result.drug_name} #{result.lot_number} was successfully moved to general inventory."
     else
       flash[:errors] = result.errors

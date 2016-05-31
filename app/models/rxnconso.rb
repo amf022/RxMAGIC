@@ -3,7 +3,7 @@ class Rxnconso < ActiveRecord::Base
   self.primary_key = 'RXAUI'
 
   def name
-    return self.STR
+    return self.STR.titleize rescue ""
   end
 
   def threshold

@@ -7,6 +7,7 @@ module MainHelper
       results[dispensation.patient_id][dispensation.drug_name] = {} if results[dispensation.patient_id][dispensation.drug_name].blank?
       results[dispensation.patient_id][dispensation.drug_name]["directions"] = dispensation.prescription.directions
       results[dispensation.patient_id][dispensation.drug_name]["patient_name"] = dispensation.patient.fullname
+      results[dispensation.patient_id][dispensation.drug_name]["prescription"] = dispensation.rx_id
       results[dispensation.patient_id][dispensation.drug_name]["source"] = [] if results[dispensation.patient_id][dispensation.drug_name]["source"].blank?
       results[dispensation.patient_id][dispensation.drug_name]["source"] << Misc.source_of_meds(dispensation.patient_id,
                                                                                                dispensation.inventory_id)

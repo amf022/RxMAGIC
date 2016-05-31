@@ -3,7 +3,7 @@
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => 'PMAP Inventory: Expired Items'.titleize %></h3>
+  <h3><%=t '.title', :default => 'PMAP Inventory: Items About to Expire'.titleize %></h3>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 
@@ -111,7 +111,8 @@
 <script type="text/javascript">
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#expiredItems').DataTable({"bLengthChange": false, "bDestroy": true});
+      $.fn.dataTable.moment( 'MMM D, YYYY' );
+      $('#expiredItems').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
     $('.moveItem').on('click', function(e) {
         document.getElementById('btnMove').href = $(this).data('href');

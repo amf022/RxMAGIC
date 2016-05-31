@@ -91,10 +91,11 @@
 
     // Styling the table with datatables library
     $(document).ready(function() {
-        $('#reorders').DataTable({
+      $.fn.dataTable.moment( 'MMM D, YYYY' );
+      $('#reorders').DataTable({
             "bLengthChange": false,
             "bDestroy": true
-        });
+      });
     } );
 
     $(function () {
