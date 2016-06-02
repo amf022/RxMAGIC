@@ -3,7 +3,21 @@
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => "PAR Levels" %></h3>
+  <div style="display: table">
+    <div style="display: table-row">
+      <div style="display: table-cell" class="dropdown">
+        <a href="#menu" class="box-shadow-menu">
+        </a>
+        <div class="dropdown-content">
+          <p><a href="/drug_threshold/unique_prescriptions" class="links">Items ever prescribed</a></p>
+          <p><a href="/general_inventory/understocked" class="links">Under Stocked Items</a></p>
+        </div>
+      </div>
+      <div style="display: table-cell">
+        <h3><%=t '.title', :default => "PAR Levels" %></h3>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 

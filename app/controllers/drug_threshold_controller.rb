@@ -1,5 +1,7 @@
 class DrugThresholdController < ApplicationController
   def index
+    #list of drug thresholds that exist in the system
+
     @thresholds = DrugThreshold.where("voided = ?", false)
     @unique_items = Prescription.where("voided =?", false).pluck(:rxaui).uniq.length
     @understocked = []
@@ -19,6 +21,8 @@ class DrugThresholdController < ApplicationController
   end
 
   def destroy
+    # function to void drug thresholds
+
     threshold = DrugThreshold.find(params[:id])
     threshold.update_attributes(:voided => TRUE)
     flash[:success] = "PAR level for #{threshold.drug_name} was successfully deleted."
@@ -64,6 +68,8 @@ class DrugThresholdController < ApplicationController
   end
 
   def unique_prescriptions
+    #Function to list all drugs that have ever been prescribed
+
     unique_items = Prescription.where("voided =?", false).pluck(:rxaui).uniq
     terms = Rxnconso.select("STR,RXAUI").where("RXAUI in (?)", unique_items)
     @items = []

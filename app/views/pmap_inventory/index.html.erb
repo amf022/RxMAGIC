@@ -4,7 +4,21 @@
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => "PMAP Inventory" %></h3>
+  <div style="display: table">
+    <div style="display: table-row">
+      <div style="display: table-cell" class="dropdown">
+        <a href="#menu" class="box-shadow-menu">
+        </a>
+        <div class="dropdown-content">
+          <p><a href="/pmap_inventory/about_to_expire" class="links">Items About to Expire</a></p>
+          <p><a href="/expired_pmap_items" class="links">Expired Items</a></p>
+        </div>
+      </div>
+      <div style="display: table-cell">
+        <h3><%=t '.title', :default => "PMAP Inventory" %></h3>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 

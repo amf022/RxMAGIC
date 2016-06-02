@@ -4,7 +4,24 @@
 <%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
 <div class="page-header" style="margin: 0px !important;padding: 0px !important;">
-  <h3><%=t '.title', :default => 'General Inventory: Understocked Items'.titleize %></h3>
+  <div style="display: table">
+    <div style="display: table-row">
+      <div style="display: table-cell" class="dropdown">
+        <a href="#menu" class="box-shadow-menu">
+        </a>
+        <div class="dropdown-content">
+          <p><a href="/general_inventory" class="links">General Inventory</a></p>
+          <p><a href="/drug_threshold" class="links">PAR Levels</a></p>
+          <p><a href="/general_inventory/wellstocked" class="links">Well Stocked items</a></p>
+          <p><a href="/general_inventory/expiring_items" class="links">Items About to Expire</a></p>
+          <p><a href="/general_inventory/expired_items" class="links">Expired Items</a></p>
+        </div>
+      </div>
+      <div style="display: table-cell">
+        <h3><%=t '.title', :default => 'General Inventory: Understocked Items'.titleize %></h3>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
 

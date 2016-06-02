@@ -1,5 +1,7 @@
 class GeneralInventoryController < ApplicationController
   def index
+    #List of all general inventory items
+
     @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold)
@@ -142,6 +144,8 @@ class GeneralInventoryController < ApplicationController
   end
 
   def understocked
+    #List items that are understocked
+
     thresholds = DrugThreshold.where("voided = ?", false)
     @underStocked = []
 
@@ -167,6 +171,8 @@ class GeneralInventoryController < ApplicationController
   end
 
   def wellstocked
+
+    #list items that are well stocked.
 
     thresholds = Hash[*DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold).flatten(1)]
 

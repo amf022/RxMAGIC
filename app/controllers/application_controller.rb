@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-
+    #Authenticate if user is logged in
     if session[:user_token].blank?
       redirect_to "/login" and return
     else
