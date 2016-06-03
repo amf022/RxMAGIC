@@ -39,16 +39,18 @@ module Misc
 
   end
 
-  def create_dispensation_label(item,quantity,lot_number,directions,patient_name,prescriber)
+  def create_dispensation_label(item,quantity,lot_number,directions,patient_name,prescriber,rx_id)
 
     label = ZebraPrinter::StandardLabel.new
     label.font_size = 4
     label.font_horizontal_multiplier = 1
     label.font_vertical_multiplier = 1
     label.left_margin = 50
+    label.draw_text("Rx:#{rx_id}",450,10,0,4,1,1,true)
     label.draw_multi_text("#{get_facility_name}")
+    label.draw_multi_text("Phone: #{get_facility_phone}") unless get_facility_phone.blank?
     label.draw_multi_text("Patient: #{patient_name}")
-    label.draw_multi_text("Physician : #{prescriber}")
+    label.draw_multi_text("Physician: #{prescriber}")
     label.draw_multi_text("#{item}")
     label.draw_multi_text("Dir : #{directions}")
     label.draw_multi_text("QTY : #{quantity}")
@@ -111,4 +113,7 @@ module Misc
     YAML.load_file("#{Rails.root}/config/application.yml")['facility_name']
   end
 
+  def get_facility_phone
+    YAML.load_file("#{Rails.root}/config/application.yml")['facility_phone_number']
+  end
 end
