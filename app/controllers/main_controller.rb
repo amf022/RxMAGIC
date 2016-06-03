@@ -18,8 +18,9 @@ class MainController < ApplicationController
     if request.post?
       config = YAML.load_file("#{Rails.root}/config/application.yml")
       login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_login"]}"
+      post_params = {"username" => params[:user][:username], "password" => params[:user][:password]}
 
-      status = RestClient.post(login_link, {"username" => params[:user][:username], "password" => params[:user][:password]})
+      status = RestClient::Request.execute(:url => login_link,:payload => post_params, :method => :post, :verify_ssl => false )
 
       if status.match(/error/i)
         flash[:errors] = {} if flash[:errors].blank?
@@ -35,7 +36,7 @@ class MainController < ApplicationController
   def logout
     config = YAML.load_file("#{Rails.root}/config/application.yml")
     login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_logout"]}"
-    logout_status = RestClient.post(login_link, {"token" => session[:user_token]})
+    logout_status = RestClient::Request.execute(:url => login_link, :payload => {"token" => session[:user_token]}, :method => :post, :verify_ssl => false )
 
     if logout_status
       session[:user_token] = nil

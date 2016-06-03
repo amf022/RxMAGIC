@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     else
       config = YAML.load_file("#{Rails.root}/config/application.yml")
       auth_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_authenticate"]}"
-      auth_status = RestClient.post(auth_link, {"token" => session[:user_token]})
+      auth_status = RestClient::Request.execute(:url =>auth_link,:payload => {"token" => session[:user_token]},:method => :post, :verify_ssl => false)
 
       if auth_status == "true"
         return true
