@@ -11,7 +11,7 @@ class CreatePatients < ActiveRecord::Migration
       t.string :state
       t.string :zip
       t.string :phone
-      t.boolean :voided
+      t.boolean :voided, :default => false
       t.timestamps null: false
     end
   end

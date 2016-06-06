@@ -1,47 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>RxMAGIC</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <title>RxMAGIC</title>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+      <%= csrf_meta_tags %>
+    </head>
+    <body>
+        <% if !flash[:errors].blank? || !flash[:success].blank? %>
+            <div id="shadow" class="opaqueLayer"> </div>
+            <div id="question" class="questionLayer" style="font-size: 0.9em;">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <% if !flash[:errors].blank? %>
+                        <div id="error_expl" class="panel panel-danger">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Entry could not be saved due to :</h3>
+                          </div>
+                          <div class="panel-body">
+                            <ul>
+                              <% flash[:errors].keys.each do |attribute| %>
+                                  <% (flash[:errors][attribute].uniq || []).each do |msg| %>
+                                      <li><%= attribute.gsub('_', ' ') %> <%= msg %></li>
+                                  <% end %>
+                              <% end %>
+                            </ul>
+                          </div>
+                        </div>
+                    <% else %>
+                        <div class="alert alert-success" role="alert">
+                          <strong><%= flash[:success] %></strong>
+                        </div>
+                    <% end %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onMouseDown="hideLayer('shadow', 'question')">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <% end %>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">RxMAGIC</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/main/about">About</a></li>
+                <li><a href="/main/contact">Contact Us</a></li>
+              </ul>
+              <% if !logged_user.blank? %>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                      <a aria-expanded="true" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span style="color: #ffffff"><%= logged_user %></span> <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a >Signed in as <strong><%= logged_user %></strong></a></li>
+                        <li class="divider" role="separator"></li>
+                        <li><a href="/logout">Logout</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+              <% end %>
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
 
-<!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">RxMAGIC</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
+        <div class="container theme-showcase" style="margin-top: 50px !important;margin-bottom: 40px !important;" role="main">
+            <%= yield %>
+        </div>
 
-
-<div class="container theme-showcase" style="margin-top: 60px !important;" role="main">
-
-    <%= yield %>
-    </div>
-<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-<!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-bottom">
-  <div class="container">
-    <a class="navbar-brand" href="/">RxMAGIC @ Bingham Clinic</a>
-  </div>
-</nav>
-</body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+          <div class="container">
+            <a class="navbar-brand" href="/">RxMAGIC @ <%= facility_name %></a>
+            <a class="navbar-brand navbar-right">
+              <%= Date.today.strftime("%A, %b %d, %Y ")%>
+            </a>
+          </div>
+        </nav>
+        <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <% if !flash[:errors].blank? || !flash[:success].blank? %>
+            <script type="text/javascript">
+              showLayer("shadow", "question");
+            </script>
+        <% end %>
+    </body>
 </html>

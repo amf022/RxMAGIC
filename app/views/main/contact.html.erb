@@ -1,0 +1,72 @@
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h3><%=t '.title', :default => 'Contact Us'.titleize %></h3>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-9 col-sm-9" style="margin-top: 10px;padding-left: 5%;">
+    <%= form_for :contact, :html => { :class => "form-horizontal pmap_inventory" }, :url => "/main/contact"  do |f| %>
+        <div class="form-group" style="margin-top: 5px;margin-bottom: 0px;">
+          <div class="col-lg-6">
+            <%= f.label :your_name%>
+          </div>
+        </div>
+        <div class="form-group" >
+          <div class="col-lg-6">
+            <%= f.text_field :name,:placeholder => "Enter your name" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 5px;margin-bottom: 0px;">
+          <div class="col-lg-6">
+            <%= f.label :your_email%>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-6">
+            <%= f.text_field :email,:placeholder => "Enter your email address" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 5px;margin-bottom: 0px;">
+          <div class="col-lg-6">
+            <%= f.label :message%>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-6">
+            <textarea maxlength="500" name="contact[message]" style="resize: none;" placeholder="Enter message" class ='form-control' required ></textarea>
+          </div>
+        </div>
+
+        <%= f.hidden_field :user_name, :value => logged_user %>
+        <div class="form-group">
+          <div class="col-lg-offset-5 col-lg-10">
+            <%= f.submit "Save", :class => 'btn btn-success' %>
+          </div>
+        </div>
+
+    <% end %>
+  </div>
+
+  <div class="col-xs-3 col-sm-3">
+    <div style="font-size: 115%;color: black; font-weight: bold;margin-top: 10px;">
+        Email
+    </div>
+    <div style="font-size: 115%;color: black;">
+      arf56@pitt.edu
+    </div>
+
+    <div style="font-size: 115%;color: black; font-weight: bold;margin-top: 10px;">
+      Phone
+    </div>
+    <div style="font-size: 115%;color: black;">
+      570-294-4399
+    </div>
+
+    <div style="font-size: 115%;color: black; font-weight: bold;margin-top: 10px;">
+      Hours
+    </div>
+    <div style="font-size: 115%;color: black;">
+      9am - 5pm business days
+    </div>
+
+  </div>
+</div>

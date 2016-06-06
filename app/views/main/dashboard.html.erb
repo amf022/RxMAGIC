@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <title>RxMAGIC - Prescriptions</title>
+        <style>
+            body{
+                font-family: Verdana, Geneva, sans-serif;
+                -moz-user-select:none;
+            }
+            div.heading{
+                padding:10px;
+                background-color: #000000;
+                color: #FFFFFF;
+                font-size: 150%;
+
+            }
+
+            .table-header-cell{
+                text-align: left;
+                font-size: 120%;
+                display: table-cell;
+                padding: 5px;
+                border: 1px solid #ffffff;
+                background-color: #DEDBA7;
+                color: #000000;
+            }
+
+            #clockbox{
+                float: right;
+                color: #e6e6e6;
+                margin-right: 15px;
+            }
+            .even{
+                background-color: gainsboro;
+            }
+            .odd{
+                background-color: #FFFFFF;
+            }
+            div.footer{
+                position:fixed;
+                width: 100%;
+                left:0px;
+                bottom:0px;
+                padding:10px;
+                background-color: #000000;
+                color: #FFFFFF;
+                font-size: 150%;
+                text-align: center;
+            }
+            div.base-cell{
+                display: table-cell;
+                padding: 5px;
+                font-size: 120%;
+            }
+        </style>
+
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <script type="text/javascript">
+          function resized(){
+              document.getElementById('main').style.height = (window.innerHeight -
+                      (document.getElementById('header').offsetHeight +
+                      document.getElementById("footer").offsetHeight + 10)) + "px";
+          }
+          function updateRecords() {
+              link = "/prescriptions";
+              getData(link);
+          }
+          function handleResults(data){
+            
+             reloadTable('dataSection',data,['name','item','prescribed_by','quantity','type'], "main")
+              
+          }
+         setTimeout("updateRecords()", 10000)
+         setInterval("updateRecords()", 60000)
+
+      </script>
+    </head>
+    <body style="margin: 0px;">
+        <div id="header" class="heading">
+          Pending Prescriptions
+          <span id="clockbox">Birmingham Free Clinic</span>
+        </div>
+        <div id="main" style="display: table;width: 100%;">
+          <div style="display: table-header-group" id="heading">
+            <div class="table-header-cell" style="display: table-cell">
+              Patient Name
+            </div>
+            <div class="table-header-cell" style="display: table-cell">
+              Prescribed Medicine
+            </div>
+            <div class="table-header-cell" style="display: table-cell">
+              Prescribed By
+            </div>
+            <div class="table-header-cell" style="display: table-cell">
+              Quantity
+            </div>
+            <div class="table-header-cell" style="display: table-cell">
+              Type
+            </div>
+          </div>
+          <div id="dataSection" style="display: table-row-group">
+          </div>
+        </div>
+        <div id="footer" class="footer">
+          Showing 0 of 0 prescriptions
+        </div>
+    </body>
+</html>

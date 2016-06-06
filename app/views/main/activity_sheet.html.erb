@@ -1,0 +1,144 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+
+<style>
+  th{
+      text-align: center;
+      padding: 1px;
+  }
+
+  td{
+      padding-left: 2px;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 12px;
+      line-height: 1.42857;
+  }
+</style>
+<div class="page-header" style="margin: 0px !important;padding: 5px !important;">
+  <div style="display: table; width: 100%;">
+    <div style="display: table-row">
+      <div style="display: table-cell">
+        <h4><%=t '.title', :default => "Pharmacy Activity Sheet for #{@date}" %></h4>
+      </div>
+      <div style="display: table-cell;text-align: right;">
+        <div style="display: table; width: 100%;">
+          <div style="display: table-row">
+            <div style="display: table-cell;vertical-align: middle;text-align: right;">
+              <div class='input-group date'  id='datetimepicker1'>
+                <input id="report_date" type='text' placeholder="Enter date" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+              </div>
+            </div>
+            <div style="display: table-cell">
+              <button class="btn btn-primary" style="width: 80%;" onmousedown="genNextReport()">Generate</button>
+            </div>
+            <div style="display: table-cell">
+              <button class="btn btn-success" style="width: 80%;">Print</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-12 col-sm-12">
+    <div>
+      <table border="1" style="width: 100%;">
+        <thead style="background-color: silver;">
+        <tr>
+          <th rowspan="2" width="5%">Initials</th>
+          <th rowspan="2">Rx #</th>
+          <th rowspan="2">Patient Name</th>
+          <th rowspan="2">Medication</th>
+          <th rowspan="2" width="5%">QTY</th>
+          <th rowspan="2" width="15%">Directions</th>
+          <th colspan="3" width="15%">Med Source</th>
+          <th colspan="4" width="15%">PMAP</th>
+          <th>&nbsp;</th>
+        </tr>
+        <tr>
+          <th>Borrowed</th>
+          <th>PMAP</th>
+          <th>Stock</th>
+          <th>New Med</th>
+          <th>Reorder</th>
+          <th>Dose Change</th>
+          <th>Re-Enrollment / New App</th>
+          <th>Comments</th>
+        </tr>
+        </thead>
+        <tbody>
+            <% (@records || {}).each do |patient_id, patient| %>
+                <% (patient ||{}).each do |drug_name, record| %>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td style="text-align: center;"><%= record['prescription'] %></td>
+                      <td><%= record['patient_name'] %></td>
+                      <td><%= drug_name %></td>
+                      <td style="text-align: center;"><%= record['quantity'] %></td>
+                      <td><%= record['directions'] %></td>
+                      <td style="text-align: center;"><%= record['source'].include?('Borrowed') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
+                      <td style="text-align: center;"><%= record['source'].include?('PMAP') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
+                      <td style="text-align: center;"><%= record['source'].include?('General') ? '&#10004;'.html_safe : '&nbsp;'.html_safe %></td>
+                      <td>&nbsp;</td>
+                      <td style="text-align: center;"><%= record['reorder'].blank? ? '&nbsp;'.html_safe : '&#10004;'.html_safe%></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                <% end %>
+            <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding-top: 10px;">
+      <strong>Stock meds to be replenished:</strong>
+
+      <div style="display: table; width: 50%;padding-top: 5px;">
+        <% i = 0 %>
+        <% while i < @low_stock.length  do%>
+            <div style="display: table-row">
+              <div style="display: table-cell; width: 5%;">
+                <strong><%= "#{i + 1}." %></strong>
+              </div>
+              <div style="display: table-cell; padding-left: 10px;width: 45%;">
+                 <%= @low_stock[i].titleize rescue "&nbsp;".html_safe %>
+              </div>
+              <div style="display: table-cell; padding-left: 10px;width: 5%;">
+                <strong><%= "#{i + 2}." %></strong>
+              </div>
+              <div style="display: table-cell">
+                <%= @low_stock[i+1].titleize rescue "&nbsp;".html_safe %>
+              </div>
+            </div>
+            <% i += 2 %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    // Date picker activation
+    $(function () {
+        $('#datetimepicker1').datetimepicker({format: 'MMM D YYYY'});
+    });
+
+    function genNextReport()
+    {
+        var date = document.getElementById("report_date").value.toString().trim()
+        if(date == "")
+        {
+            alert("Please select a date")
+        }
+        else{
+            window.location = "/pharmacy_sheet/"+date
+        }
+
+    }
+
+</script>

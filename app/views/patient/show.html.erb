@@ -1,0 +1,370 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'jquery.slimscroll.js' %>
+
+<br/>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-8 col-sm-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading primary">
+        <h3 class="panel-title">Patient Details</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+          <tr style="padding-top:0px; ">
+            <td colspan="6" style="padding: 0px;">
+              <div style="float: left" class="<%= @patient.patient_gender.downcase %>"><img style="height: 30px;" src="/assets/<%= @patient.patient_gender.downcase %>.png"></div>
+              <div style="vertical-align: text-top;"><h4><strong><%= @patient.fullname %></strong></h4></div>
+            </td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>
+              Birthdate
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.birthdate_formatted %>
+            </td>
+            <th>
+              Age
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.age %>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Street Address
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.address %>
+            </td>
+            <th>
+              City
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.city.titleize rescue "Unknown" %>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              State
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= @patient.state.upcase rescue "Unknown" %>
+            </td>
+            <th>
+              Zip Code
+            </th>
+            <td><strong>:</strong></td>
+            <td>
+              <%= (@patient.zip.blank? ? "Unknown" : @patient.zip) %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 style="font-weight: bold;" class="panel-title">Dispensation History</h3>
+      </div>
+      <div class="panel-body" id="dispensations" >
+        <% if @history.blank? %>
+            <h4>No previous dispensations available.</h4>
+        <% else %>
+            <table class="table">
+              <thead>
+                <th>Item</th>
+                <th>Amount Dispensed</th>
+                <th>Date Dispensed</th>
+              </thead>
+              <tbody>
+                <% (@history || []).each do |dispensation| %>
+                    <tr>
+                      <td>
+                        <%= dispensation.drug_name %>
+                      </td>
+                      <td style="padding-left: 5%;">
+                        <%= dispensation.quantity %>
+                      </td>
+                      <td>
+                        <%= dispensation.dispensation_date.strftime('%b %d, %Y') %>
+                      </td>
+                    </tr>
+                <% end %>
+              </tbody>
+            </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4">
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 style="font-weight: bold;" class="panel-title">PMAP Details</h3>
+      </div>
+      <div id="pmapDetails" class="panel-body" style="overflow:auto;">
+        <% if @pmap_meds.blank? %>
+            <h4>Patient has no PMAP medication</h4>
+        <% else %>
+            <table class="table">
+          <tbody>
+          <% (@pmap_meds.keys || []).each do |company| %>
+              <tr>
+                <th colspan="3">
+                  <h5><strong><%= company%></strong></h5>
+                </th>
+              </tr>
+              <% (@pmap_meds[company] || []).each do |item| %>
+                  <tr>
+                    <td>
+                      <%= item[0]%>
+                    </td>
+                    <td>
+                      <%= item[1]%>
+                    </td>
+                    <td>
+                      <a href="#" style="width: 100%;" data-toggle="modal" class="autoAdd" data-target="#basicModal" data-it="<%= item[0]%>" data-cp="<%= company%>">
+                        <img style="cursor:pointer ;padding-right: 5px;" src="/assets/add.png"  title="Select Item"></a>
+                    </td>
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+        <% end %>
+      </div>
+    </div>
+
+    <div style="width: 60%;float: right;">
+      <table class="table" style="width: 100%;">
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-primary" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#basicModal">Add PMAP Item</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-warning" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#refillModal">Dispense (No Rx)</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="/patient" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onmousedown="chooseItem('','')">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add PMAP Item</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :pmap_inventory, :html => { :class => "form-horizontal pmap_inventory" }, :url => pmap_inventory_index_path  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="pmap_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :manufacturer, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="pmap_inventory[manufacturer]" id="company" data-provide="typeahead" placeholder="Enter manaufacturer name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='expiryDatePicker'>
+                  <input name="pmap_inventory[expiration_date]" id="pmap_inventory_expiration_date" type='text' placeholder="Expiry date (Month Year)" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :reorder_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='reorderDatePicker'>
+                  <input name="pmap_inventory[reorder_date]" id="pmap_inventory_reorder_date" type='text' placeholder="Reorder date (Month Day Year)" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :received_quantity, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+            <%= f.hidden_field :patient_id, :value => @patient.id %>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onmousedown="chooseItem('','')">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="refillModal" tabindex="-1" role="dialog" aria-labelledby="refillModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Dispense (No Rx)</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :prescription, :html => { :class => "form-horizontal pmap_inventory" }, :url => "/refill"  do |f| %>
+            <div class="form-group">
+              <%= f.label :scan_bottle_barcode, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="prescription[bottle_id]"  placeholder="Enter bottle detail" class ='form-control' onchange="removeCursor(this)" required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :directions, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <textarea maxlength="175" name="prescription[directions]" style="resize: none;" placeholder="Enter directions" class ='form-control' required ></textarea>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :prescribed_by, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="prescription[prescribed_by]" id="provider" placeholder="Prescribed by" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :quantity_dispensed, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :quantity_dispensed,:placeholder => "Enter quantity dispensed" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+            <%= f.hidden_field :patient_id, :value => @patient.id %>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    // Date picker activation
+
+    var manufacturers = [];
+    <% (manufacturers || []).each do |company|%>
+        manufacturers.push('<%= company.html_safe %>')
+    <% end %>
+
+    var providers = []
+
+    <% (@providers || []).each do |provider|%>
+        providers.push('<%= provider.html_safe %>')
+    <% end %>
+
+    $(function () {
+        $('#expiryDatePicker').datetimepicker({format: 'MMM YYYY'});
+        $('#reorderDatePicker').datetimepicker({format: 'MMM D YYYY'});
+    });
+
+    $( "#drugName" ).autocomplete({
+        source: "/suggestions",
+        minLength: 2
+    });
+
+    $("#company").autocomplete({
+        source: manufacturers,
+      change: function( event, ui ) {
+        val = $(this).val().trim();
+        exists = $.inArray(val,manufacturers);
+        if (exists<0) {
+          $(this).val("");
+          return false;
+        }
+      }
+    })
+
+    $("#provider").autocomplete({
+        source: providers
+    })
+
+    $(function() {
+        $('#pmapDetails').slimScroll({
+            height: '30vh'
+        })
+      $('#dispensations').slimScroll({
+        height: '35vh'
+      })
+
+    })
+
+    function removeCursor(element)
+    {
+        element.value = element.value.replace("$", "")
+    }
+
+    $('a.autoAdd').on('click', function(e) {
+        document.getElementById('company').value = $(this).data('cp');;
+        document.getElementById('drugName').value = $(this).data('it');;
+    });
+
+</script>

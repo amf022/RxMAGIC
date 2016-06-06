@@ -1,0 +1,226 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<div id="backGround" class="opaqueLayer"> </div>
+<div id="dispenseForm" class="questionLayer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title">Dispense Item</h3>
+      </div>
+      <div class="modal-body">
+        <%= form_for :dispensation, :html => { :class => "form-horizontal general_inventory" }, :url => "/prescription/dispense"  do |f| %>
+            <div class="form-group">
+              <%= f.label :dispense_from, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :dispense_from,:class => 'form-control',:autocomplete=> 'off' %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :amount_prescribed, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :amount_prescribed,:value => @prescription.quantity,:class => 'form-control',:autocomplete=> 'off', :disabled => true  %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :amount_dispensed, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :amount_dispensed,:class => 'form-control',:autocomplete=> 'off', :type => 'number', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+
+            <%= f.hidden_field :prescription, :value => @prescription.id %>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Dispense", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" onmousedown="cancelDispense()">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h4><%=t '.title', :default => 'Dispensation' %></h4>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-9 col-sm-9">
+    <div class="panel panel-primary">
+      <div class="panel-heading primary">
+        <h3 class="panel-title">Prescription Details</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table" style="width: 96%; margin: auto;">
+          <thead>
+            <td colspan="4">
+              <h4><strong><%= @prescription.drug_name %></strong></h4>
+            </td>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Prescribed By</strong>
+              </td>
+              <td style="text-align: center"><strong>QTY-Prescribed</strong></td>
+              <td style="text-align: center"><strong>QTY-Dispensed</strong></td>
+              <td><strong>Date Prescribed</strong></td>
+              <td><strong>Directions</strong></td>
+            </tr>
+            <tr>
+              <td><%= @prescription.prescribed_by %></td>
+              <td style="text-align: center"><%= @prescription.quantity %></td>
+              <td style="text-align: center"><%= @prescription.amount_dispensed %></td>
+              <td><%= @prescription.date_prescribed.strftime('%b %d, %Y') %></td>
+              <td><%= @prescription.directions %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 class="panel-title">Inventory Suggestions : <strong><%= @category %></strong></h3>
+      </div>
+      <div class="panel-body" style="height: 35vh; overflow: auto;">
+        <% if @suggestions.blank? %>
+            <h4> Item is out of stock </h4>
+        <% else %>
+            <table class="table">
+              <thead>
+                  <tr>
+                    <th style="width: 25%;">
+                      Bottle ID
+                    </th>
+                    <th style="width: 25%;">
+                      Lot Number
+                    </th>
+                    <th style="width: 25%;">
+                      Expiry Date
+                    </th>
+                    <th style="text-align: center;">
+                      Amount Remaining
+                    </th>
+                  </tr>
+              </thead>
+              <tbody>
+                <% (@suggestions || []).each do |suggestion| %>
+                    <tr>
+                      <td><%= suggestion["id"] %></td>
+                      <td><%= suggestion["lot_number"] %></td>
+                      <td><%= suggestion["expiry_date"] %></td>
+                      <td style="text-align: center;"><%= number_with_delimiter(suggestion["amount_remaining"]) %></td>
+                    </tr>
+                <% end %>
+              </tbody>
+            </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-3 col-sm-3">
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 class="panel-title">Patient Details</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                Name
+              </td>
+              <td>
+                <%= @prescription.patient_name %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Gender
+              </td>
+              <td>
+                <%= @prescription.patient.patient_gender %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Age
+              </td>
+              <td>
+                <%= @prescription.patient.age %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="width: 100%;">
+      <table style="width: 100%;">
+        <tr>
+          <td style="border: 0em !important;width: 80px;" valign="middle">
+            <strong>Scan</strong> <img src="/assets/barcode.png">
+          </td>
+          <td  style="border: 0em !important;">
+            <input type="text" style="font-size: 18px;height:100%;width: 100%;" id="barcode" autofocus>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;padding: 10px;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="/prescription" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function checkBarcode()
+  {
+      var barcodeTxt = document.getElementById("barcode");
+      if (barcodeTxt.value.trim().match(/[A-Z0-9]+\$/)) {
+
+        if ((barcodeTxt.value.trim().replace(/\$/, "")).replace(/\-/,"").toUpperCase().length == 8)
+        {
+          showLayer("backGround", "dispenseForm")
+          document.getElementById("dispensation_dispense_from").value = (barcodeTxt.value.trim().replace(/\$/, "")).replace(/\-/,"").toUpperCase();
+          barcodeTxt.value = "";
+        }
+        else
+        {
+          barcodeTxt.value = "";
+          initializeListener();
+        }
+
+      }
+      else
+      {
+        initializeListener();
+      }
+  }
+
+  function cancelDispense()
+  {
+    initializeListener();
+    hideLayer('backGround','dispenseForm')
+  }
+
+
+  function initializeListener()
+  {
+    document.getElementById("barcode").focus();
+    timerHand = setTimeout(function () {
+      checkBarcode();
+    }, 1000);
+
+  }
+  setTimeout(checkBarcode(),10000)
+</script>

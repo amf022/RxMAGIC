@@ -1,12 +1,81 @@
 Rails.application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
   root 'main#index'
 
+  ###################### Patient Controller ##############################
+  get 'patient/new'
+
+  get 'patient/create'
+
+  get 'patient/destroy'
+
+  get 'patient/show'
+
+  get 'patient/index'
+
+  post '/patient/ajax_patient'
+
+
+  ###################### Drug Threshold Controller ##############################
+  get '/void_threshold/:id' => 'drug_threshold#destroy'
+  get "/drug_threshold/unique_prescriptions"
+
+  ###################### Main Controller ##############################
+
+  get '/dashboard' => "main#dashboard"
+  get "/main/about"
+  get 'login' => "main#login"
+  post 'login' => "main#login"
+  get '/logout' => "main#logout"
+  get '/pharmacy_sheet/:date' => "main#activity_sheet"
+  get '/print_pharmacy_sheet/:date' => "main#print_activity_sheet"
+  get '/printable_activity_sheet/:date' => "main#printable_activity_sheet"
+  get '/main/contact'
+  post '/main/contact'
+
+  ###################### Rxnconso Controller ##############################
+  get "/suggestions" => "rxnconso#suggestions"
+
+  ###################### Prescription Controller ##############################
+  get "/void_prescriptions/:id" => "prescription#destroy"
+  get "/prescriptions" => "prescription#ajax_prescriptions"
+  get "/prescription/refill"
+  post "/refill" => "prescription#refill"
+  post "/prescription/dispense"
+
+  ###################### General Inventory Controller ##############################
+  post "/void_general_inventory" => "general_inventory#destroy"
+  post "/edit_general_inventory" => "general_inventory#edit"
+  get "/general_inventory/expired_items"
+  get "/general_inventory/expiring_items"
+  get "/general_inventory/understocked"
+  get "/general_inventory/wellstocked"
+
+  ###################### PMAP Inventory Controller ##############################
+
+  get "/move_pmap_inventory/:id" => "pmap_inventory#move_inventory"
+  get "/reorders" => "pmap_inventory#reorders"
+  get "/expired_pmap_items" => "pmap_inventory#expired_items"
+  get "/pmap_inventory/about_to_expire"
+  post "/ajax_reorders" => "pmap_inventory#detailed_search"
+  post "/pmap_inventory/edit"
+  post "/void_pmap_inventory" => "pmap_inventory#destroy"
+
+  ###################### Inventory Controller ##############################
+  get "/print_bottle_barcode/:id" => "inventory#print_bottle_barcode"
+  get "/print_dispensation_label/:id" => "inventory#print_dispensation_label"
+  get "/void_item/:bottle_id" => "inventory#void_inventory_item"
+  get "/move_item/:bottle_id" => "inventory#move_inventory_item"
+  get "/add_to_activity_sheet/:drug" => "inventory#add_to_activity_sheet"
+
+  ###################### News Controller ##############################
+
+  get "/ignore_message/:id" => "news#destroy"
+  post "/manage_notice" => "news#manage_notice"
+  get "/alert_to_activity_sheet/:id" => "news#alert_add_to_activity_sheet"
+
   resources :general_inventory
-  resources :pap_inventory
+  resources :pmap_inventory
   resources :drug_threshold
   resources :patient
   resources :prescription

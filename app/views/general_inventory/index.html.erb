@@ -1,44 +1,314 @@
 <%- model_class = GeneralInventory -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:gn_inventory_id) %></th>
-      <th><%= model_class.human_attribute_name(:rxcui) %></th>
-      <th><%= model_class.human_attribute_name(:lot_number) %></th>
-      <th><%= model_class.human_attribute_name(:expiration_date) %></th>
-      <th><%= model_class.human_attribute_name(:current_stock) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% (@general_inventories || []).each do |general_inventory| %>
-      <tr>
-        <td><%= link_to general_inventory.id, general_inventory_path(general_inventory) %></td>
-        <td><%= general_inventory.gn_inventory_id %></td>
-        <td><%= general_inventory.rxcui %></td>
-        <td><%= general_inventory.lot_number %></td>
-        <td><%= general_inventory.expiration_date %></td>
-        <td><%= general_inventory.current_stock %></td>
-        <td><%=l general_inventory.created_at %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_general_inventory_path(general_inventory), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      general_inventory_path(general_inventory),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_general_inventory_path,
-            :class => 'btn btn-primary' %>
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <div style="display: table">
+    <div style="display: table-row">
+      <div style="display: table-cell" class="dropdown">
+        <a href="#menu" class="box-shadow-menu">
+        </a>
+        <div class="dropdown-content">
+          <p><a href="/general_inventory/wellstocked" class="links">Well Stocked items</a></p>
+          <p><a href="/general_inventory/understocked" class="links">Under Stocked items</a></p>
+          <p><a href="/general_inventory/expiring_items" class="links">Items About to Expire</a></p>
+          <p><a href="/general_inventory/expired_items" class="links">Expired Items</a></p>
+        </div>
+      </div>
+      <div style="display: table-cell">
+        <h3><%=t '.title', :default => model_class.model_name.human.titleize %></h3>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-12 col-sm-10">
+    <table id="generalInventory" class="table table-striped table-bordered" width="100%" cellspacing="0">
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th style="width: 15%;">Item Identifier</th>
+        <th style="width: 15%;">Lot Number</th>
+        <th style="width: 7.5%;">Current Quantity</th>
+        <th style="width: 7.5%;">Expiration Date</th>
+        <th style="width: 10%;">Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+        <% (@inventory || []).each do |item| %>
+            <tr>
+              <td id="drug<%= item.id %>" ><%= item.rxnconso.name.downcase.titleize rescue "" %></td>
+              <td><%= Misc.dash_formatter(item.gn_identifier) %></td>
+              <td id="lot<%= item.id %>"><%= Misc.dash_formatter(item.lot_number) %></td>
+              <td id="qn<%= item.id %>"><%= number_with_delimiter(item.current_quantity) %></td>
+              <td id="date<%= item.id %>"><%= item.expiration_date.strftime('%b-%Y') %></td>
+              <td>
+
+                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item.id %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+                <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
+                <a href="#" data-id=<%= item.gn_identifier %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+              </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="col-xs-3 col-sm-2 sidebar-offcanvas" id="sidebar" >
+    <div class="panel panel-info" >
+      <div class="panel-heading">
+        <span style=" font-size: 16px;font-weight: bold" class="panel-title">Stock Summary</span>
+      </div>
+      <div class="panel-body">
+        <a href="/general_inventory/wellstocked" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h5  class="list-group-item-heading">Items in Stock</h5>
+            <span class="highlighted"><%= @wellStocked.length %></span>
+          </div>
+        </a>
+        <a href="/general_inventory/understocked" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h5  class="list-group-item-heading">Under Stocked Items</h5>
+            <span class="highlighted"><%= @underStocked.length %></span>
+          </div>
+        </a>
+        <a href="/general_inventory/expiring_items" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h5  class="list-group-item-heading">Items About to Expire</h5>
+            <span class="highlighted"><%= @aboutToExpire.length %></span>
+          </div>
+        </a>
+        <a href="/general_inventory/expired_items" class="list-group-item">
+          <div style="width: 100%; text-align: center;" class="list-group-item-text">
+            <h5 class="list-group-item-heading">Expired Items</h5>
+            <span class="highlighted"><%= @expired.length %></span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <a href="#" class="btn btn-lg btn-primary"
+       data-toggle="modal" style="width: 100%;"
+       data-target="#basicModal">Add Item</a>
+  </div>
+</div><!--/.sidebar-offcanvas-->
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Item</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :general_inventory, :html => { :class => "form-horizontal general_inventory" }, :url => general_inventory_index_path  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="general_inventory[item]" id="drugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='datetimepicker1'>
+                  <input name="general_inventory[expiration_date]" id="general_inventory_expiration_date" type='text' placeholder="Expiry date (Month Year)" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :received_quantity, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Edit Item</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :edit_general_inventory, :html => { :class => "form-horizontal general_inventory" }, :url => "/edit_general_inventory"  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :item, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="edit_general_inventory[item]" id="editDrugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :expiration_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='datetimepicker2'>
+                  <input name="edit_general_inventory[expiration_date]" id="edit_general_inventory_expiration_date" type='text' placeholder="Expiry date (Month Year)" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <%#=f.error_span(:expiration_date) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :received_quantity, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :received_quantity,:placeholder => "Quantity received" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+              <%#=f.error_span(:current_stock) %>
+            </div>
+            <%= f.hidden_field :inventory_id, :value => nil %>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title">Delete Item from Inventory</h3>
+      </div>
+      <div class="modal-body">
+        <%= form_for :general_inventory, :html => { :class => "form-horizontal general_inventory" }, :url => "/void_general_inventory"  do |f| %>
+
+            Select reason for deleting item
+            <div class="form-group" style="margin-bottom: 0px;">
+              <div class="control-label col-lg-6" style="text-align: left;padding-top: 2px;margin-left: 25px;">
+                <label><input type="radio" name="general_inventory[reason]" value="Medication has expired" required>Medication has expired</label>
+              </div>
+              <div class="control-label col-lg-3">
+                &nbsp;
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0px;">
+              <div class="control-label col-lg-6" style="text-align: left;padding-top: 2px;margin-left: 25px;">
+                <label><input type="radio" name="general_inventory[reason]" value="Clerical error made when adding item" required>Clerical error made when adding item</label>
+              </div>
+              <div class="control-label col-lg-3">
+                &nbsp;
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0px;">
+              <div class="control-label col-lg-6" style="text-align: left;margin-left: 25px;">
+                <label><input type="radio" name="general_inventory[reason]" value="Other" required>Other</label>
+              </div>
+              <div class="control-label col-lg-3">
+                &nbsp;
+              </div>
+            </div>
+            <%= f.hidden_field :gn_id %>
+            <div class="form-group" style="margin-top: 10px;">
+              <div class="col-lg-offset-3 col-lg-5">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $.fn.dataTable.moment( 'MMM-YYYY' );
+        $('#generalInventory').DataTable({"bLengthChange": false, "bDestroy": true});
+    } );
+
+    // Date picker activation
+    $(function () {
+      $('#datetimepicker1').datetimepicker({format: 'MMM YYYY'});
+      $('#datetimepicker2').datetimepicker({format: 'MMM YYYY'});
+    });
+
+
+    $( "#drugName" ).autocomplete({
+        source: "/suggestions",
+        minLength: 2,
+      change: function(event,ui)
+      {
+        if (ui.item==null)
+        {
+          $("#drugName").val('');
+          $("#drugName").focus();
+        }
+      }
+    });
+
+    $( "#editDrugName" ).autocomplete({
+      source: "/suggestions",
+      minLength: 2,
+      change: function(event,ui)
+      {
+        if (ui.item==null)
+        {
+          $("#drugName").val('');
+          $("#drugName").focus();
+        }
+      }
+    });
+
+    $('.delete').on('click', function(e) {
+        document.getElementById('general_inventory_gn_id').value = $(this).data('id');
+    });
+    $('.edit').on('click', function(e) {
+        $('#editDrugName').attr('value',$('#drug'+$(this).data('uid'))[0].innerHTML);
+        $('#editDrugName').attr('disabled',true)
+        $('#edit_general_inventory_lot_number').attr('value',$('#lot'+$(this).data('uid'))[0].innerHTML);
+        $('#edit_general_inventory_received_quantity').attr('value',parseInt($('#qn'+$(this).data('uid'))[0].innerHTML.replace(",","")));
+        $('#edit_general_inventory_expiration_date')[0].value = $('#date'+$(this).data('uid'))[0].innerHTML;
+        $('#edit_general_inventory_inventory_id')[0].value = $(this).data('uid')
+    });
+
+</script>

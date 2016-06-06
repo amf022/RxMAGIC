@@ -1,0 +1,131 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'jquery.slimscroll.js' %>
+<div class="page-header" style="margin: 0px !important;padding: 0px !important;">
+  <h4><%=t '.title', :default => "Prescription History" %></h4>
+</div>
+
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-8 col-sm-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading primary">
+        <h3 class="panel-title">Current Inventory</h3>
+      </div>
+      <div class="panel-body" id="inventory">
+        <% if @inventory.blank? %>
+            <h5><%= "#{@patient.fullname} has no current inventory of #{@item.drug_name}" %></h5>
+        <% else %>
+        <table class="table">
+          <thead>
+          <tr style="padding-top:0px; ">
+            <th>Bottle ID</th>
+            <th>Lot #</th>
+            <th>Date Received</th>
+            <th>Expiry Date</th>
+            <th>Current Quantity</th>
+          </tr>
+          </thead>
+          <tbody>
+            <% (@inventory || []).each do |item| %>
+		<tr>
+                <td><%= Misc.dash_formatter(item.bottle_id) %></td>
+                <td><%= Misc.dash_formatter(item.lot_number) %></td>
+                <td><%= item.date_received.to_date.strftime("%b %d, %Y") %></td>
+                <td><%= item.expiration_date.to_date.strftime("%b %d, %Y")  %></td>
+                <td style="padding-left: 5%;"><%= item.current_quantity %></td>
+		</tr>
+            <% end %>
+          </tbody>
+        </table>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="panel panel-primary"  >
+      <div class="panel-heading primary">
+        <h3 class="panel-title">Past Prescriptions</h3>
+      </div>
+      <div class="panel-body" id="prescriptions">
+        <table class="table">
+          <thead>
+          <tr style="padding-top:0px; ">
+            <th>Date Prescribed</th>
+            <th>Amount Prescribed</th>
+            <th>Amount Dispensed</th>
+          </tr>
+          </thead>
+          <tbody>
+            <% (@prescriptions || []).each do |prescription| %>
+              <td><%= prescription.date_prescribed.to_date.strftime("%b %d, %Y")  %></td>
+              <td style="padding-left: 5%;"><%= prescription.quantity %></td>
+              <td style="padding-left: 5%;"><%= prescription.amount_dispensed %></td>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4">
+    <div class="panel panel-info">
+      <div class="panel-heading info">
+        <h3 class="panel-title">Patient Details</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <tbody>
+          <tr>
+            <td>
+              Name
+            </td>
+            <td>
+              <%= @item.patient_name %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Gender
+            </td>
+            <td>
+              <%= @item.patient.patient_gender %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Age
+            </td>
+            <td>
+              <%= @item.patient.age %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="width: 100%;">
+      <table style="width: 100%;">
+        <tr>
+          <td style="border: 0em !important;padding: 10px;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="/reorders" class="btn btn-default btn-success" style="width: 100%;">Finish</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $('#inventory').slimScroll({
+      height: '25vh'
+    })
+    $('#prescriptions').slimScroll({
+      height: '30vh'
+    })
+
+  })
+
+</script>

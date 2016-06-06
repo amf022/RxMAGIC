@@ -20,4 +20,6 @@
 config/*.yml
 test/fixtures/*.yml
 *.lock
-
+.ruby-version
+*reports.csv
+.rbenv-vars
