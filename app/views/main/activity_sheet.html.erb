@@ -10,39 +10,34 @@
 
   td{
       padding-left: 2px;
+      padding-right: 2px;
       font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
       font-size: 12px;
       line-height: 1.42857;
   }
 </style>
 <div class="page-header" style="margin: 0px !important;padding: 5px !important;">
-  <div style="display: table; width: 100%;">
-    <div style="display: table-row">
-      <div style="display: table-cell">
+  <table style="width: 100%">
+    <tr>
+      <td style="width: 60%;">
         <h4><%=t '.title', :default => "Pharmacy Activity Sheet for #{@date}" %></h4>
-      </div>
-      <div style="display: table-cell;text-align: right;">
-        <div style="display: table; width: 100%;">
-          <div style="display: table-row">
-            <div style="display: table-cell;vertical-align: middle;text-align: right;">
-              <div class='input-group date'  id='datetimepicker1'>
-                <input id="report_date" type='text' placeholder="Enter date" class="form-control" autocomplete="off" required/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-              </div>
-            </div>
-            <div style="display: table-cell">
-              <button class="btn btn-primary" style="width: 80%;" onmousedown="genNextReport()">Generate</button>
-            </div>
-            <div style="display: table-cell">
-              <button class="btn btn-success" style="width: 80%;">Print</button>
-            </div>
-          </div>
+      </td>
+      <td style="width: 30%;">
+        <div class='input-group date'  id='datetimepicker1'>
+          <input id="report_date" type='text' placeholder="Enter date" class="form-control" autocomplete="off" required/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
         </div>
-      </div>
-    </div>
-  </div>
+      </td>
+      <td>
+        <button class="btn btn-primary" onmousedown="genNextReport()">Generate</button>
+      </td>
+      <td>
+        <button class="btn btn-success" >Print</button>
+      </td>
+    </tr>
+  </table>
 </div>
 <div class="row row-offcanvas row-offcanvas-right">
   <div class="col-xs-12 col-sm-12">
