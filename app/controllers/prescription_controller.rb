@@ -3,7 +3,7 @@ class PrescriptionController < ApplicationController
   def index
     # This function serves the main table for prescriptions
 
-    @prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(created_at: :asc)
+    @prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(date_prescribed: :asc)
   end
 
   def show
@@ -162,7 +162,7 @@ class PrescriptionController < ApplicationController
   def ajax_prescriptions
     # this function services the application dashboard
 
-    prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(created_at: :asc)
+    prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(date_prescribed: :asc)
     render :text => view_context.prescriptions(prescriptions).to_json
   end
 
