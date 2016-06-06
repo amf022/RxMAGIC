@@ -24,7 +24,7 @@ class MainController < ApplicationController
 
       if status.match(/error/i)
         flash[:errors] = {} if flash[:errors].blank?
-        flash[:errors][:invalid_credentials] = [status.gsub("Error: ", "")]
+        flash[:errors]["invalid_credentials"] = [status.gsub("Error: ", "")]
       else
         session[:user_token] = status
         session[:user] = params[:user][:username]
