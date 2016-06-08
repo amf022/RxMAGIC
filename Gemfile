@@ -27,8 +27,10 @@ gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rest-client', '1.7.2'
 gem 'thin'
-#gem 'wicked_pdf'
-#gem 'wkhtmltopdf-binary'
+
+gem 'prawn'
+gem 'prawn-table', '~> 0.2.2'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -37,6 +39,8 @@ gem 'thin'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem 'whenever', '~> 0.9.4', :require => false
 
 group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

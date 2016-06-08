@@ -62,6 +62,15 @@ class MainController < ApplicationController
                                  report_date.strftime("%Y-%m-%d"), true,'Added to activity sheet',
                                  "low general stock").pluck(:refers_to)
     @low_stock = Rxnconso.where("RXAUI in (?)", low_stock_items).pluck(:STR)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ActivitySheetPdf.new(@records, @low_stock,@date)
+        send_data pdf.render, filename: "activity_sheet_#{report_date}.pdf", type: 'application/pdf'
+      end
+    end
+
   end
 
   def printable_activity_sheet
