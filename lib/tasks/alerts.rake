@@ -1,4 +1,4 @@
-namespace :test_data do
+namespace :alerts do
 
   desc "Creating system alerts for RxMAGIC"
 
