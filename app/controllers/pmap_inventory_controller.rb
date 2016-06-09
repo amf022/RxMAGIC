@@ -74,24 +74,24 @@ class PmapInventoryController < ApplicationController
       flash[:errors] = {} if flash[:errors].blank?
       flash[:errors][:missing] = "Item #{params[:pmap_inventory][:item]} was not found"
       redirect_to "/patient/#{params[:pmap_inventory][:patient_id]}"
-    end
+    else
+      PmapInventory.transaction do
+        @new_stock_entry.save
+      end
 
-    PmapInventory.transaction do
-      @new_stock_entry.save
-    end
-
-    if @new_stock_entry.errors.blank?
-      #print barcode for new bottles
-      if params[:pmap_inventory][:inventory_id].blank?
-        flash[:success] = "#{params[:pmap_inventory][:item]} was successfully added to inventory."
-        print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.pap_identifier}", "/patient/#{params[:pmap_inventory][:patient_id]}")
+      if @new_stock_entry.errors.blank?
+        #print barcode for new bottles
+        if params[:pmap_inventory][:inventory_id].blank?
+          flash[:success] = "#{params[:pmap_inventory][:item]} was successfully added to inventory."
+          print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.pap_identifier}", "/patient/#{params[:pmap_inventory][:patient_id]}")
+        else
+          flash[:success] = "#{params[:pmap_inventory][:item]} (Lot #: #{@new_stock_entry.lot_number}) was successfully updated."
+          redirect_to "/patient/#{params[:pmap_inventory][:patient_id]}"
+        end
       else
-        flash[:success] = "#{params[:pmap_inventory][:item]} (Lot #: #{@new_stock_entry.lot_number}) was successfully updated."
+        flash[:errors] = @new_stock_entry.errors
         redirect_to "/patient/#{params[:pmap_inventory][:patient_id]}"
       end
-    else
-      flash[:errors] = @new_stock_entry.errors
-      redirect_to "/patient/#{params[:pmap_inventory][:patient_id]}"
     end
   end
 
