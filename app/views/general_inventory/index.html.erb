@@ -168,7 +168,7 @@
             <div class="form-group">
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <input type="text" name="edit_general_inventory[item]" id="editDrugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+                <input type="text" name="edit_general_inventory[item]" id="editDrugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' disabled >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -303,12 +303,12 @@
         document.getElementById('general_inventory_gn_id').value = $(this).data('id');
     });
     $('.edit').on('click', function(e) {
-        $('#editDrugName').attr('value',$('#drug'+$(this).data('uid'))[0].innerHTML);
-        $('#editDrugName').attr('disabled',true)
-        $('#edit_general_inventory_lot_number').attr('value',$('#lot'+$(this).data('uid'))[0].innerHTML);
-        $('#edit_general_inventory_received_quantity').attr('value',parseInt($('#qn'+$(this).data('uid'))[0].innerHTML.replace(",","")));
-        $('#edit_general_inventory_expiration_date')[0].value = $('#date'+$(this).data('uid'))[0].innerHTML;
-        $('#edit_general_inventory_inventory_id')[0].value = $(this).data('uid')
+        var temp = $(this).data('uid');
+        document.getElementById('editDrugName').value = document.getElementById('drug'+temp).innerHTML;
+        document.getElementById('edit_general_inventory_lot_number').value = document.getElementById('lot'+temp).innerHTML.replace('-','');
+        document.getElementById('edit_general_inventory_received_quantity').value = parseInt(document.getElementById('qn'+temp).innerHTML.replace(",",""));
+        document.getElementById('edit_general_inventory_expiration_date').value = document.getElementById('date'+temp).innerHTML;
+        document.getElementById('edit_general_inventory_inventory_id').value = temp
     });
 
 </script>
