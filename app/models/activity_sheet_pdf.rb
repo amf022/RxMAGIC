@@ -8,6 +8,7 @@ class ActivitySheetPdf < Prawn::Document
     header
     text_content
     table_content
+    refills
   end
 
   def header
@@ -37,6 +38,15 @@ class ActivitySheetPdf < Prawn::Document
 
   end
 
+  def refills
+    move_down 5
+    text "Stock meds to be replenished :"
+
+    move_down 10
+    table(items_to_refill)
+
+  end
+
   def product_rows
     rows = [[{:content => 'Initials', :rowspan => 2},{:content => 'Rx #', :rowspan => 2},
              {:content => 'Patient Name', :rowspan => 2}, {:content => 'Medication', :rowspan => 2},
@@ -47,16 +57,20 @@ class ActivitySheetPdf < Prawn::Document
             ['Borrowed', 'PMAP','Stock', 'New Med', 'Reorder', 'Dose Change','Re-Enrollment /New App']]
 
 
-     (@activities || {}).each do |patient_id, patient|
-       (patient ||{}).each do |drug_name, record|
-         rows << ["",record['prescription'],record['patient_name'], drug_name,record['quantity'],record['directions'],
-                  (record['source'].include?('Borrowed') ? {:content => 'X', :align => :center} : ""),
-                  (record['source'].include?('PMAP') ? {:content => 'X', :align => :center} : ""),
-                  (record['source'].include?('General') ? {:content => 'X', :align => :center} : ""),"",
-                  (record['reorder'].blank? ? "" : {:content => 'X', :align => :center}),"","",""]
-       end
-     end
+    (@activities || {}).each do |patient_id, patient|
+      (patient ||{}).each do |drug_name, record|
+        rows << ["",record['prescription'],record['patient_name'], drug_name,record['quantity'],record['directions'],
+                 (record['source'].include?('Borrowed') ? {:content => 'X', :align => :center} : ""),
+                 (record['source'].include?('PMAP') ? {:content => 'X', :align => :center} : ""),
+                 (record['source'].include?('General') ? {:content => 'X', :align => :center} : ""),"",
+                 (record['reorder'].blank? ? "" : {:content => 'X', :align => :center}),"","",""]
+      end
+    end
 
     return rows
+  end
+
+  def items_to_refill
+
   end
 end
