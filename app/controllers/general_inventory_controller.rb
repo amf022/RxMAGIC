@@ -48,12 +48,12 @@ class GeneralInventoryController < ApplicationController
     else
       @new_stock_entry.lot_number = params[:edit_general_inventory][:lot_number].upcase
       @new_stock_entry.expiration_date = params[:edit_general_inventory][:expiration_date].to_date rescue nil
-      @new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity]
 
       if (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity) > params[:edit_general_inventory][:received_quantity].to_f
         flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
       else
         @new_stock_entry.current_quantity = params[:edit_general_inventory][:received_quantity].to_i - (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
+        @new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity]
         GeneralInventory.transaction do
           @new_stock_entry.save
         end
