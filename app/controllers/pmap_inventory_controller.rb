@@ -43,6 +43,7 @@ class PmapInventoryController < ApplicationController
         flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
       else
         @entry.current_quantity = params[:pmap_inventory][:amount_received].to_i - (@entry.received_quantity - @entry.current_quantity)
+        @entry.received_quantity = params[:pmap_inventory][:amount_received].to_i
         @entry.lot_number = params[:pmap_inventory][:lot_number]
         @entry.expiration_date = params[:pmap_inventory][:expiry_date].to_date rescue nil
         @entry.manufacturer = params[:pmap_inventory][:manufacturer]
