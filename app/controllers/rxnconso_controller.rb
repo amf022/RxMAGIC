@@ -1,6 +1,5 @@
 class RxnconsoController < ApplicationController
 
-
   def index
     respond_to do |format|
       format.html
@@ -10,7 +9,7 @@ class RxnconsoController < ApplicationController
 
   def suggestions
 
-    @items = Rxnconso.where("STR like ? and TTY = 'PSN'", "%#{params[:term]}%").limit(10).collect{|x| x.STR.titleize}
+    @items = Rxnconso.where("STR like ? and TTY = 'PSN'", "%#{params[:term]}%").limit(10).collect{|x| x.STR.humanize.gsub(/\b('?[a-z])/) { $1.capitalize }}
     render :text => @items
   end
 

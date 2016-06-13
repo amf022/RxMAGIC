@@ -7,6 +7,6 @@ class Dispensation < ActiveRecord::Base
   end
 
   def drug_name
-    inventory.rxnconso.STR.titleize rescue ""
+    inventory.rxnconso.STR.humanize.gsub(/\b('?[a-z])/) { $1.capitalize } rescue ""
   end
 end
