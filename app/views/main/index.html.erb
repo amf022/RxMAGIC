@@ -19,6 +19,7 @@
     <h2 style=" font-size: 15px;" class="panel-title">Prescription Management </h2>
     <hr style="border-color: black"/>
     <div class="row">
+      <% if session[:user_role] == "Pharmacy Staff"%>
           <div style="margin-top: 5px;" class="col-xs-6 col-lg-4">
             <table cellpadding="10px">
               <tr>
@@ -36,6 +37,7 @@
               </tr>
             </table>
           </div><!--/.col-xs-6.col-lg-4-->
+      <%end%>
       <div style="margin-top: 5px;" class="col-xs-6 col-lg-4">
         <table cellpadding="10px">
           <tr>
@@ -59,6 +61,7 @@
     <h2 style="font-size: 15px;" class="panel-title">Inventory Control</h2>
     <hr style="border-color: black"/>
     <div class="row">
+      <% if session[:user_role] == "Pharmacy Staff"%>
       <div style="margin-top: 5px;" class="col-xs-6 col-lg-4">
         <table cellpadding="10px" >
           <tr>
@@ -76,6 +79,7 @@
           </tr>
         </table>
       </div><!--/.col-xs-6.col-lg-4-->
+      <% end %>
       <div style="margin-top: 5px;" class="col-xs-6 col-lg-4">
         <table cellpadding="10px">
           <tr>
@@ -94,6 +98,7 @@
         </table>
       </div><!--/.col-xs-6.col-lg-4-->
 
+      <% if session[:user_role] == "Pharmacy Staff"%>
       <div style="margin-top: 5px;" class="col-xs-6 col-lg-4">
         <table cellpadding="10px">
           <tr>
@@ -111,6 +116,7 @@
           </tr>
         </table>
       </div><!--/.col-xs-6.col-lg-4-->
+      <% end %>
     </div><!--/row-->
     <br/>
     <h2 style="font-size: 15px;" class="panel-title">Documentation</h2>

@@ -74,6 +74,13 @@ Rails.application.routes.draw do
   post "/manage_notice" => "news#manage_notice"
   get "/alert_to_activity_sheet/:id" => "news#alert_add_to_activity_sheet"
 
+  ###################### User Role Controller #############################
+  get 'user_role/index'
+  get 'user_role/show'
+  get 'user_role/new'
+  get 'user_role/edit'
+
+
   resources :general_inventory
   resources :pmap_inventory
   resources :drug_threshold
@@ -81,6 +88,7 @@ Rails.application.routes.draw do
   resources :prescription
   resources :main
   resources :news
+  resources :user_role
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
