@@ -28,7 +28,13 @@ class MainController < ApplicationController
       else
         session[:user_token] = status
         session[:user] = params[:user][:username]
-        redirect_to "/"
+        user_role = UserRole.find_by_username(params[:user][:username])
+        if user_role.blank?
+          redirect_to "/user_role/new"
+        else
+          session[:user_role] = user_role.user_role
+          redirect_to "/"
+        end
       end
     end
   end

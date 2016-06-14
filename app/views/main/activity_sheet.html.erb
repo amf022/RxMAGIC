@@ -34,7 +34,7 @@
         <button class="btn btn-primary" onmousedown="genNextReport()">Generate</button>
       </td>
       <td>
-        <button class="btn btn-success" onmousedown="printReport()">Print</button>
+        <button class="btn btn-success" onmousedown="printReport()">Export as PDF</button>
       </td>
     </tr>
   </table>
@@ -104,7 +104,7 @@
                  <%= @low_stock[i].titleize rescue "&nbsp;".html_safe %>
               </div>
               <div style="display: table-cell; padding-left: 10px;width: 5%;">
-                <strong><%= "#{i + 2}." %></strong>
+                <strong><%= (@low_stock[i+1].blank? ? "&nbsp;".html_safe : "#{i + 2}.") %></strong>
               </div>
               <div style="display: table-cell">
                 <%= @low_stock[i+1].titleize rescue "&nbsp;".html_safe %>

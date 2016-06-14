@@ -24,7 +24,7 @@ class PmapInventory < ActiveRecord::Base
   def drug_name
     #this method handles the need to access the drug name associated to the inventory entry
 
-    self.rxnconso.STR.titleize rescue ""
+    self.rxnconso.STR.humanize.gsub(/\b('?[a-z])/) { $1.capitalize } rescue ""
   end
 
   def made_by
