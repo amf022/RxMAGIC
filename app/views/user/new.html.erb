@@ -4,7 +4,7 @@
   </div>
   <div style="padding: 10px;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;letter-spacing: normal;">
     <p>Please provide the following details to improve your experience with RxMAGIC.</p>
-    <%= form_for :user_role, :html => { :class => "form-horizontal user_role" }, :url => "/new_user_role"  do |f| %>
+    <%= form_for :user, :html => { :class => "form-horizontal user_role" }, :url => "/user"  do |f| %>
       <p>
         <strong>Enter your personal information</strong>
       </p>
@@ -18,6 +18,23 @@
         </div>
 
         <p>
+          <strong>Enter your user credentials</strong>
+        </p>
+        <div class="form-group">
+          <div class="col-lg-6">
+            <%= f.text_field :user_name, :class => 'form-control', :placeholder => 'User Name',:autocomplete=> 'off', :required => true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-6">
+            <%= f.password_field :password, :class => 'form-control', :placeholder => 'Enter password',:autocomplete=> 'off', :required => true %>
+          </div>
+          <div class="col-lg-6">
+            <%= f.text_field :password_confirmation, :class => 'form-control', :placeholder => 'Re-enter password',:autocomplete=> 'off', :required => true %>
+          </div>
+        </div>
+
+        <p>
           <strong>Select your role</strong>
         </p>
 
@@ -26,13 +43,16 @@
             <%= f.radio_button :user_role,"Americorp Member" %>
             <%= label_tag(:user_role_americorp_member, "Americorp Member") %>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <%= f.radio_button :user_role,"Pharmacy Staff" %>
             <%= label_tag(:user_role_pharmacy_staff, "Pharmacy Staff") %>
           </div>
+          <div class="col-lg-4">
+            <%= f.radio_button :user_role,"Clinician" %>
+            <%= label_tag(:user_role_clinician, "Clinician") %>
+          </div>
         </div>
 
-        <%= f.hidden_field :user_name, :value => session[:user] %>
         <div class="form-group">
           <div class="col-lg-offset-3 col-lg-5">
             <%= f.submit "Save", :class => 'btn btn-success', :style => "width:100%;" %>

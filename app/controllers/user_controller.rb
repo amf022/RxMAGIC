@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   def index
+    @users = User.all
   end
 
   def show
@@ -13,6 +14,32 @@ class UserController < ApplicationController
 
   def create
 
+    user = User.where(username: params[:user][:user_name]).first
+    if user.blank?
+      User.transaction do
+        user = User.new
+        user.username = params[:user][:user_name]
+        user.first_name = params[:user][:first_name]
+        user.last_name = params[:user][:last_name]
+        user.user_role = params[:user][:user_role]
+        user.save
+
+        credentials = UserCredential.create({:password => params[:user][:password],:user_id => user.id})
+
+        if credentials.errors.blank?
+          flash[:success] = "New user successfully created."
+          redirect_to "/user"
+        else
+          flash[:errors] = credentials.errors
+          redirect_to "/user/new"
+        end
+      end
+
+    else
+      flash[:errors] = {} if flash[:errors].blank?
+      flash[:errors][:missing] = ["Username is already in use"]
+      redirect_to "/user/new"
+    end
   end
 
   def create_user_role
@@ -35,7 +62,7 @@ class UserController < ApplicationController
   def login
     #The login process can be done in three ways.Locally, remotely with User MGMT and with LDAP
     if request.post?
-      config = YAML.load_file("#{Rails.root}/config/application.yml")
+      config = YAML.load_file("#{Rails.root}/config/application.yml") rescue ""
 
       case config["authentication"].downcase
 
