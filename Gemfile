@@ -28,8 +28,15 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rest-client', '1.7.2'
 gem 'thin'
 
+#These gems are used to generate pdfs
 gem 'prawn'
 gem 'prawn-table', '~> 0.2.2'
+
+#Gem for LDAP
+gem 'net-ldap', '~> 0.14.0'
+
+#Gem for password hashing
+gem 'bcrypt-ruby', '~> 3.1.5', require: "bcrypt"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

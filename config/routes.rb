@@ -24,9 +24,6 @@ Rails.application.routes.draw do
 
   get '/dashboard' => "main#dashboard"
   get "/main/about"
-  get 'login' => "main#login"
-  post 'login' => "main#login"
-  get '/logout' => "main#logout"
   get '/pharmacy_sheet/:date' => "main#activity_sheet"
   get '/print_pharmacy_sheet/:date' => "main#print_activity_sheet"
   get '/printable_activity_sheet/:date' => "main#printable_activity_sheet"
@@ -75,11 +72,15 @@ Rails.application.routes.draw do
   get "/alert_to_activity_sheet/:id" => "news#alert_add_to_activity_sheet"
 
   ###################### User Role Controller #############################
-  get 'user_role/index'
-  get 'user_role/show'
-  get 'user_role/new'
-  get 'user_role/edit'
-
+  get 'user/index'
+  get 'user/show'
+  get 'user/new'
+  get 'user/edit'
+  get "/new_user_role" => "user#create_user_role"
+  post "/new_user_role" => "user#create_user_role"
+  get 'login' => "user#login"
+  post 'login' => "user#login"
+  get '/logout' => "user#logout"
 
   resources :general_inventory
   resources :pmap_inventory
@@ -88,7 +89,7 @@ Rails.application.routes.draw do
   resources :prescription
   resources :main
   resources :news
-  resources :user_role
+  resources :user
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

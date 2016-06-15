@@ -14,45 +14,6 @@ class MainController < ApplicationController
 		#This page displays application details
   end
 
-  def login
-    if request.post?
-      config = YAML.load_file("#{Rails.root}/config/application.yml")
-      login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_login"]}"
-      post_params = {"username" => params[:user][:username], "password" => params[:user][:password]}
-
-      status = RestClient::Request.execute(:url => login_link,:payload => post_params, :method => :post, :verify_ssl => false )
-
-      if status.match(/error/i)
-        flash[:errors] = {} if flash[:errors].blank?
-        flash[:errors]["invalid_credentials"] = [status.gsub("Error: ", "")]
-      else
-        session[:user_token] = status
-        session[:user] = params[:user][:username]
-        user_role = UserRole.find_by_username(params[:user][:username])
-        if user_role.blank?
-          redirect_to "/user_role/new"
-        else
-          session[:user_role] = user_role.user_role
-          redirect_to "/"
-        end
-      end
-    end
-  end
-
-  def logout
-    config = YAML.load_file("#{Rails.root}/config/application.yml")
-    login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_logout"]}"
-    logout_status = RestClient::Request.execute(:url => login_link, :payload => {"token" => session[:user_token]}, :method => :post, :verify_ssl => false )
-
-    if logout_status
-      session[:user_token] = nil
-      session[:user] = nil
-      # flash[:notice] = "You have been logged out!"
-      redirect_to "/login" and return
-    else
-    end
-  end
-
   def activity_sheet
     #code block for generating activity sheet
 
