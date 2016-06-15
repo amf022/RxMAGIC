@@ -1,0 +1,46 @@
+<div style="width: 50%; margin-top: 10vh; margin-left: auto; margin-right: auto;border: 1px solid black ">
+  <div style="width: 100%; background: black;color: white; text-align: center;padding: 10px;">
+    <h4>RxMAGIC User Profile</h4>
+  </div>
+  <div style="padding: 10px;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;letter-spacing: normal;">
+    <p>Please provide the following details to improve your experience with RxMAGIC.</p>
+    <%= form_for :user_role, :html => { :class => "form-horizontal user_role" }, :url => "/new_user_role"  do |f| %>
+      <p>
+        <strong>Enter your personal information</strong>
+      </p>
+        <div class="form-group">
+          <div class="col-lg-6">
+            <%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name',:autocomplete=> 'off', :required => true %>
+          </div>
+          <div class="col-lg-6">
+            <%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name',:autocomplete=> 'off', :required => true %>
+          </div>
+        </div>
+
+        <p>
+          <strong>Select your role</strong>
+        </p>
+
+        <div class="form-group">
+          <div class="col-lg-4">
+            <%= f.radio_button :user_role,"Americorp Member" %>
+            <%= label_tag(:user_role_americorp_member, "Americorp Member") %>
+          </div>
+          <div class="col-lg-6">
+            <%= f.radio_button :user_role,"Pharmacy Staff" %>
+            <%= label_tag(:user_role_pharmacy_staff, "Pharmacy Staff") %>
+          </div>
+        </div>
+
+        <%= f.hidden_field :user_name, :value => session[:user] %>
+        <div class="form-group">
+          <div class="col-lg-offset-3 col-lg-5">
+            <%= f.submit "Save", :class => 'btn btn-success', :style => "width:100%;" %>
+          </div>
+        </div>
+    <% end %>
+
+  </div>
+
+
+</div>
