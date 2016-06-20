@@ -1,12 +1,14 @@
 def start
-
+  puts "Started at #{Time.now}"
   #check_low_pmap_stock
+  puts ""
   check_low_general_stock
   #check_expiring_pmap_stock
   #check_expiring_general_stock
   check_unutilized_pmap_stock
   check_expired_general_items
   check_expired_pmap_items
+  puts "Finished at #{Time.now}"
 end
 
 def check_low_pmap_stock
@@ -38,10 +40,12 @@ def check_low_general_stock
   #this code block gets all items that have fewer than the permissible amounts available
 
   thresholds = DrugThreshold.where("voided = ?", false)
-  items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+  items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
+                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
+                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
   (thresholds || []).each do |threshold|
 
-    if items[threshold.rxaui].blank?
+    if items[threshold.rxcui].blank?
       message = "#{threshold.drug_name} stock below par level"
       check_news = News.where("refers_to = ? AND news_type = ? AND date_resolved <= ?",
                               threshold.rxaui, "low general stock",Time.now.advance(:day => (1)).strftime("%Y-%m-%d"))
@@ -51,7 +55,7 @@ def check_low_general_stock
       end
 
     else
-      if items[threshold.rxaui] <= threshold.threshold
+      if items[threshold.rxcui] <= threshold.threshold
         message = "#{threshold.drug_name} stock below par level"
         check_news = News.where("refers_to = ? AND news_type = ? AND date_resolved <= ?",
                                 threshold.rxaui, "low general stock",Time.now.advance(:day => (1)).strftime("%Y-%m-%d"))

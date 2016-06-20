@@ -4,7 +4,7 @@ class GeneralInventoryController < ApplicationController
 
     @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
 
-    thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold)
+    thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
     @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
 
@@ -17,7 +17,10 @@ class GeneralInventoryController < ApplicationController
     @wellStocked = []
 
 
-    items = GeneralInventory.where("voided = ? AND current_quantity > 0", false).group(:rxaui).sum(:current_quantity)
+    items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
+                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
+                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
+
 
     (thresholds || []).each do |threshold|
 
