@@ -4,7 +4,7 @@ class GeneralInventoryController < ApplicationController
 
     @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
 
-    thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold)
+    thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
     @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
 
@@ -17,7 +17,10 @@ class GeneralInventoryController < ApplicationController
     @wellStocked = []
 
 
-    items = GeneralInventory.where("voided = ? AND current_quantity > 0", false).group(:rxaui).sum(:current_quantity)
+    items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
+                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
+                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
+
 
     (thresholds || []).each do |threshold|
 
@@ -48,13 +51,14 @@ class GeneralInventoryController < ApplicationController
     else
       @new_stock_entry.lot_number = params[:edit_general_inventory][:lot_number].upcase
       @new_stock_entry.expiration_date = params[:edit_general_inventory][:expiration_date].to_date rescue nil
-      @new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity]
 
       if (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity) > params[:edit_general_inventory][:received_quantity].to_f
         flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
       else
         @new_stock_entry.current_quantity = params[:edit_general_inventory][:received_quantity].to_i - (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
-        GeneralInventory.transaction do
+	@new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity]
+        
+	GeneralInventory.transaction do
           @new_stock_entry.save
         end
         if @new_stock_entry.errors.blank?

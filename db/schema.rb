@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615163647) do
+ActiveRecord::Schema.define(version: 20160620131845) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 20160615163647) do
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.boolean  "voided",     limit: 1,   default: false
+    t.string   "rxcui",      limit: 255,                 null: false
   end
 
   create_table "general_inventories", primary_key: "gn_inventory_id", force: :cascade do |t|
