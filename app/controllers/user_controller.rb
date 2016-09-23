@@ -74,13 +74,30 @@ class UserController < ApplicationController
             flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
           end
         when "ldap"
-          ldap = Net::LDAP.new
-          ldap.host = config["ldap_host"]
-          ldap.port = config["ldap_port"]
-          ldap.auth params[:user][:username], params[:user][:password]
-          if ldap.bind
-            # authentication succeeded
-            session[:user_token] = (0...5).map { (65 + rand(26)).chr }.join
+          ldap = Net::LDAP.new(:base => config["ldap_base"], :host => config["ldap_host"])
+          ldap.auth config["ldap_service_name"], config["ldap_service_password"]
+
+          if ldap.bind(:method => :simple, :username => config["ldap_dn"], :password => config["ldap_service_password"])
+            usr = params[:user][:username]
+            usr_password = params[:user][:password]
+
+            user_dn = ldap.search(filter: Net::LDAP::Filter.eq("sAMAccountName","#{usr.to_s.strip}"),
+                                  attributes: %w[ dn ],return_result:true).first.dn rescue nil
+
+            if user_dn != nil
+              results = ldap.bind( :method=> :simple,:username => user_dn.to_s.strip,:password => usr_password.to_s.strip)
+
+              if results
+                # authentication succeeded
+                session[:user_token] = (0...5).map { (65 + rand(26)).chr }.join
+              else
+                flash[:errors] = {} if flash[:errors].blank?
+                flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
+              end
+            else
+              flash[:errors] = {} if flash[:errors].blank?
+              flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
+            end
           else
             flash[:errors] = {} if flash[:errors].blank?
             flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
