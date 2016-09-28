@@ -18,6 +18,7 @@
 //= require bootstrap-datetimepicker
 
 
+
 function reloadTable(section, data, keys, container)
 {
     if (container.trim() == "" )
@@ -225,3 +226,18 @@ $.fn.dataTable.moment = function ( format, locale ) {
 
 }));
 
+function updateLanguage(patient_id){
+    console.log("change language")
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }else{// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+
+        }
+    }
+    xmlhttp.open("GET","/patient/toggle_language_preference?id="+patient_id ,true);
+    xmlhttp.send();
+}

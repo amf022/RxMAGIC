@@ -17,8 +17,9 @@ class InventoryController < ApplicationController
     #This function prints bottle barcode labels for both inventory types
 
     @prescription = Prescription.find(params[:id])
+    directions = (@prescription.patient.language == "ENG" ? @prescription.directions : "")
     print_string = create_dispensation_label(@prescription.drug_name,@prescription.amount_dispensed,
-                                             @prescription.lot_numbers, @prescription.directions, @prescription.patient_name,
+                                             @prescription.lot_numbers, directions, @prescription.patient_name,
                                              @prescription.prescribed_by,@prescription.id)
 
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false, :filename=>"#{('a'..'z').to_a.shuffle[0,8].join}.lbl", :disposition => "inline")
@@ -47,6 +48,7 @@ class InventoryController < ApplicationController
     elsif item.errors.blank?
       flash[:success] = "#{item.drug_name} #{item.lot_number} was successfully deleted."
       News.resolve(params[:bottle_id],"expired item","Item discarded")
+      logger.info "#{current_user.username} voided inventory item #{params[:bottle_id]}"
     else
       flash[:errors] = item.errors
     end
@@ -64,6 +66,7 @@ class InventoryController < ApplicationController
     elsif result.errors.blank?
       flash[:success] = " #{result.drug_name} #{result.lot_number} was successfully moved to general inventory."
       News.resolve(params[:bottle_id],"under utilized item","Moved to general inventory")
+      logger.info "#{current_user.username} moved inventory item #{params[:bottle_id]} to General Inventory"
     else
       flash[:errors] = result.errors
     end

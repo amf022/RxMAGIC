@@ -182,6 +182,8 @@ class PrescriptionController < ApplicationController
         dispensation = Dispensation.create({:rx_id => prescription.id, :inventory_id => inventory.bottle_id,
                                             :patient_id => prescription.patient_id, :quantity => dispense_amount,
                                             :dispensation_date => Time.now})
+
+        logger.info "#{current_user.username} dispensed #{dispense_amount} of #{inventory.bottle_id} (RX:#{prescription.id})"
       else
         return false
       end

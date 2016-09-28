@@ -60,6 +60,7 @@ class GeneralInventoryController < ApplicationController
         
 	GeneralInventory.transaction do
           @new_stock_entry.save
+          logger.info "#{current_user.username} edited general inventory item #{params[:edit_general_inventory][:gn_id]}"
         end
         if @new_stock_entry.errors.blank?
           flash[:success] = "#{@new_stock_entry.drug_name} (Lot #: #{@new_stock_entry.lot_number}) was successfully updated."
@@ -90,6 +91,7 @@ class GeneralInventoryController < ApplicationController
         news.resolution = "Item was voided"
         news.date_resolved= Date.today
         news.save
+        logger.info "#{current_user.username} voided general inventory item #{params[:general_inventory][:gn_id]}"
       end
     else
       flash[:errors] = item.errors

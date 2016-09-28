@@ -46,4 +46,14 @@ class PatientController < ApplicationController
 
     render "index"
   end
+
+  def toggle_language_preference
+    patient = Patient.find(params[:id])
+    unless patient.blank?
+      patient.language = (patient.language == "ENG"? "ESP" : "ENG")
+      patient.save
+      logger.info "Patient #{params[:id]} language preference switched by #{current_user.username}"
+    end
+    render :text => "done"
+  end
 end

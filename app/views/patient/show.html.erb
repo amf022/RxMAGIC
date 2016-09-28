@@ -14,10 +14,24 @@
         <table class="table">
           <thead>
           <tr style="padding-top:0px; ">
-            <td colspan="6" style="padding: 0px;">
+            <td colspan="4" style="padding: 0px;">
               <div style="float: left" class="<%= @patient.patient_gender.downcase %>"><img style="height: 30px;" src="/assets/<%= @patient.patient_gender.downcase %>.png"></div>
               <div style="vertical-align: text-top;"><h4><strong><%= @patient.fullname %></strong></h4></div>
             </td>
+            <td style="text-align: right;">
+              <strong>Preferred Language</strong>
+            </td>
+            <td>
+              <div class="onoffswitch">
+                <input type="checkbox" name="langPref" class="onoffswitch-checkbox" id="langPref"
+                       <%= (@patient.language == "ENG" ? 'Checked' : '') %> onchange="updateLanguage(<%= @patient.id%>)">
+                <label class="onoffswitch-label" for="langPref" id="langPrefLbl">
+                  <span class="onoffswitch-inner" id="langPrefValue"></span>
+                  <span class="onoffswitch-switch"></span>
+                </label>
+              </div>
+            </td>
+
           </tr>
           </thead>
           <tbody>

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   post '/patient/ajax_patient'
 
+  get '/patient/toggle_language_preference'
+
 
   ###################### Drug Threshold Controller ##############################
   get '/void_threshold/:id' => 'drug_threshold#destroy'

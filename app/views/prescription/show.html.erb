@@ -154,6 +154,21 @@
                 <%= @prescription.patient.age %>
               </td>
             </tr>
+            <tr>
+              <td>
+                Preferred Language
+              </td>
+              <td>
+                <div class="onoffswitch">
+                  <input type="checkbox" name="langPref" class="onoffswitch-checkbox" id="langPref"
+                         <%= (@prescription.patient.language == "ENG" ? 'Checked' : '') %> onchange="updateLanguage(<%= @prescription.patient.id%>)">
+                  <label class="onoffswitch-label" for="langPref" id="langPrefLbl">
+                    <span class="onoffswitch-inner" id="langPrefValue"></span>
+                    <span class="onoffswitch-switch"></span>
+                  </label>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -223,4 +238,6 @@
 
   }
   setTimeout(checkBarcode(),10000)
+
+
 </script>
