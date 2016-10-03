@@ -77,7 +77,7 @@ class UserController < ApplicationController
           ldap = Net::LDAP.new(:base => ENV["LDAP_BASE"], :host => ENV["LDAP_HOST"])
           ldap.auth ENV["LDAP_Service_Account"], ENV["LDAP_PASSWORD"]
 
-          if ldap.bind(:method => :simple, :username => config["LDAP_DN"], :password => config["LDAP_PASSWORD"])
+          if ldap.bind(:method => :simple, :username => ENV["LDAP_DN"], :password => ENV["LDAP_PASSWORD"])
             usr = params[:user][:username]
             usr_password = params[:user][:password]
 
