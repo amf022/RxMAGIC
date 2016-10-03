@@ -74,10 +74,10 @@ class UserController < ApplicationController
             flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
           end
         when "ldap"
-          ldap = Net::LDAP.new(:base => config["ldap_base"], :host => config["ldap_host"])
-          ldap.auth config["ldap_service_name"], config["ldap_service_password"]
+          ldap = Net::LDAP.new(:base => ENV["LDAP_BASE"], :host => ENV["LDAP_HOST"])
+          ldap.auth ENV["LDAP_Service_Account"], ENV["LDAP_PASSWORD"]
 
-          if ldap.bind(:method => :simple, :username => config["ldap_dn"], :password => config["ldap_service_password"])
+          if ldap.bind(:method => :simple, :username => config["LDAP_DN"], :password => config["LDAP_PASSWORD"])
             usr = params[:user][:username]
             usr_password = params[:user][:password]
 
