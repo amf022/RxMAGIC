@@ -117,8 +117,8 @@ class UserController < ApplicationController
       end
 
       if !session[:user_token].blank?
-        logger.info "#{current_user.username} logged in at #{Time.now}"
         session[:user] = params[:user][:username]
+        logger.info "#{current_user.username} logged in at #{Time.now}"
         user_role = User.find_by_username(params[:user][:username])
         if user_role.blank?
           redirect_to "/new_user_role"
