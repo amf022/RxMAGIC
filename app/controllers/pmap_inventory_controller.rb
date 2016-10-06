@@ -49,6 +49,7 @@ class PmapInventoryController < ApplicationController
         @entry.manufacturer = params[:pmap_inventory][:manufacturer]
         if @entry.save
           flash[:success] = "#{@entry.bottle_id}  was successfully updated."
+          logger.info "Pmap Item #{@entry.bottle_id} was edited by #{current_user.username}"
         else
           flash[:errors] = @entry.errors
         end
@@ -84,6 +85,7 @@ class PmapInventoryController < ApplicationController
         #print barcode for new bottles
         if params[:pmap_inventory][:inventory_id].blank?
           flash[:success] = "#{params[:pmap_inventory][:item]} was successfully added to inventory."
+          logger.info "Pmap Item #{@new_stock_entry.id} was created by #{current_user.username}"
           print_and_redirect("/print_bottle_barcode/#{@new_stock_entry.pap_identifier}", "/patient/#{params[:pmap_inventory][:patient_id]}")
         else
           flash[:success] = "#{params[:pmap_inventory][:item]} (Lot #: #{@new_stock_entry.lot_number}) was successfully updated."
@@ -113,6 +115,7 @@ class PmapInventoryController < ApplicationController
         news.date_resolved= Date.today
         news.save
       end
+      logger.info "Pmap Item #{params[:pmap_inventory][:pmap_id]} was deleted by #{current_user.username}"
     else
       flash[:errors] = item.errors
     end

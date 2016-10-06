@@ -14,4 +14,4 @@ Rails.application.config.assets.precompile += %w( jquery-1.12.0.min.js )
 Rails.application.config.assets.precompile += %w( jquery-ui.min.js )
 Rails.application.config.assets.precompile += %w( jquery.slimscroll.js c)
 Rails.application.config.assets.precompile += %w( jquery-ui.css )
-
+Rails.application.config.assets.precompile += %w( bootstrap-switch.js )

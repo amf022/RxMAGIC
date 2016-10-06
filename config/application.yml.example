@@ -1,8 +1,6 @@
 facility_name : Birmingham Free Clinic
 facility_phone_number : 412 481 7900, Ext. 281
 authentication: local #local,remote,ldap
-ldap_host:localhost
-ldap_port: 369
 user_management_protocol: http
 user_management_server: localhost
 user_management_port: port

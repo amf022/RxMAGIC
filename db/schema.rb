@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620131845) do
+ActiveRecord::Schema.define(version: 20160923004928) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20160620131845) do
     t.string   "last_name",  limit: 255
     t.string   "gender",     limit: 255
     t.date     "birthdate"
+    t.string   "language",   limit: 255, default: "ENG"
     t.string   "address",    limit: 255
     t.string   "city",       limit: 255
     t.string   "state",      limit: 255

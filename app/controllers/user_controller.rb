@@ -74,13 +74,30 @@ class UserController < ApplicationController
             flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
           end
         when "ldap"
-          ldap = Net::LDAP.new
-          ldap.host = config["ldap_host"]
-          ldap.port = config["ldap_port"]
-          ldap.auth params[:user][:username], params[:user][:password]
-          if ldap.bind
-            # authentication succeeded
-            session[:user_token] = (0...5).map { (65 + rand(26)).chr }.join
+          ldap = Net::LDAP.new(:base => ENV["LDAP_BASE"], :host => ENV["LDAP_HOST"])
+          ldap.auth ENV["LDAP_Service_Account"], ENV["LDAP_PASSWORD"]
+
+          if ldap.bind(:method => :simple, :username => ENV["LDAP_DN"], :password => ENV["LDAP_PASSWORD"])
+            usr = params[:user][:username]
+            usr_password = params[:user][:password]
+
+            user_dn = ldap.search(filter: Net::LDAP::Filter.eq("sAMAccountName","#{usr.to_s.strip}"),
+                                  attributes: %w[ dn ],return_result:true).first.dn rescue nil
+
+            if user_dn != nil
+              results = ldap.bind( :method=> :simple,:username => user_dn.to_s.strip,:password => usr_password.to_s.strip)
+
+              if results
+                # authentication succeeded
+                session[:user_token] = (0...5).map { (65 + rand(26)).chr }.join
+              else
+                flash[:errors] = {} if flash[:errors].blank?
+                flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
+              end
+            else
+              flash[:errors] = {} if flash[:errors].blank?
+              flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
+            end
           else
             flash[:errors] = {} if flash[:errors].blank?
             flash[:errors]["invalid_credentials"] = ["Wrong username/password combination"]
@@ -101,6 +118,7 @@ class UserController < ApplicationController
 
       if !session[:user_token].blank?
         session[:user] = params[:user][:username]
+        logger.info "#{params[:user][:username]} logged in at #{Time.now}"
         user_role = User.find_by_username(params[:user][:username])
         if user_role.blank?
           redirect_to "/new_user_role"
