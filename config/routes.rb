@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   ###################### Prescription Controller ##############################
   get "/void_prescriptions/:id" => "prescription#destroy"
-  get "prescriptions" => "prescription#ajax_prescriptions"
+  get "ajax_prescriptions" => "prescription#ajax_prescriptions"
   get "/prescription/refill"
   post "/refill" => "prescription#refill"
   post "/prescription/dispense"
