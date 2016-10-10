@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   ###################### Main Controller ##############################
 
-  get '/dashboard' => "main#dashboard"
+  get 'dashboard' => "main#dashboard"
   get "/main/about"
   get '/pharmacy_sheet/:date' => "main#activity_sheet"
   get '/print_pharmacy_sheet/:date' => "main#print_activity_sheet"
@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   ###################### Prescription Controller ##############################
   get "/void_prescriptions/:id" => "prescription#destroy"
-  get "/prescriptions" => "prescription#ajax_prescriptions"
+  get "ajax_prescriptions" => "prescription#ajax_prescriptions"
   get "/prescription/refill"
   post "/refill" => "prescription#refill"
   post "/prescription/dispense"

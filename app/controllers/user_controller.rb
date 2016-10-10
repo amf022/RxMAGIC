@@ -24,7 +24,7 @@ class UserController < ApplicationController
         user.user_role = params[:user][:user_role]
         user.save
 
-        credentials = UserCredential.create({:password => params[:user][:password],:user_id => user.id})
+        credentials = UserCredential.create({:password => params[:user][:password], :user_id => user.id})
 
         if credentials.errors.blank?
           flash[:success] = "New user successfully created."
@@ -81,11 +81,11 @@ class UserController < ApplicationController
             usr = params[:user][:username]
             usr_password = params[:user][:password]
 
-            user_dn = ldap.search(filter: Net::LDAP::Filter.eq("sAMAccountName","#{usr.to_s.strip}"),
-                                  attributes: %w[ dn ],return_result:true).first.dn rescue nil
+            user_dn = ldap.search(filter: Net::LDAP::Filter.eq("sAMAccountName", "#{usr.to_s.strip}"),
+                                  attributes: %w[ dn ], return_result: true).first.dn rescue nil
 
             if user_dn != nil
-              results = ldap.bind( :method=> :simple,:username => user_dn.to_s.strip,:password => usr_password.to_s.strip)
+              results = ldap.bind(:method => :simple, :username => user_dn.to_s.strip, :password => usr_password.to_s.strip)
 
               if results
                 # authentication succeeded
@@ -106,7 +106,7 @@ class UserController < ApplicationController
           login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_login"]}"
           post_params = {"username" => params[:user][:username], "password" => params[:user][:password]}
 
-          status = RestClient::Request.execute(:url => login_link,:payload => post_params, :method => :post, :verify_ssl => false )
+          status = RestClient::Request.execute(:url => login_link, :payload => post_params, :method => :post, :verify_ssl => false)
 
           if status.match(/error/i)
             flash[:errors] = {} if flash[:errors].blank?
@@ -131,17 +131,18 @@ class UserController < ApplicationController
   end
 
   def logout
-    config = YAML.load_file("#{Rails.root}/config/application.yml")
-    login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_logout"]}"
-    logout_status = RestClient::Request.execute(:url => login_link, :payload => {"token" => session[:user_token]}, :method => :post, :verify_ssl => false )
 
-    if logout_status
-      session[:user_token] = nil
-      session[:user] = nil
-      # flash[:notice] = "You have been logged out!"
-      redirect_to "/login" and return
-    else
+    config = YAML.load_file("#{Rails.root}/config/application.yml") rescue ""
+
+    session[:user_token] = nil
+    session[:user] = nil
+
+    if config["authentication"].downcase == "remote"
+      login_link = "#{config["user_management_protocol"]}://#{config["user_management_name"]}:#{config["user_management_password"]}@#{config["user_management_server"]}:#{config["user_management_port"]}#{config["user_management_logout"]}"
+      logout_status = RestClient::Request.execute(:url => login_link, :payload => {"token" => session[:user_token]}, :method => :post, :verify_ssl => false)
     end
+    flash[:notice] = "Logged out"
+    redirect_to "/login" and return
   end
 
 

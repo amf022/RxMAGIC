@@ -61,7 +61,7 @@
                       document.getElementById("footer").offsetHeight + 10)) + "px";
           }
           function updateRecords() {
-              link = "/prescriptions";
+              link = "/ajax_prescriptions";
               getData(link);
           }
           function handleResults(data){
@@ -69,7 +69,7 @@
              reloadTable('dataSection',data,['name','item','prescribed_by','quantity','type'], "main")
               
           }
-         setTimeout("updateRecords()", 10000)
+         
          setInterval("updateRecords()", 60000)
 
       </script>
