@@ -23,12 +23,12 @@ $manufacturers = JSON.parse(File.open("#{Rails.root}/app/assets/data/manufacture
 
 
 def start
-
+=begin
   puts "Creating 5000 patients"
   (1..5000).each do |i|
     create_patient()
   end
-
+=end
   puts "Creating 1500 general inventory entries"
   (1..1500).each do |p|
     create_general_stocks()
@@ -209,9 +209,14 @@ def random_medicine_name
 end
 
 def random_drug
-  drug = random_medicine_name
+	rxaui = nil
+	
+	while rxaui.blank?
+	  drug = random_medicine_name		
+	  rxaui = Rxnconso.where("STR = ?", drug).first.RXAUI rescue nil
+	end
 
-  return Rxnconso.where("STR = ?", drug).first.RXAUI
+  return rxaui
 end
 
 def random_first_name
