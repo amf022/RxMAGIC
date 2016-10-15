@@ -23,3 +23,4 @@ test/fixtures/*.yml
 .ruby-version
 *reports.csv
 .rbenv-vars
+*Thumbs.db
