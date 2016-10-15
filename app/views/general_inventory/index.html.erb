@@ -40,8 +40,9 @@
       <tbody>
 
         <% (@inventory || []).each do |item| %>
+
             <tr>
-              <td id="drug<%= item.id %>" ><%= item.rxnconso.name.downcase.titleize rescue "" %></td>
+              <td id="drug<%= item.id %>" ><%= item.rxname.downcase.titleize rescue "" %></td>
               <td><%= Misc.dash_formatter(item.gn_identifier) %></td>
               <td id="lot<%= item.id %>"><%= Misc.dash_formatter(item.lot_number) %></td>
               <td id="qn<%= item.id %>"><%= number_with_delimiter(item.current_quantity) %></td>

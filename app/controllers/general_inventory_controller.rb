@@ -2,7 +2,9 @@ class GeneralInventoryController < ApplicationController
   def index
     #List of all general inventory items
 
-    @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
+    @inventory = GeneralInventory.find_by_sql("SELECT g.gn_inventory_id, g.gn_identifier,g.lot_number,g.current_quantity,
+                                              g.expiration_date,(SELECT STR from RXNCONSO as r where r.RXAUI = g.rxaui ) as rxname FROM
+                                               general_inventories as g where g.current_quantity > 0 and g.voided = 0")
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
