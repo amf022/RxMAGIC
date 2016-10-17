@@ -40,17 +40,17 @@
 
       <% (@inventory || []).each do |item| %>
           <tr>
-            <td id="name<%=item.id %>"><%= item.rxnconso.name.downcase.titleize %></td>
-            <td><%= Misc.dash_formatter(item.pap_identifier) %></td>
-            <td id="pat<%=item.id %>"><%= item.patient_name %></td>
-            <td id="lot<%=item.id %>"><%= Misc.dash_formatter(item.lot_number) %></td>
-            <td><%= item.current_quantity %></td>
-            <td id="exp<%=item.id %>"><%= item.expiration_date.strftime('%b-%Y') %></td>
+            <td id="name<%=item[6] %>"><%= @items[item[0]].downcase.titleize rescue "" %></td>
+            <td><%= Misc.dash_formatter(item[5]) %></td>
+            <td id="pat<%=item[6] %>"><%= @patients[item[1]].titleize %></td>
+            <td id="lot<%=item[6] %>"><%= Misc.dash_formatter(item[2]) %></td>
+            <td><%= item[3] %></td>
+            <td id="exp<%=item[6] %>"><%= item[4].strftime('%b-%Y') %></td>
             <td>
-              <a href="#" data-id=<%= item.pap_identifier%> data-uid=<%= item.id%> data-toggle="modal" data-target="#confirm-edit" class="edit"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
-              <img style="padding-right: 5px;cursor: pointer;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.pap_identifier %>'" title="Print Barcode">
-              <a href="#" data-href="/move_pmap_inventory/<%= item.pap_identifier%>" data-toggle="modal" data-target="#confirm-move" class="moveItem"><img src="/assets/move.png" title="Move Item to general inventory"></a>
-              <a href="#" data-id=<%= item.pap_identifier%> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+              <a href="#" data-id=<%= item[5]%> data-uid=<%= item[6]%> data-toggle="modal" data-target="#confirm-edit" class="edit"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+              <img style="padding-right: 5px;cursor: pointer;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item[5] %>'" title="Print Barcode">
+              <a href="#" data-href="/move_pmap_inventory/<%= item[5]%>" data-toggle="modal" data-target="#confirm-move" class="moveItem"><img src="/assets/move.png" title="Move Item to general inventory"></a>
+              <a href="#" data-id=<%= item[5]%> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
             </td>
           </tr>
       <% end %>

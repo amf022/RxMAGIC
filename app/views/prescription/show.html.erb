@@ -207,6 +207,7 @@
         {
           showLayer("backGround", "dispenseForm")
           document.getElementById("dispensation_dispense_from").value = (barcodeTxt.value.trim().replace(/\$/, "")).replace(/\-/,"").toUpperCase();
+          document.getElementById("dispensation_amount_dispensed").focus();
           barcodeTxt.value = "";
         }
         else

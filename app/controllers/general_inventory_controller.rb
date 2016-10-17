@@ -2,15 +2,16 @@ class GeneralInventoryController < ApplicationController
   def index
     #List of all general inventory items
 
-    @inventory = GeneralInventory.find_by_sql("SELECT g.gn_inventory_id, g.gn_identifier,g.lot_number,g.current_quantity,
-                                              g.expiration_date, g.rxaui FROM general_inventories as g where
-                                              g.current_quantity > 0 and g.voided = 0")
+    @inventory = GeneralInventory.where("current_quantity > ? and voided = ?",
+                                        0, false).pluck(:gn_inventory_id, :gn_identifier,:lot_number,:current_quantity,
+                                                        :expiration_date, :rxaui)
 
-    @keys = Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x.rxaui}.uniq).pluck(:rxaui,:STR).flatten(1)]
+    @keys= Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[5]}.uniq).pluck(:rxaui,:STR).flatten(1)]
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
-    @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
+    @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0,
+                                      Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
 
     @aboutToExpire = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
                                             Date.today.strftime('%Y-%m-%d'),
