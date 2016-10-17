@@ -1,7 +1,17 @@
 class PmapInventoryController < ApplicationController
 
   def index
-    @inventory = PmapInventory.where("current_quantity > 0 and voided = ?", false).order(date_received: :asc)
+    @inventory = PmapInventory.where("current_quantity > 0 and voided = ?",
+                                     false).order(date_received: :asc).pluck(:rxaui, :patient_id,:lot_number,
+                                                                             :current_quantity,:expiration_date,
+                                                                             :pap_identifier,:pap_inventory_id)
+
+    @items = Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[0]}.uniq).pluck(:rxaui,:STR).flatten(1)]
+
+    @patients = Patient.where("patient_id in (?)", @inventory.collect{|x| x[1]}.uniq).pluck(:patient_id,:first_name, :last_name).inject({}) do |result, element|
+      result[element[0]] = element[1] + " " + element[2] rescue " "
+      result
+    end
 
     @in_stock = PmapInventory.select("patient_id, rxaui, count(rxaui) as count").where("current_quantity > 0
                                       and voided = ?",false).group(:patient_id,:rxaui).length

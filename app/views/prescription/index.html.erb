@@ -25,11 +25,11 @@
       <% (@prescriptions || []).each do |prescription| %>
           <tr>
             <td><%= i %></td>
-            <td><%= prescription.patient_name %></td>
-            <td><%= prescription.rxnconso.name.downcase.titleize %></td>
+            <td><%= @patients[prescription.patient_id] %></td>
+            <td><%= @items[prescription.rxaui].downcase.titleize %></td>
             <td style="text-align: center"><%= prescription.quantity %></td>
             <td><%= prescription.directions %></td>
-            <td><%= prescription.prescribed_by %></td>
+            <td><%= @providers[prescription.provider_id] %></td>
             <td>
               <a href="#" data-href="/void_prescriptions/<%= prescription.id%>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img style="padding-right: 5px;" src="/assets/delete.png" title="Void prescription"></a>
               <%= link_to image_tag('/assets/dispense_small.png'), prescription, :title => "Dispense item" %>

@@ -40,18 +40,17 @@
       <tbody>
 
         <% (@inventory || []).each do |item| %>
-
             <tr>
-              <td id="drug<%= item.id %>" ><%= @keys[item.rxaui].downcase.titleize rescue "" %></td>
-              <td><%= Misc.dash_formatter(item.gn_identifier) %></td>
-              <td id="lot<%= item.id %>"><%= Misc.dash_formatter(item.lot_number) %></td>
-              <td id="qn<%= item.id %>"><%= number_with_delimiter(item.current_quantity) %></td>
-              <td id="date<%= item.id %>"><%= item.expiration_date.strftime('%b-%Y') %></td>
+              <td id="drug<%= item[0] %>" ><%= @keys[item[5]].downcase.titleize rescue "" %></td>
+              <td><%= Misc.dash_formatter(item[1]) %></td>
+              <td id="lot<%= item[0] %>"><%= Misc.dash_formatter(item[2]) %></td>
+              <td id="qn<%= item[0] %>"><%= number_with_delimiter(item[3]) %></td>
+              <td id="date<%= item[0] %>"><%= item[4].strftime('%b-%Y') %></td>
               <td>
 
-                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item.id %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
-                <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
-                <a href="#" data-id=<%= item.gn_identifier %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item[0] %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+                <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item[1] %>'" title="Print Barcode">
+                <a href="#" data-id=<%= item[1] %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
               </td>
             </tr>
         <% end %>

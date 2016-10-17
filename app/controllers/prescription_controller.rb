@@ -2,8 +2,20 @@ class PrescriptionController < ApplicationController
 
   def index
     # This function serves the main table for prescriptions
+    @prescriptions = Prescription.select("directions, provider_id,quantity,rxaui,
+                                          patient_id,rx_id").where("voided = ? AND quantity > amount_dispensed",false).order(date_prescribed: :asc)
 
-    @prescriptions = Prescription.where("voided = ? AND quantity > amount_dispensed", false).order(date_prescribed: :asc)
+    @items = Hash[*Rxnconso.where("rxaui in (?)", @prescriptions.collect{|x| x.rxaui}.uniq).pluck(:rxaui,:STR).flatten(1)]
+
+    @providers = Provider.where("provider_id in (?)", @prescriptions.collect{|x| x.provider_id}.uniq).pluck(:provider_id,:first_name, :last_name).inject({}) do |result, element|
+      result[element[0]] = element[1] + " " + element[2] rescue " "
+      result
+    end
+
+    @patients = Patient.where("patient_id in (?)", @prescriptions.collect{|x| x.patient_id}.uniq).pluck(:patient_id,:first_name, :last_name).inject({}) do |result, element|
+      result[element[0]] = element[1] + " " + element[2] rescue " "
+      result
+    end
   end
 
   def show
@@ -13,7 +25,7 @@ class PrescriptionController < ApplicationController
       redirect_to "/prescription"
     end
 
-    @category, @suggestions = get_suggestions(@prescription.patient_id, @prescription.rxaui)
+    @category, @suggestions = get_suggestions(@prescription.patient_id, @prescription.rxnconso.RXCUI)
 
   end
 
@@ -202,16 +214,17 @@ class PrescriptionController < ApplicationController
 
   def get_suggestions(patient_id, drug)
 
+    options = Rxnconso.where("RXCUI = ? ",drug).pluck(:RXAUI)
     category = "PMAP"
-    meds = PmapInventory.where("patient_id = ? and rxaui = ? and current_quantity > ? and voided = ?",
-                               patient_id, drug, 0, false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
+    meds = PmapInventory.where("patient_id = ? and rxaui in (?) and current_quantity > ? and voided = ?",
+                               patient_id, options, 0, false).order(expiration_date: :asc).pluck(:pap_identifier,:lot_number,
                                                                                               :expiration_date,
                                                                                               :current_quantity)
 
     suggestions =[]
     if meds.blank?
       category = "General"
-      meds = GeneralInventory.where("rxaui = ? and current_quantity > ? and voided = ?", drug,0,
+      meds = GeneralInventory.where("rxaui in (?) and current_quantity > ? and voided = ?", options,0,
                                     false).order(expiration_date: :asc).limit(5).pluck(:gn_identifier, :lot_number,
                                                                                        :expiration_date,:current_quantity)
     end
