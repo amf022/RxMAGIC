@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   get "/general_inventory/expiring_items"
   get "/general_inventory/understocked"
   get "/general_inventory/wellstocked"
+  get "view_gn_drug/:id" => "general_inventory#view_drug"
 
   ###################### PMAP Inventory Controller ##############################
 

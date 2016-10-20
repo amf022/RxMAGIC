@@ -2,11 +2,9 @@ class GeneralInventoryController < ApplicationController
   def index
     #List of all general inventory items
 
-    @inventory = GeneralInventory.where("current_quantity > ? and voided = ?",
-                                        0, false).pluck(:gn_inventory_id, :gn_identifier,:lot_number,:current_quantity,
-                                                        :expiration_date, :rxaui)
+    @inventory = GeneralInventory.select("rxaui, sum(current_quantity) as current_quantity").where("voided = ?", false).group("rxaui")
 
-    @keys= Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[5]}.uniq).pluck(:rxaui,:STR).flatten(1)]
+    @keys= Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x.rxaui}.uniq).pluck(:rxaui,:STR).flatten(1)]
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
@@ -39,6 +37,12 @@ class GeneralInventoryController < ApplicationController
     end
 
     @wellStocked = @wellStocked + (items.keys - thresholds.collect{|x| x[0]})
+  end
+
+  def view_drug
+    @inventory = GeneralInventory.where("current_quantity > ? and voided = ? and rxaui = ?",
+                                        0, false, params[:id]).pluck(:gn_inventory_id, :gn_identifier,:lot_number,
+                                                                     :current_quantity, :expiration_date)
   end
 
   def new
