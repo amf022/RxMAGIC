@@ -2,9 +2,21 @@ class GeneralInventoryController < ApplicationController
   def index
     #List of all general inventory items
 
-    @inventory = GeneralInventory.select("rxaui, sum(current_quantity) as current_quantity").where("voided = ?", false).group("rxaui")
+    @inventory = GeneralInventory.where("current_quantity > ? and voided = ?",
+                                        0, false).pluck(:gn_inventory_id, :gn_identifier,:lot_number,:current_quantity,
+                                                        :expiration_date, :rxaui)
 
-    @keys= Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x.rxaui}.uniq).pluck(:rxaui,:STR).flatten(1)]
+    concepts = Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[5]}.uniq).pluck(:rxaui,:rxcui,:STR)
+
+    @keys= concepts.inject({}) do |result, element|
+      result[element[0]] = element[2]  rescue " "
+      result
+    end
+
+    concept_map = concepts.inject({}) do |result, element|
+      result[element[0]] = element[1]  rescue " "
+      result
+    end
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
@@ -20,10 +32,11 @@ class GeneralInventoryController < ApplicationController
     @wellStocked = []
 
 
-    items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
-                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
-                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
+    items = Hash.new(0)
 
+    (@inventory || []).each do |item|
+      items[concept_map[item[5]]] += item[3]
+    end
 
     (thresholds || []).each do |threshold|
 
@@ -37,12 +50,6 @@ class GeneralInventoryController < ApplicationController
     end
 
     @wellStocked = @wellStocked + (items.keys - thresholds.collect{|x| x[0]})
-  end
-
-  def view_drug
-    @inventory = GeneralInventory.where("current_quantity > ? and voided = ? and rxaui = ?",
-                                        0, false, params[:id]).pluck(:gn_inventory_id, :gn_identifier,:lot_number,
-                                                                     :current_quantity, :expiration_date)
   end
 
   def new
