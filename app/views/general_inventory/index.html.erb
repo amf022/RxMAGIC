@@ -68,25 +68,25 @@
         <a href="/general_inventory/wellstocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items in Stock</h5>
-            <span class="highlighted"><%= @wellStocked.length %></span>
+            <span class="highlighted"><%= @wellStocked %></span>
           </div>
         </a>
         <a href="/general_inventory/understocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Under Stocked Items</h5>
-            <span class="highlighted"><%= @underStocked.length %></span>
+            <span class="highlighted"><%= @underStocked %></span>
           </div>
         </a>
         <a href="/general_inventory/expiring_items" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items About to Expire</h5>
-            <span class="highlighted"><%= @aboutToExpire.length %></span>
+            <span class="highlighted"><%= @aboutToExpire %></span>
           </div>
         </a>
         <a href="/general_inventory/expired_items" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5 class="list-group-item-heading">Expired Items</h5>
-            <span class="highlighted"><%= @expired.length %></span>
+            <span class="highlighted"><%= @expired %></span>
           </div>
         </a>
       </div>

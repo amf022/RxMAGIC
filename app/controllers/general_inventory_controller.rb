@@ -20,36 +20,34 @@ class GeneralInventoryController < ApplicationController
 
     thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
 
-    @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0,
-                                      Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
-
-    @aboutToExpire = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
-                                            Date.today.strftime('%Y-%m-%d'),
-                                            Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
-
-    @underStocked = []
-
-    @wellStocked = []
-
+    aboutToExpire_items = []
+    underStocked_items = []
+    wellStocked_items = []
+    expired_items = []
 
     items = Hash.new(0)
 
     (@inventory || []).each do |item|
       items[concept_map[item[5]]] += item[3]
+      expired_items << item[0] if (item[4] <= Date.today)
+      aboutToExpire_items << item[0] if (item[4] >= Date.today && item[4] <= Date.today.advance(:months => 2))
     end
 
     (thresholds || []).each do |threshold|
 
       if items[threshold[0]].blank?
-        @underStocked << threshold[0]
+        underStocked_items << threshold[0]
       elsif items[threshold[0]] <= threshold[1]
-        @underStocked << threshold[0]
+        underStocked_items << threshold[0]
       else
-        @wellStocked << threshold[0]
+        wellStocked_items << threshold[0]
       end
     end
 
-    @wellStocked = @wellStocked + (items.keys - thresholds.collect{|x| x[0]})
+    @aboutToExpire = aboutToExpire_items.length
+    @underStocked = underStocked_items.length
+    @expired = expired_items.length
+    @wellStocked = (wellStocked_items + (items.keys - thresholds.collect{|x| x[0]})).length
   end
 
   def new
