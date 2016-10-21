@@ -115,6 +115,7 @@
                         <%= dispensation.dispensation_date.strftime('%b %d, %Y') %>
                       </td>
                       <td style="text-align: center;">
+                        <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_dispensation_label/<%= dispensation.rx_id %>'" title="Print dispensation label">
                         <a href="#" data-id=<%= dispensation.id %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Dispensation"></a>
                       </td>
                     </tr>
