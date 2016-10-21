@@ -8,7 +8,7 @@
         <h3 style=" font-size: 20px;" class="panel-title">Dispense Item</h3>
       </div>
       <div class="modal-body">
-        <%= form_for :dispensation, :html => { :class => "form-horizontal general_inventory" }, :url => "/prescription/dispense"  do |f| %>
+        <%= form_for :dispensation, :html => { :class => "form-horizontal general_inventory" }, :url => dispensation_index_path  do |f| %>
             <div class="form-group">
               <%= f.label :dispense_from, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">

@@ -10,7 +10,7 @@ class PatientController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
-    @history = Dispensation.where("patient_id = ? and voided = ?",params[:id],false).limit(10)
+    @history = Dispensation.where("patient_id = ? and voided = ?",params[:id],false).order(dispensation_date: :desc).limit(10)
     rawPmapMeds = PmapInventory.where("voided = ? AND patient_id = ? AND current_quantity > ?", false,params[:id],0)
     @pmap_meds = {}
     (rawPmapMeds || []).each do |med|

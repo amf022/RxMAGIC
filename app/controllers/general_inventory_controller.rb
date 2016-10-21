@@ -1,4 +1,8 @@
 class GeneralInventoryController < ApplicationController
+
+  def show
+    @general_inventory = GeneralInventory.find(params[:id])
+  end
   def index
     #List of all general inventory items
 

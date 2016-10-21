@@ -100,6 +100,7 @@
                 <th>Item</th>
                 <th>Amount Dispensed</th>
                 <th>Date Dispensed</th>
+                <th style="text-align: center;">Action</th>
               </thead>
               <tbody>
                 <% (@history || []).each do |dispensation| %>
@@ -112,6 +113,9 @@
                       </td>
                       <td>
                         <%= dispensation.dispensation_date.strftime('%b %d, %Y') %>
+                      </td>
+                      <td style="text-align: center;">
+                        <a href="#" data-id=<%= dispensation.id %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Dispensation"></a>
                       </td>
                     </tr>
                 <% end %>
@@ -321,6 +325,30 @@
   </div>
 </div>
 
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title">Void Dispensation</h3>
+      </div>
+      <div class="modal-body">
+        <%= form_for :dispensation, :html => { :class => "form-horizontal dispensation" }, :url => "/void_dispensation"  do |f| %>
+
+            Are you sure you want to void this dispensation?
+            <%= f.hidden_field :dispensation_id %>
+            <div class="form-group" style="margin-top: 10px;">
+              <div class="col-lg-offset-3 col-lg-5">
+                <%= f.submit "Confirm", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script type="text/javascript">
     // Date picker activation
 
@@ -379,6 +407,10 @@
     $('a.autoAdd').on('click', function(e) {
         document.getElementById('company').value = $(this).data('cp');;
         document.getElementById('drugName').value = $(this).data('it');;
+    });
+
+    $('.delete').on('click', function(e) {
+      document.getElementById('dispensation_dispensation_id').value = $(this).data('id');
     });
 
 </script>
