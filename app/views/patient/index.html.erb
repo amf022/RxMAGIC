@@ -55,14 +55,14 @@
             <div class="form-group">
               <%= f.label :first_name, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :first_name,:placeholder => "Enter first name" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+                <%= f.text_field :first_name,:placeholder => "Enter first name" ,:class => 'form-control',:autocomplete=> 'off' %>
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
             <div class="form-group">
               <%= f.label :last_name, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <%= f.text_field :last_name,:placeholder => "Enter last name" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+                <%= f.text_field :last_name,:placeholder => "Enter last name" ,:class => 'form-control',:autocomplete=> 'off' %>
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -70,7 +70,7 @@
               <%= f.label :date_of_birth, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='birthDate'>
-                  <input name="patient[date_of_birth]" id="date_of_birth" type='text' placeholder="Date of Birth" class="form-control" autocomplete="off" required/>
+                  <input name="patient[date_of_birth]" id="date_of_birth" type='text' placeholder="Date of Birth" class="form-control" autocomplete="off" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -86,7 +86,6 @@
             </div>
 
         <% end %>
-
       </div>
 
     </div>

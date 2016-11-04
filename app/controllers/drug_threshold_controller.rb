@@ -58,6 +58,9 @@ class DrugThresholdController < ApplicationController
     unless new_drug_threshold.blank?
       DrugThreshold.transaction do
         new_drug_threshold.save
+        if params[:drug_threshold][:drug_threshold_id].blank?
+            DrugThresholdSet.create_new_set(new_drug_threshold.rxcui, new_drug_threshold.id)
+        end
       end
 
       if new_drug_threshold.errors.blank?

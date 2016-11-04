@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   ###################### Rxnconso Controller ##############################
   get "/suggestions" => "rxnconso#suggestions"
+  get "/threshold_suggestions" => "rxnconso#threshold_suggestions"
 
   ###################### Prescription Controller ##############################
   get "/void_prescriptions/:id" => "prescription#destroy"
