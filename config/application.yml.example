@@ -9,3 +9,6 @@ user_management_logout: /remote_logout/
 user_management_name: username
 user_management_password: password
 user_management_authenticate: /remote_authentication/
+suppress_expiry_alert: false
+suppress_prescription_alert: false
+suppress_pmap_alert: false

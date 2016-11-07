@@ -13,6 +13,8 @@ class PmapInventoryController < ApplicationController
     @expired = PmapInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ",
                                       false,0, Date.today.strftime('%Y-%m-%d')).pluck(:pap_identifier).length
 
+    @underutilized = News.where({:resolved => false, :news_type => "under utilized item"}).length
+
   end
 
   def show
