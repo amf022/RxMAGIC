@@ -4,17 +4,11 @@ class GeneralInventoryController < ApplicationController
 
     @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
 
-    thresholds = DrugThreshold.where("voided = ?", false).pluck(:rxcui, :threshold)
-
     @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
 
     @aboutToExpire = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
                                             Date.today.strftime('%Y-%m-%d'),
                                             Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
-
-    @underStocked = []
-
-    @wellStocked = []
 
 
     items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
@@ -22,18 +16,21 @@ class GeneralInventoryController < ApplicationController
                                           voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
 
 
-    (thresholds || []).each do |threshold|
+    thresholds = Misc.calculate_gn_thresholds
 
-      if items[threshold[0]].blank?
-        @underStocked << threshold[0]
-      elsif items[threshold[0]] <= threshold[1]
-        @underStocked << threshold[0]
-      else
-        @wellStocked << threshold[0]
+    @wellStocked = []
+    @underStocked = []
+
+    (thresholds || []).each do |id, details|
+      if details["count"] > details["threshold"]
+        @wellStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+                         "available" => details["count"], "id" => id}
+      elsif details["count"] <= details["threshold"]
+        @underStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+                         "available" => details["count"], "id" => id}
       end
     end
 
-    @wellStocked = @wellStocked + (items.keys - thresholds.collect{|x| x[0]})
   end
 
   def new
@@ -152,26 +149,14 @@ class GeneralInventoryController < ApplicationController
   def understocked
     #List items that are understocked
 
-    thresholds = DrugThreshold.where("voided = ?", false)
-    @underStocked = []
+    thresholds = Misc.calculate_gn_thresholds
 
-    items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+    @underStocked =[]
 
-    (thresholds || []).each do |threshold|
-      if items[threshold.rxaui].blank?
-        @underStocked << {
-            "drug_name" => threshold.drug_name,
-            "threshold" => threshold.threshold,
-            "available" => 0,
-            "rxaui" => threshold.rxaui
-        }
-      elsif items[threshold.rxaui] <= threshold.threshold
-        @underStocked << {
-            "drug_name" => threshold.drug_name,
-            "threshold" => threshold.threshold,
-            "available" => items[threshold.rxaui],
-            "rxaui" => threshold.rxaui
-        }
+    (thresholds || []).each do |id, details|
+      if details["count"] <= details["threshold"]
+        @underStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+                          "available" => details["count"], "id" => id}
       end
     end
   end
@@ -180,24 +165,15 @@ class GeneralInventoryController < ApplicationController
 
     #list items that are well stocked.
 
-    thresholds = Hash[*DrugThreshold.where("voided = ?", false).pluck(:rxaui, :threshold).flatten(1)]
+    thresholds = Misc.calculate_gn_thresholds
 
     @wellStocked = []
 
-    items = GeneralInventory.select("rxaui,SUM(current_quantity) as current_quantity").where("voided = ? AND current_quantity > 0", false).group("rxaui")
-    (items || []).each do |item|
-
-      if !thresholds[item.rxaui].blank?
-        if item.current_quantity <= thresholds[item.rxaui]
-          next
-        end
+    (thresholds || []).each do |id, details|
+      if details["count"] > details["threshold"]
+        @wellStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+                          "available" => details["count"], "id" => id}
       end
-
-      @wellStocked << {
-          "drug_name" => item.drug_name,
-          "threshold" => (thresholds[item.rxaui].blank? ? "Unspecified" : thresholds[item.rxaui]),
-          "available" => item.current_quantity
-      }
     end
   end
 end

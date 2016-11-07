@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   get '/dashboard' => "main#dashboard"
   get "/main/about"
+  get "main/faq"
   get '/pharmacy_sheet/:date' => "main#activity_sheet"
   get '/print_pharmacy_sheet/:date' => "main#print_activity_sheet"
   get '/printable_activity_sheet/:date' => "main#printable_activity_sheet"
@@ -67,7 +68,7 @@ Rails.application.routes.draw do
   get "/void_item/:bottle_id" => "inventory#void_inventory_item"
   get "/move_item/:bottle_id" => "inventory#move_inventory_item"
   get "/add_to_activity_sheet/:drug" => "inventory#add_to_activity_sheet"
-
+  get "/inventory/add_to_activity_sheet"
   ###################### News Controller ##############################
 
   get "/ignore_message/:id" => "news#destroy"

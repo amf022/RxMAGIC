@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102144443) do
+ActiveRecord::Schema.define(version: 20161104185041) do
 
   create_table "RXNATOMARCHIVE", id: false, force: :cascade do |t|
     t.string "RXAUI",             limit: 8,    null: false
@@ -205,6 +205,13 @@ ActiveRecord::Schema.define(version: 20161102144443) do
     t.boolean  "voided",          limit: 1,   default: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "ndc_code_matches", force: :cascade do |t|
+    t.string   "missing_code", limit: 255
+    t.string   "rxaui",        limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "news", primary_key: "news_id", force: :cascade do |t|

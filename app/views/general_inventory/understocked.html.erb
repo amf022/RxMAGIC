@@ -44,7 +44,7 @@
             <td style="padding-left: 10px;"><%= number_with_delimiter(item['threshold']) %></td>
             <td style="padding-left: 10px;"><%= number_with_delimiter(item['available']) %></td>
             <td style="text-align: center">
-              <%= link_to "Add to Activity Sheet", "/add_to_activity_sheet/#{item['rxaui']}"  %>
+              <%= link_to "Add to Activity Sheet", "/inventory/add_to_activity_sheet?threshold=#{item['id']}"  %>
             </td>
           </tr>
       <% end %>

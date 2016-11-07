@@ -107,6 +107,26 @@ module Misc
     end
   end
 
+  def self.calculate_gn_thresholds
+
+    sets = get_threshold_sets
+
+    items = GeneralInventory.where("voided = ?", false).group(:rxaui).sum(:current_quantity)
+
+    (items || []).each do |rxaui, count|
+      (sets || []).each do |id,threshold|
+        if threshold["items"].include? rxaui
+          threshold["count"] += count
+        end
+      end
+    end
+
+    (sets || []).each do |id,set|
+      set["items"] = []
+    end
+    return sets
+  end
+
   private
 
   def get_facility_name
@@ -115,5 +135,20 @@ module Misc
 
   def get_facility_phone
     YAML.load_file("#{Rails.root}/config/application.yml")['facility_phone_number']
+  end
+
+  def self.get_threshold_sets
+    sets = DrugThresholdSet.where("voided = ? ", false).pluck(:threshold_id,:rxaui)
+
+    mappings = {}
+    sets.each do | element|
+      if mappings[element[0]].blank?
+        threshold = DrugThreshold.find(element[0])
+        mappings[element[0]] = {"items" => [], "count" => 0,"name" => threshold.drug_name,"threshold" => threshold.threshold}
+      end
+      mappings[element[0]]["items"] << element[1]
+    end
+
+    return mappings
   end
 end

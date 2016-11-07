@@ -83,4 +83,8 @@ class MainController < ApplicationController
     end
 
   end
+
+  def faq
+    #This page will display frequently asked questions
+  end
 end

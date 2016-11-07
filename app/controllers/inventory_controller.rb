@@ -76,11 +76,19 @@ class InventoryController < ApplicationController
 
   def add_to_activity_sheet
 
-    drug = Rxnconso.where("RXAUI = ?", params[:drug]).pluck(:STR).first rescue ""
+    if params[:drug].blank?
+      item = DrugThreshold.find(params["threshold"])
+      drug = item.drug_name
+      reference = item.rxaui
+    else
+      drug = Rxnconso.where("RXAUI = ?", params[:drug]).pluck(:STR).first rescue ""
+      reference = params[:drug]
+    end
+
     news = News.new
     news.message = "#{drug} stock below par level"
     news.news_type = "low general stock"
-    news.refers_to = params[:drug]
+    news.refers_to = reference
     news.resolved = true
     news.date_resolved= Date.today
     news.resolution = 'Added to activity sheet'
