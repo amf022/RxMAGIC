@@ -198,7 +198,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onmousedown="chooseItem('','')">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onmousedown="clearForm()">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Add PMAP Item</h4>
       </div>
       <div class="modal-body">
@@ -260,7 +260,7 @@
             <div class="form-group">
               <div class="col-lg-offset-7 col-lg-10">
                 <%= f.submit "Save", :class => 'btn btn-success' %>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" onmousedown="chooseItem('','')">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onmousedown="clearForm()">Close</button>
               </div>
             </div>
 
@@ -342,7 +342,16 @@
 
     $( "#drugName" ).autocomplete({
         source: "/suggestions",
-        minLength: 2
+        minLength: 2,
+        change: function(event,ui)
+        {
+          if (ui.item==null)
+          {
+            $("#drugName").val('');
+            $("#drugName").focus();
+          }
+        }
+
     });
 
     $("#company").autocomplete({
@@ -381,4 +390,8 @@
         document.getElementById('drugName').value = $(this).data('it');;
     });
 
+    function clearForm() {
+      document.getElementById('company').value = "";
+      document.getElementById('drugName').value = "";
+    }
 </script>

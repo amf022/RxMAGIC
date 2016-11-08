@@ -1,0 +1,132 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'jquery.slimscroll.js' %>
+
+<br/>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-8 col-sm-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading primary">
+        <h3 class="panel-title"><%= @name %> </h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+          <tr style="padding-top:0px; ">
+            <td colspan="4" style="padding: 0px;">
+              <div style="vertical-align: text-top;"><h4><strong>Suggested Matches</strong></h4></div>
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </tr>
+          </thead>
+          <tbody>
+              <% (@options || []).each do |option| %>
+                <tr>
+                  <td>
+                    <%= option.STR.titleize %>
+                  </td>
+                    <td>
+                      <a href="#" class="autoAdd" data-toggle="modal" data-it="<%= option.STR%>" data-target="#basicModal">
+                        <button class="btn btn-default btn-success"> Add Mapping</button>
+                      </a>
+                    </td>
+                </tr>
+              <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4">
+    <div style="width: 60%;">
+      <table class="table" style="width: 100%;">
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="#" class="btn btn-default btn-primary" style="width: 100%;"
+               data-toggle="modal"
+               data-target="#basicModal">Search for Mapping</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 0em !important;">
+            &nbsp;
+          </td>
+          <td style="border: 0em !important;">
+            <a href="/" class="btn btn-default btn-danger" style="width: 100%;">Cancel</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onmousedown="clearForm()">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Drug Mapping</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :rxnconso, :html => { :class => "form-horizontal pmap_inventory" }, :url => "/map_drug"  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :missing_drug, :class => 'control-label col-lg-3' %>
+              <div class="col-lg-8">
+                <input type="text" name="rxnconso[missing_drug]" value="<%= @name %>" class ='form-control' disabled >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :matching_drug, :class => 'control-label col-lg-3' %>
+              <div class="col-lg-8">
+                <input type="text" name="rxnconso[matching_drug]" id="drugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <%= f.hidden_field :ndc_code, :value => @code %>
+            <div class="form-group">
+              <div class="col-lg-offset-8 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onmousedown="clearForm()">Close</button>
+              </div>
+            </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Date picker activation
+
+  $( "#drugName" ).autocomplete({
+    source: "/suggestions",
+    minLength: 2,
+    change: function(event,ui)
+    {
+      if (ui.item==null)
+      {
+        $("#drugName").val('');
+        $("#drugName").focus();
+      }
+    }
+  });
+
+  $('a.autoAdd').on('click', function(e) {
+    document.getElementById('drugName').value = $(this).data('it');
+  });
+
+
+  function clearForm() {
+    document.getElementById('drugName').value = "";
+  }
+</script>

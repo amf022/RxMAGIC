@@ -7,6 +7,7 @@ class CreateHl7Errors < ActiveRecord::Migration
       t.integer :quantity
       t.string :directions
       t.string :drug_name
+      t.string :code
       t.boolean :voided, :default => false
       t.timestamps null: false
     end

@@ -1,71 +1,298 @@
-<div style=" text-align: justify;text-justify: inter-word;" class="col-xs-12 col-sm-12">
-  <h3>Frequently asked questions</h3>
-  <div class="panel-group" id="accordion">
-    <div class="panel panel-info">
-      <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
-        <h4 class="panel-title accordion-toggle">
-          1. Do I need UPMC credentials to login to RxMAGIC?
-        </h4>
-
-      </div>
-      <div id="collapseOne" class="panel-collapse collapse">
-        <div class="panel-body">
-          A: Yes, RxMAGIC uses the same user management framework as UPMC,
-          thus you need UPMC credentials to login to RxMAGIC.
+ <div style=" text-align: justify;text-justify: inter-word;" class="col-xs-12 col-sm-12">
+    <h3>Frequently Asked Questions</h3>
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-info">
+        <div class="panel-heading collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" aria-expanded="false">
+          <h4 class="panel-title accordion-toggle">
+            1. Do I need UPMC credentials to login to RxMAGIC?
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body">
+            A: Yes, RxMAGIC uses the same user management framework as UPMC,
+            so you need UPMC credentials to login to RxMAGIC.
+          </div>
         </div>
       </div>
-    </div>
-    <div class="panel panel-info">
-      <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
-        <h4 class="panel-title accordion-toggle">
-          2. I am clicking on things on the homepage, like the dispense button, and nothing is happening.
-        </h4>
-      </div>
-      <div id="collapseTwo" class="panel-collapse collapse">
-        <div class="panel-body">
-          A: If RxMAGIC seems unreasonably slow, give it a few minutes before clicking on something.
-          If you are still having problems, contact the support team.
+      <div class="panel panel-info">
+        <div class="panel-heading collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" aria-expanded="false">
+          <h4 class="panel-title accordion-toggle">
+            2. I am clicking on things on the homepage, like the dispense button, and nothing is happening.
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body">
+            A: If RxMAGIC seems unreasonably slow, give it a few minutes before clicking on something.
+            If you are still having problems, contact the support team.
+          </div>
         </div>
       </div>
-    </div>
-    <div class="panel panel-info">
-      <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree">
-        <h4 class="panel-title accordion-toggle">
-          3. Why aren't medication orders showing up in RxMAGIC, do I need to wait for them to be signed?
-        </h4>
-      </div>
-      <div id="collapseThree" class="panel-collapse collapse">
-        <div class="panel-body">
-          A: Yes, the orders need to be signed before they are sent to RxMAGIC. The signing process in the EHR initiates
-          the electronic transmission of the medication order.
+      <div class="panel panel-info">
+        <div class="panel-heading collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree" aria-expanded="false">
+          <h4 class="panel-title accordion-toggle">
+            3. Why aren't medication orders showing up in RxMAGIC, do I need to wait for them to be signed?
+          </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body">
+            A: Yes, the orders need to be signed in Epic before they are sent to RxMAGIC. The signing process in Epic initiates
+            the electronic transmission of the medication order.
+          </div>
         </div>
       </div>
+      <div class="panel panel-info">
+        <div class="panel-heading collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour" aria-expanded="false">
+          <h4 class="panel-title accordion-toggle">
+            4. What do I do if a medication order has not come across to RxMAGIC?
+          </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+          <div class="panel-body">
+            A: Some OTC medication orders currently do not come across to RxMAGIC. To dispense and print a label for this order in RxMAGIC, you want to first
+            navigate to the appropriate patient's profile page. You can do this by navigating to 'Manage Patients' and selecting 'Advanced Search.' Enter
+            the necessary credentials to the best of your ability, all fields are required but they do not need to be accurate. Once on the patient profile page, you will
+            see a yellow button that says 'Dispense (No Rx).' Select this button and complete all of the fields to dispense and print a label, making sure to scan the barcode
+            on the stock bottle from which you are dispensing.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            5. The inventory suggestions panel on the dispensing page says we are out of stock of a medication, but I am certain we have that medication (or the brand name) in stock.
+            Can I still dispense even though the panel says we are out of stock?
+          </h4>
+        </div>
+        <div id="collapseFive" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: Short answer, yes! Go ahead and scan the bottle you’d like to dispense from and you shouldn’t have any problems. The inventory suggestions panel is
+            meant to show you items in stock; these items are ranked by their expiry date. Items closest to expiry are listed first, which is intended to encourage
+            you to dispense from items closer to expiry. Sometimes, prescribed medications don’t totally match the name of the inventory item (i.e. the generic form
+            is prescribed but RxMAGIC lists the brand name). That is okay, you can still dispense from any bottle even if it doesn’t show up in the panel as long as
+            there is sufficient inventory in RxMAGIC from the bottle you want to dispense.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            6. The barcode on the label will not scan because the medication name is too long. What do I do?
+          </h4>
+        </div>
+        <div id="collapseSix" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: This was a problem when we first launched the system. Some of the medication names are too long and interfere with the barcode.
+            To dispense from a bottle when the barcode won’t scan, simply type in the bottle ID (on the label) without the hyphen, followed by a $.
+            For example, if the bottle ID is G0000-345, you will type in G0000345$.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeven" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            7. I need to dispense pills from two separate bottles. How do I do this?
+          </h4>
+        </div>
+        <div id="collapseSeven" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: Scan the barcode label of the first bottle you are dispensing from and enter the appropriate quantity.
+            Once brought back to the dispensing screen, scan the barcode of the next bottle you are dispensing from
+            and enter the appropriate quantity. Your label should print once the prescribed quantity matches the dispensed quantity.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEight" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            8. I dispensed something, but it was a mistake. How do I delete this and put it back into the inventory?
+          </h4>
+        </div>
+        <div id="collapseEight" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: First, you want to go to the appropriate patient’s profile page (see #4 above).
+            Once you locate your patient, you will see his/her dispensation history on the bottom of the page.
+            Find the appropriate dispensation and select the delete icon (red X) to void the dispensation.
+            This will remove the dispensation from the activity sheet AND replenish the inventory.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseNine" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            9. How do I reprint a patient dispensation label?
+          </h4>
+        </div>
+        <div id="collapseNine" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: First, you want to go to the appropriate patient’s profile page (see #4 above).
+            Once you locate your patient, you will see his/her dispensation history on the bottom of the page.
+            Find the appropriate dispensation and select the delete icon (red X) to void the dispensation.
+            This will remove the dispensation from the activity sheet AND replenish the inventory.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            10. How do I reprint an inventory label?
+          </h4>
+        </div>
+        <div id="collapseTen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: Navigate to the appropriate row in the inventory for the label you would like to reprint.
+            Select the print icon in that row to reprint the label.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEleven" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            11.	My patient speaks Spanish. How do I print a label for him?
+          </h4>
+        </div>
+        <div id="collapseEleven" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: In the patient profile page described above, in addition to the prescription-specific dispensing screen, you will see a toggle button that says ENG or ESP.
+            Click the button to select ESP for Spanish-speaking patients. The medication directions will not print on the label so that you can manually
+            translate them and write them in yourself before affixing the label to the bottle. We are working on making the translation automatic.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwelve" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            12.	The inventory counts in RxMAGIC are not correct. How do I edit the quantity?
+          </h4>
+        </div>
+        <div id="collapseTwelve" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: To edit inventory items, navigate to the row you would like to edit and select the pencil icon in the far right of that row.
+            A dialogue box will appear with information for that item and you can edit the desired fields. If the box appears with nothing in the fields,
+            there is a problem and you should contact the RxMAGIC support team.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThirteen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            13.	How do I add stock medications to be replenished to the Activity Sheet?
+          </h4>
+        </div>
+        <div id="collapseThirteen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: Low inventory alerts are only generated for items that have established par levels. If you see a low inventory alert, you can select 'Add to Activity Sheet' to add this item.
+            If you think this item should have a par level, then go ahead and add one (see next question). If a par level already exists for this item, but the alert isn’t showing up, then navigate to the 'General Inventory'
+            and select ‘Under Stocked Items’ on the panel on the right. Here you will see a list of all items with a link that reads ‘Add to Activity Sheet.’
+            By selecting this, your item will be added to the activity sheet. It will remain on this list until the item is replenished within RxMAGIC.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFourteen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            14.	How do I create a new par level?
+          </h4>
+        </div>
+        <div id="collapseFourteen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: Navigate to the ‘Manage Par Level’ section on the homepage and select ‘New Par Level.’ Enter the medication name as it appears in the inventory and the desired quantity.
+            RxMAGIC will compare the total number of units in the inventory with this par level, and if it is below the par level, will generate a low inventory alert.
+            The entered quantity represents the minimum number of units that should be on the shelves at all times (units should be entered in the same way as they are in the inventory, i.e. pills or total inhalers).
+            Par levels can be modified using the pencil icon in the same row.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFifteen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            15.	The barcode scanner doesn’t seem to be working. What do I do?
+          </h4>
+        </div>
+        <div id="collapseFifteen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: The scanner may beep at you randomly and stop working. In this case, just unplug it and plug it back in.
+            If you hear three ascending beeps, then you should be good to go.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSixteen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            16.	I’m having problems with the printer. What do I do?
+          </h4>
+        </div>
+        <div id="collapseSixteen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: Try and troubleshoot the printer: (1) First check to see the printer is powered on and plugged into the USB port of your computer.
+            (2) Then take a look inside the printer to make sure the ribbon and labels are full, and that there are no ‘jams’ with the labels or the ribbon.
+            If the printer is jammed, do your best to fix the problem. If you see you need to replace the ribbon, try and follow the instructions on the
+            inside of the printer lid – being sure not to throw away the empty cardboard roll in the printer! You can also check out this youtube video
+            (http://www.youtube.com/watch?v=kZxo6E7T_BE&sns=em).
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeventeen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            17.	The printer is functioning fine, but it still won't print a label. What do I do?
+          </h4>
+        </div>
+        <div id="collapseSeventeen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: If you see the labels downloading and they’re just not printing, then follow the steps taped to the top of the printer.
+            Once you complete these steps, your labels should begin printing. If you are still having problems, contact the support team.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEighteen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            18.	How do I view and print the Activity Sheet? Can I edit the document before printing?
+          </h4>
+        </div>
+        <div id="collapseEighteen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: In the ‘Documentation’ section on the RxMAGIC homepage, click the 'Activity Sheet' button.
+            You can use the date picker function to select the date of the sheet you would like to view, and then select generate.
+            Once you are ready to print, select the ‘Export as PDF’ and print the PDF as per your normal printing routine.
+            Please make sure to manually check appropriate columns or add any non-medication items to this sheet after printing.
+            We are working on making the document editable in RxMAGIC.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseNineteen" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            19.	How should I enter medications in the inventory? What quantity do I use for an inhaler?
+          </h4>
+        </div>
+        <div id="collapseNineteen" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: If you are unsure of how best to enter these items, check how they are already listed in the inventory or talk to other pharmacists.
+            It is important items are entered in a way that most closely matches how they are prescribed. We have learned that entering all items using
+            the generic form rather than brand name is the most suitable approach. For most pill bottles, the quantity is simply the number of pills in the bottle.
+            In the case of eye drops/creams/insulin pens, the quantity should be entered as the weight of the item.
+            For example, insulin pens are entered in 3 mL increments (5 pens = quantity 15 mLs) and creams are entered in grams.
+            For inhalers, make sure the item name includes the total actuations, and then enter the quantity as 1.
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwenty" aria-expanded="true">
+          <h4 class="panel-title accordion-toggle">
+            20.	What do I do if RxMAGIC crashes, or the Internet stops working?
+          </h4>
+        </div>
+        <div id="collapseTwenty" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="panel-body">
+            A: RxMAGIC is locally hosted on a server right in the dispensary (Gregg or Mary can show you where the server is located).
+            In the rare chance RxMAGIC would ‘crash,’ you can simply plug your computers using USB cables into the server hosting RxMAGIC.
+            You should be able to access RxMAGIC once successfully plugged into the server.
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        $(".panel-heading").addClass("collapsed");
+      </script>
     </div>
-    <div class="panel panel-info">
-      <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour">
-        <h4 class="panel-title accordion-toggle">
-          Collapsible Group Item #2
-        </h4>
-
-      </div>
-      <div id="collapseFour" class="panel-collapse collapse">
-        <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
-      </div>
-    </div>
-    <div class="panel panel-info">
-      <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive">
-        <h4 class="panel-title accordion-toggle">
-          Collapsible Group Item #3
-        </h4>
-
-      </div>
-      <div id="collapseFive" class="panel-collapse collapse">
-        <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
-      </div>
-    </div>
-  </div>
 </div>
-
-<script type="text/javascript">
-  $(".panel-heading").addClass("collapsed");
-</script>

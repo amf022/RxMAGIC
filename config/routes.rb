@@ -36,7 +36,9 @@ Rails.application.routes.draw do
   ###################### Rxnconso Controller ##############################
   get "/suggestions" => "rxnconso#suggestions"
   get "/threshold_suggestions" => "rxnconso#threshold_suggestions"
-
+  get "/drug_mapping/:id" => "rxnconso#map_drug"
+  get "/drug_mapping" => "rxnconso#drug_mapping"
+  post "/map_drug" => "rxnconso#map_drug"
   ###################### Prescription Controller ##############################
   get "/void_prescriptions/:id" => "prescription#destroy"
   get "/prescriptions" => "prescription#ajax_prescriptions"
@@ -69,6 +71,7 @@ Rails.application.routes.draw do
   get "/move_item/:bottle_id" => "inventory#move_inventory_item"
   get "/add_to_activity_sheet/:drug" => "inventory#add_to_activity_sheet"
   get "/inventory/add_to_activity_sheet"
+
   ###################### News Controller ##############################
 
   get "/ignore_message/:id" => "news#destroy"

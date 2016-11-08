@@ -44,11 +44,11 @@ BEGIN
 
   IF (@drug_id IS NULL) THEN
 
-      SET @drug_id = (SELECT rxaui FROM ndc_code_matches WHERE missing_code = ndc_code);
+      SET @drug_id = (SELECT rxaui FROM ndc_code_matches WHERE missing_code = ndc_code LIMIT 1);
 
       IF (@drug_id IS NULL) THEN
-        INSERT INTO hl7_errors (patient_id, date_prescribed, drug_name,quantity, directions, provider_id, voided, created_at, updated_at) VALUES ( @patient_id, COALESCE(STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), now()),drug_name, COALESCE(rx_quantity,0), rx_directions, @provider_id, FALSE, now(), now());
-        SET @msg = CONCAT("Missing NDC code for ", @drug_name);
+        INSERT INTO hl7_errors (patient_id, date_prescribed, drug_name,quantity, directions, provider_id,code, voided, created_at, updated_at) VALUES ( @patient_id, COALESCE(STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), now()),drug_name, COALESCE(rx_quantity,0), rx_directions, @provider_id,ndc_code, FALSE, now(), now());
+        SET @msg = CONCAT("Missing NDC code for ", drug_name);
         INSERT INTO news (message, refers_to, news_type, created_at, updated_at) VALUES (@msg,ndc_code,"Missing Reference",now(),now());
       ELSE
         UPDATE prescriptions SET patient_id = @patient_id, rxaui = @drug_id, date_prescribed = COALESCE(STR_TO_DATE(rx_date_prescribed, '%Y%m%d %h%i%s'), now()), quantity = COALESCE(rx_quantity,0), directions = rx_directions, provider_id = @provider_id, voided = FALSE, updated_at = now() WHERE rxaui = @drug_id AND patient_id = @patient_id AND DATE(date_prescribed) = COALESCE(STR_TO_DATE(rx_date_prescribed, '%Y%m%d'), DATE(now()));

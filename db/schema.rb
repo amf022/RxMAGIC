@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.integer  "quantity",        limit: 4
     t.string   "directions",      limit: 255
     t.string   "drug_name",       limit: 255
+    t.string   "code",            limit: 255
     t.boolean  "voided",          limit: 1,   default: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
@@ -210,6 +211,7 @@ ActiveRecord::Schema.define(version: 20161104185041) do
   create_table "ndc_code_matches", force: :cascade do |t|
     t.string   "missing_code", limit: 255
     t.string   "rxaui",        limit: 255
+    t.string   "name",         limit: 255
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
