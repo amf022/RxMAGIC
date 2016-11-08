@@ -40,22 +40,18 @@ class PmapInventoryController < ApplicationController
       flash[:errors] = {} if flash[:errors].blank?
       flash[:errors][:missing] = ["Item not found"]
     else
-      if (@entry.received_quantity - @entry.current_quantity) > params[:pmap_inventory][:amount_received].to_i
-        flash[:errors] = {} if flash[:errors].blank?
-        flash[:errors]["counts"] = [" The number of items that have already been dispensed from this bottle is more than the received quantity."]
+      @entry.received_quantity = params[:pmap_inventory][:amount_received].to_i + (@entry.received_quantity - @entry.current_quantity)
+      @entry.current_quantity = params[:pmap_inventory][:amount_received].to_i
+      @entry.lot_number = params[:pmap_inventory][:lot_number]
+      @entry.expiration_date = params[:pmap_inventory][:expiry_date].to_date rescue nil
+      @entry.manufacturer = params[:pmap_inventory][:manufacturer]
+      if @entry.save
+        flash[:success] = "#{@entry.bottle_id}  was successfully updated."
+        logger.info "Pmap Item #{@entry.bottle_id} was edited by #{current_user.username}"
       else
-        @entry.current_quantity = params[:pmap_inventory][:amount_received].to_i - (@entry.received_quantity - @entry.current_quantity)
-        @entry.received_quantity = params[:pmap_inventory][:amount_received].to_i
-        @entry.lot_number = params[:pmap_inventory][:lot_number]
-        @entry.expiration_date = params[:pmap_inventory][:expiry_date].to_date rescue nil
-        @entry.manufacturer = params[:pmap_inventory][:manufacturer]
-        if @entry.save
-          flash[:success] = "#{@entry.bottle_id}  was successfully updated."
-          logger.info "Pmap Item #{@entry.bottle_id} was edited by #{current_user.username}"
-        else
-          flash[:errors] = @entry.errors
-        end
+        flash[:errors] = @entry.errors
       end
+
     end
 
     redirect_to "/pmap_inventory"
