@@ -61,7 +61,7 @@ class GeneralInventoryController < ApplicationController
       else
         flash[:errors] = @new_stock_entry.errors
       end
-      
+
     end
 
     redirect_to "/general_inventory"
