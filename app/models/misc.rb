@@ -29,12 +29,12 @@ module Misc
     label.font_vertical_multiplier = 1
     label.left_margin = 50
     label.draw_barcode(610,30,1,1,3,6,80,false,"#{bottle_id}")
-    label.draw_multi_text("#{item}", {:column_width => 609})
-    label.draw_multi_text("Patient: #{patient_name}",{:column_width => 609}) unless patient_name.blank?
-    label.draw_multi_text("Type: #{type}",{:column_width => 609})
-    label.draw_multi_text("Bottle #:#{Misc.dash_formatter(bottle_id)}",{:column_width => 609})
-    label.draw_multi_text("Lot #:#{lot_number} ",{:column_width => 609})
-    label.draw_multi_text("Exp:#{expiration_date.strftime('%m/%y')}", {:column_width => 609})
+    label.draw_multi_text("#{item}", {:column_width => 570})
+    label.draw_multi_text("Patient: #{patient_name}",{:column_width => 570}) unless patient_name.blank?
+    label.draw_multi_text("Type: #{type}",{:column_width => 570})
+    label.draw_multi_text("Bottle #:#{Misc.dash_formatter(bottle_id)}",{:column_width => 570})
+    label.draw_multi_text("Lot #:#{lot_number} ",{:column_width => 570})
+    label.draw_multi_text("Exp:#{expiration_date.strftime('%m/%y')}", {:column_width => 570})
     label.print(1)
 
   end
@@ -60,6 +60,7 @@ module Misc
   end
 
   def self.dash_formatter(id)
+    return "" if id.blank?
     if id.length > 9
       return id[0..(id.length/3)] + "-" +id[1 +(id.length/3)..(id.length/3)*2]+ "-" +id[1 +2*(id.length/3)..id.length]
     else
@@ -152,3 +153,5 @@ module Misc
     return mappings
   end
 end
+
+

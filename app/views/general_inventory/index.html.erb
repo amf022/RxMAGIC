@@ -41,16 +41,16 @@
 
         <% (@inventory || []).each do |item| %>
             <tr>
-              <td id="drug<%= item.id %>" ><%= item.rxnconso.name.downcase.titleize rescue "" %></td>
-              <td><%= Misc.dash_formatter(item.gn_identifier) %></td>
-              <td id="lot<%= item.id %>"><%= Misc.dash_formatter(item.lot_number) %></td>
-              <td id="qn<%= item.id %>"><%= number_with_delimiter(item.current_quantity) %></td>
-              <td id="date<%= item.id %>"><%= item.expiration_date.strftime('%b-%Y') %></td>
+              <td id="drug<%= item[0] %>" ><%= @keys[item[5]].downcase.titleize rescue "" %></td>
+              <td><%= Misc.dash_formatter(item[1]) %></td>
+              <td id="lot<%= item[0] %>"><%= Misc.dash_formatter(item[2]) %></td>
+              <td id="qn<%= item[0] %>"><%= number_with_delimiter(item[3]) %></td>
+              <td id="date<%= item[0] %>"><%= item[4].strftime('%b-%Y') rescue ""%></td>
               <td>
 
-                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item.id %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
-                <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item.gn_identifier %>'" title="Print Barcode">
-                <a href="#" data-id=<%= item.gn_identifier %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item[0] %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+                <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item[1] %>'" title="Print Barcode">
+                <a href="#" data-id=<%= item[1] %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
               </td>
             </tr>
         <% end %>
@@ -68,25 +68,25 @@
         <a href="/general_inventory/wellstocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items in Stock</h5>
-            <span class="highlighted"><%= @wellStocked.length %></span>
+            <span class="highlighted"><%= @wellStocked %></span>
           </div>
         </a>
         <a href="/general_inventory/understocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Under Stocked Items</h5>
-            <span class="highlighted"><%= @underStocked.length %></span>
+            <span class="highlighted"><%= @underStocked %></span>
           </div>
         </a>
         <a href="/general_inventory/expiring_items" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items About to Expire</h5>
-            <span class="highlighted"><%= @aboutToExpire.length %></span>
+            <span class="highlighted"><%= @aboutToExpire %></span>
           </div>
         </a>
         <a href="/general_inventory/expired_items" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5 class="list-group-item-heading">Expired Items</h5>
-            <span class="highlighted"><%= @expired.length %></span>
+            <span class="highlighted"><%= @expired %></span>
           </div>
         </a>
       </div>
@@ -168,7 +168,7 @@
             <div class="form-group">
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
-                <input type="text" name="edit_general_inventory[item]" id="editDrugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' disabled >
+                <input type="text" name="edit_general_inventory[item]" id="editDrugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required>
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>

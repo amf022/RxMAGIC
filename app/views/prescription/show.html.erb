@@ -8,7 +8,7 @@
         <h3 style=" font-size: 20px;" class="panel-title">Dispense Item</h3>
       </div>
       <div class="modal-body">
-        <%= form_for :dispensation, :html => { :class => "form-horizontal general_inventory" }, :url => "/prescription/dispense"  do |f| %>
+        <%= form_for :dispensation, :html => { :class => "form-horizontal general_inventory" }, :url => dispensation_index_path  do |f| %>
             <div class="form-group">
               <%= f.label :dispense_from, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
@@ -72,7 +72,11 @@
             </tr>
             <tr>
               <td><%= @prescription.prescribed_by %></td>
-              <td style="text-align: center"><%= @prescription.quantity %></td>
+              <td style="text-align: center">
+                <%= @prescription.quantity %>
+                <a href="#" class="editRx" data-toggle="modal" data-target="#editModal" data-uid="<%= @prescription.id %>"
+                   data-np="<%= @prescription.quantity%>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+              </td>
               <td style="text-align: center"><%= @prescription.amount_dispensed %></td>
               <td><%= @prescription.date_prescribed.strftime('%b %d, %Y') %></td>
               <td><%= @prescription.directions %></td>
@@ -197,7 +201,38 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onmousedown="cancelDispense()">&times;</button>
+        <h4 class="modal-title">Edit Amount Prescribed</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :edit_prescription, :html => { :class => "form-horizontal general_inventory" }, :url => "/prescription/edit"  do |f| %>
+            <div class="form-group">
+              <%= f.label :quantity, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <%= f.text_field :quantity,:placeholder => "Quantity Prescribed" ,:class => 'form-control',:autocomplete=> 'off', :required => true %>
+              </div>
+            </div>
+            <%= f.hidden_field :prescription_id, :value => @prescription.id %>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-10">
+                <%= f.submit "Save", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onmousedown="cancelDispense()">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
+  var timerHand;
+
   function checkBarcode()
   {
       var barcodeTxt = document.getElementById("barcode");
@@ -207,6 +242,7 @@
         {
           showLayer("backGround", "dispenseForm")
           document.getElementById("dispensation_dispense_from").value = (barcodeTxt.value.trim().replace(/\$/, "")).replace(/\-/,"").toUpperCase();
+          document.getElementById("dispensation_amount_dispensed").focus();
           barcodeTxt.value = "";
         }
         else
@@ -234,10 +270,14 @@
     document.getElementById("barcode").focus();
     timerHand = setTimeout(function () {
       checkBarcode();
-    }, 1000);
+    }, 3000);
 
   }
-  setTimeout(checkBarcode(),10000)
 
 
+  $('.editRx').on('click', function(e) {
+    clearTimeout(timerHand);
+  });
+
+    setTimeout(initializeListener(), 3000);
 </script>

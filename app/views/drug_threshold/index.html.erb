@@ -9,7 +9,7 @@
         <a href="#menu" class="box-shadow-menu">
         </a>
         <div class="dropdown-content">
-          <p><a href="/drug_threshold/unique_prescriptions" class="links">Items ever prescribed</a></p>
+          <!--<p><a href="/drug_threshold/unique_prescriptions" class="links">Items ever prescribed</a></p> -->
           <p><a href="/general_inventory/understocked" class="links">Under Stocked Items</a></p>
         </div>
       </div>
@@ -55,16 +55,17 @@
         <h4 class="panel-title">Summary</h4>
       </div>
       <div class="panel-body">
+        <!--
         <a href="/drug_threshold/unique_prescriptions" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5  class="list-group-item-heading">Items ever Prescribed</h5>
             <span class="highlighted"><%= @unique_items %></span>
           </div>
-        </a>
+        </a> -->
         <a href="/general_inventory/understocked" class="list-group-item">
           <div style="width: 100%; text-align: center;" class="list-group-item-text">
             <h5 class="list-group-item-heading">Items Below PAR Level</h5>
-            <span class="highlighted"><%= @understocked.length %></span>
+            <span class="highlighted"><%= @underStocked.length %></span>
           </div>
         </a>
       </div>
@@ -140,7 +141,15 @@
 
     $( "#drugName" ).autocomplete({
         source: "/threshold_suggestions",
-        minLength: 2
+        minLength: 2,
+      change: function(event,ui)
+      {
+        if (ui.item==null)
+        {
+          $("#drugName").val('');
+          $("#drugName").focus();
+        }
+      }
     });
 
     $('.delete').on('click', function(e) {

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   get "/prescription/refill"
   post "/refill" => "prescription#refill"
   post "/prescription/dispense"
+  post "/prescription/edit"
 
   ###################### General Inventory Controller ##############################
   post "/void_general_inventory" => "general_inventory#destroy"
@@ -53,6 +54,7 @@ Rails.application.routes.draw do
   get "/general_inventory/expiring_items"
   get "/general_inventory/understocked"
   get "/general_inventory/wellstocked"
+  get "view_gn_drug/:id" => "general_inventory#view_drug"
 
   ###################### PMAP Inventory Controller ##############################
 
@@ -60,6 +62,7 @@ Rails.application.routes.draw do
   get "/reorders" => "pmap_inventory#reorders"
   get "/expired_pmap_items" => "pmap_inventory#expired_items"
   get "/pmap_inventory/about_to_expire"
+  get "/underutilized_pmap" => "pmap_inventory#underutilized"
   post "/ajax_reorders" => "pmap_inventory#detailed_search"
   post "/pmap_inventory/edit"
   post "/void_pmap_inventory" => "pmap_inventory#destroy"
@@ -70,7 +73,6 @@ Rails.application.routes.draw do
   get "/void_item/:bottle_id" => "inventory#void_inventory_item"
   get "/move_item/:bottle_id" => "inventory#move_inventory_item"
   get "/add_to_activity_sheet/:drug" => "inventory#add_to_activity_sheet"
-  get "/inventory/add_to_activity_sheet"
 
   ###################### News Controller ##############################
 
@@ -97,7 +99,7 @@ Rails.application.routes.draw do
   resources :main
   resources :news
   resources :user
-
+  resources :dispensation
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

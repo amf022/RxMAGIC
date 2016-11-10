@@ -2,34 +2,50 @@ class GeneralInventoryController < ApplicationController
   def index
     #List of all general inventory items
 
-    @inventory = GeneralInventory.where("current_quantity > 0 AND voided = ?", false).order(date_received: :asc)
+    @inventory = GeneralInventory.where("current_quantity > ? and voided = ?",
+                                        0, false).pluck(:gn_inventory_id, :gn_identifier,:lot_number,:current_quantity,
+                                                        :expiration_date, :rxaui)
 
-    @expired = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d')).pluck(:gn_identifier)
+    concepts = Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[5]}.uniq).pluck(:rxaui,:rxcui,:STR)
 
-    @aboutToExpire = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
-                                            Date.today.strftime('%Y-%m-%d'),
-                                            Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
+    @keys= concepts.inject({}) do |result, element|
+      result[element[0]] = element[2]  rescue " "
+      result
+    end
 
+    concept_map = concepts.inject({}) do |result, element|
+      result[element[0]] = element[1]  rescue " "
+      result
+    end
 
-    items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
-                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
-                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
+    items = Hash.new(0)
+    wellStocked = []
+    underStocked = []
+    aboutToExpire_items = []
+    expired_items = []
 
+    (@inventory || []).each do |item|
+      items[concept_map[item[5]]] += item[3]
+      expired_items << item[0] if (item[4] <= Date.today)
+      aboutToExpire_items << item[0] if (item[4] >= Date.today && item[4] <= Date.today.advance(:months => 2))
+    end
 
     thresholds = Misc.calculate_gn_thresholds
 
-    @wellStocked = []
-    @underStocked = []
 
     (thresholds || []).each do |id, details|
       if details["count"] > details["threshold"]
-        @wellStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+        wellStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
                          "available" => details["count"], "id" => id}
       elsif details["count"] <= details["threshold"]
-        @underStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+        underStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
                          "available" => details["count"], "id" => id}
       end
     end
+    @aboutToExpire = aboutToExpire_items.length
+    @underStocked = underStocked.length
+    @expired = expired_items.length
+    @wellStocked = wellStocked.length
 
   end
 
@@ -46,14 +62,22 @@ class GeneralInventoryController < ApplicationController
       flash[:errors] = {} if flash[:errors].blank?
       flash[:errors][:missing] = ["Item could not be found"]
     else
+      @new_stock_entry.rxaui = Rxnconso.where("STR = ? AND TTY = 'PSN'",
+                                              params[:edit_general_inventory][:item]).first.RXAUI rescue nil
       @new_stock_entry.lot_number = params[:edit_general_inventory][:lot_number].upcase
       @new_stock_entry.expiration_date = params[:edit_general_inventory][:expiration_date].to_date rescue nil
-      @new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity] + (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
+      @new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity].to_i + (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
       @new_stock_entry.current_quantity = params[:edit_general_inventory][:received_quantity].to_i
 
-      GeneralInventory.transaction do
-        @new_stock_entry.save
-        logger.info "#{current_user.username} edited general inventory item #{params[:edit_general_inventory][:gn_id]}"
+      if @new_stock_entry.rxaui.blank?
+        flash[:errors] = {} if flash[:errors].blank?
+        flash[:errors][:missing] = ["Item #{params[:edit_general_inventory][:item]} was not found"]
+        redirect_to "/general_inventory"
+      else
+        GeneralInventory.transaction do
+          @new_stock_entry.save
+          logger.info "#{current_user.username} edited general inventory item #{params[:edit_general_inventory][:gn_id]}"
+        end
       end
 
       if @new_stock_entry.errors.blank?
@@ -98,7 +122,7 @@ class GeneralInventoryController < ApplicationController
     # Create a new record for general inventory
     name = params[:general_inventory][:item]
     @new_stock_entry = GeneralInventory.new
-    @new_stock_entry.rxaui = Rxnconso.where("STR = ?", params[:general_inventory][:item]).first.RXAUI rescue nil
+    @new_stock_entry.rxaui = Rxnconso.where("STR = ? AND TTY = 'PSN'", params[:general_inventory][:item]).first.RXAUI rescue nil
     @new_stock_entry.current_quantity = params[:general_inventory][:received_quantity]
     @new_stock_entry.lot_number = params[:general_inventory][:lot_number].upcase
     @new_stock_entry.expiration_date = params[:general_inventory][:expiration_date].to_date rescue nil

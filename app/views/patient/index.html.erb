@@ -48,6 +48,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Search for Patient</h4>
+        <p>* Not all fields required </p>
       </div>
       <div class="modal-body">
         <%= form_for :patient, :html => { :class => "form-horizontal general_inventory" }, :url => "/patient/ajax_patient"  do |f| %>

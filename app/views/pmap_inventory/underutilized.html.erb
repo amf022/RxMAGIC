@@ -10,12 +10,12 @@
         </a>
         <div class="dropdown-content">
           <p><a href="/pmap_inventory" class="links">PMAP Inventory</a></p>
-          <p><a href="/underutilized_pmap" class="links">Underutilized Items</a></p>
+          <p><a href="/expired_pmap_items" class="links">Expired Items</a></p>
           <p><a href="/pmap_inventory/about_to_expire" class="links">Items About to Expire</a></p>
         </div>
       </div>
       <div style="display: table-cell">
-        <h3><%=t '.title', :default => 'PMAP Inventory: Expired Items'.titleize %></h3>
+        <h3><%=t '.title', :default => 'PMAP Inventory: Under Utilized Items'.titleize %></h3>
       </div>
     </div>
   </div>
@@ -23,31 +23,33 @@
 <div class="row row-offcanvas row-offcanvas-right">
 
   <div class="col-xs-12 col-sm-12">
-    <table id="expiredItems" class="table table-striped table-bordered" width="100%" cellspacing="0">
+    <table id="pmapMeds" class="table table-striped table-bordered" width="100%" cellspacing="0">
       <thead>
       <tr>
-        <th>Patient Name</th>
         <th>Item</th>
-        <th >Item Identifier</th>
-        <th >Date Received</th>
-        <th >Expiration Date</th>
-        <th >Quantity</th>
-        <th >Action</th>
+        <th style="width: 10%;">Item Identifier</th>
+        <th>Patient</th>
+        <th style="width: 10%;">Lot Number</th>
+        <th style="width: 7.5%;">Current Quantity</th>
+        <th style="width: 5%;">Expiration Date</th>
+        <th style="width: 12.5%;">Actions</th>
       </tr>
       </thead>
 
       <tbody>
 
-      <% (@expired || []).each do |item| %>
+      <% (@inventory || []).each do |item| %>
           <tr>
-            <td><%= item.patient_name %></td>
-            <td><%= item.drug_name %></td>
-            <td><%= Misc.dash_formatter(item.bottle_id) %></td>
-            <td><%= item.date_received.strftime("%b %d, %Y") %></td>
-            <td><%= item.expiration_date.strftime("%b %d, %Y") %></td>
-            <td><%= number_with_delimiter(item.current_quantity) %></td>
-            <td>
-              <a href="#" data-id="<%= item.bottle_id %>" data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
+
+            <td id="name<%=item[6] %>"><%= @items[item[0]].downcase.titleize rescue "" %></td>
+            <td><%= Misc.dash_formatter(item[5]) %></td>
+            <td id="pat<%=item[6] %>"><%= @patients[item[1]].titleize %></td>
+            <td id="lot<%=item[6] %>"><%= Misc.dash_formatter(item[2]) %></td>
+            <td><%= item[3] %></td>
+            <td id="exp<%=item[6] %>"><%= item[4].strftime('%b-%Y') %></td>
+            <td style="text-align: center;">
+              <a href="#" data-href="/move_pmap_inventory/<%= item[5]%>" data-toggle="modal" data-target="#confirm-move" class="moveItem"><img src="/assets/move.png" title="Move Item to general inventory"></a>
+              <a href="#" data-id=<%= item[5]%> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
             </td>
           </tr>
       <% end %>
@@ -103,16 +105,33 @@
   </div>
 </div>
 
+<div class="modal fade" id="confirm-move" tabindex="-1" role="dialog" aria-labelledby="moveItem" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style=" font-size: 20px;" class="panel-title">Move Item to General Inventory</h3>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to move this item to <strong>General Inventory</strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <a class="btn btn-danger btn-ok" id="btnMove">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script type="text/javascript">
-    $('.delete').on('click', function(e) {
-        document.getElementById('pmap_inventory_pmap_id').value = $(this).data('id');
-    });
+  $('.delete').on('click', function(e) {
+    document.getElementById('pmap_inventory_pmap_id').value = $(this).data('id');
+  });
 
-    // Styling the table with datatables library
-    $(document).ready(function() {
-      $.fn.dataTable.moment( 'MMM D, YYYY' );
-      $('#expiredItems').DataTable({"bLengthChange": false, "bDestroy": true});
-    } );
+  // Styling the table with datatables library
+  $(document).ready(function() {
+    $.fn.dataTable.moment( 'MMM-YYYY' );
+    $('#pmapMeds').DataTable({"bLengthChange": false, "bDestroy": true});
+  } );
 
 </script>

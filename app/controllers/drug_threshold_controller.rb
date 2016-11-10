@@ -4,22 +4,18 @@ class DrugThresholdController < ApplicationController
 
     @thresholds = DrugThreshold.where("voided = ?", false)
     @unique_items = Prescription.where("voided =?", false).pluck(:rxaui).uniq.length
-    @understocked = []
 
-    items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
-                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
-                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
+    thresholds = Misc.calculate_gn_thresholds
 
-    (@thresholds || []).each do |threshold|
+    @underStocked =[]
 
-      if items[threshold.rxcui].blank?
-        @understocked << threshold.rxcui
-      else
-        if items[threshold.rxcui] <= threshold.threshold
-          @understocked << threshold.rxcui
-        end
+    (thresholds || []).each do |id, details|
+      if details["count"] <= details["threshold"]
+        @underStocked << {"drug_name" => details["name"], "threshold" => details["threshold"],
+                          "available" => details["count"], "id" => id}
       end
     end
+
   end
 
   def destroy
