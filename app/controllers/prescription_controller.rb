@@ -40,8 +40,8 @@ class PrescriptionController < ApplicationController
       @prescription.quantity = params[:edit_prescription][:quantity]
       @prescription.save
       if @prescription.quantity <= @prescription.amount_dispensed
-        News.resolve(params[:dispensation][:prescription],"new prescription","prescritption filled")
-        print_and_redirect("/print_dispensation_label/#{@prescription.id}", "/prescription/#{@prescription.id}")
+        News.resolve(params[:edit_prescription][:prescription_id],"new prescription","prescritption filled")
+        print_and_redirect("/print_dispensation_label/#{@prescription.id}", "/prescription")
       else
         redirect_to @prescription
       end

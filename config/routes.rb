@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get "/void_item/:bottle_id" => "inventory#void_inventory_item"
   get "/move_item/:bottle_id" => "inventory#move_inventory_item"
   get "/add_to_activity_sheet/:drug" => "inventory#add_to_activity_sheet"
+  get "/inventory/add_to_activity_sheet"
 
   ###################### News Controller ##############################
 
