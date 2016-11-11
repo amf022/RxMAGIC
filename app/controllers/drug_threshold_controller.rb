@@ -23,6 +23,9 @@ class DrugThresholdController < ApplicationController
 
     threshold = DrugThreshold.find(params[:id])
     threshold.update_attributes(:voided => TRUE)
+    if threshold.errors.blank?
+      DrugThresholdSet.void_drug_set(params[:id])
+    end
     flash[:success] = "PAR level for #{threshold.drug_name} was successfully deleted."
     redirect_to "/drug_threshold"
   end

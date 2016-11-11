@@ -9,7 +9,26 @@ class DrugThresholdSet < ActiveRecord::Base
                                   where RXCUI2 = '#{rxcui}' AND RELA = 'constitutes')")
 
     (items || []).each do |item|
-      DrugThresholdSet.create({:threshold_id => threshold_id, :rxaui => item.RXAUI})
+      (items || []).each do |item|
+        dr = DrugThresholdSet.where(threshold_id: threshold_id,rxaui: item.RXAUI).first_or_initialize
+        dr.voided = false
+        dr.save
+      end
+    end
+  end
+
+  def self.void_drug_set(threshold_id)
+      DrugThresholdSet.where("threshold_id  = ?", threshold_id).update_all(voided: true)
+  end
+
+  def self.update_drug_set(rxcui,threshold_id)
+    items = Rxnconso.find_by_sql("SELECT RXAUI FROM RXNCONSO where TTY = 'PSN' AND RXCUI in (SELECT RXCUI1 FROM RXNREL
+                                  where RXCUI2 = '#{rxcui}' AND RELA = 'constitutes')")
+
+    (items || []).each do |item|
+      dr = DrugThresholdSet.where(threshold_id: threshold_id,rxaui: item.RXAUI).first_or_initialize
+      dr.voided = false
+      dr.save
     end
   end
 end
