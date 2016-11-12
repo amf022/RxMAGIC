@@ -94,6 +94,7 @@ Rails.application.routes.draw do
   ################# Disnpensation Controller ############################
 
   post "/refill" => "dispensation#refill"
+  post "/void_dispensation" => "dispensation#destroy"
 
   resources :general_inventory
   resources :pmap_inventory
