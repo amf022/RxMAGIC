@@ -396,7 +396,15 @@
     })
 
     $("#provider").autocomplete({
-        source: providers
+        source: providers,
+        change: function(event,ui)
+        {
+          if (ui.item==null)
+          {
+            $("#provider").val('');
+            $("#provider").focus();
+          }
+        }
     })
 
     $(function() {
