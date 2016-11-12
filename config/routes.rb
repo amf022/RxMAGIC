@@ -43,7 +43,6 @@ Rails.application.routes.draw do
   get "/void_prescriptions/:id" => "prescription#destroy"
   get "/prescriptions" => "prescription#ajax_prescriptions"
   get "/prescription/refill"
-  post "/refill" => "prescription#refill"
   post "/prescription/dispense"
   post "/prescription/edit"
 
@@ -91,6 +90,10 @@ Rails.application.routes.draw do
   get 'login' => "user#login"
   post 'login' => "user#login"
   get '/logout' => "user#logout"
+
+  ################# Disnpensation Controller ############################
+
+  post "/refill" => "dispensation#refill"
 
   resources :general_inventory
   resources :pmap_inventory
