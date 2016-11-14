@@ -9,7 +9,7 @@ class RxnconsoController < ApplicationController
 
   def suggestions
 
-    @items = Rxnconso.where("STR like ? and TTY in ('PSN')", "#{params[:term]}%").limit(10).collect{|x| x.STR.humanize.gsub(/\b('?[a-z])/) { $1.capitalize }}.uniq
+    @items = Rxnconso.where("STR like ? and TTY in ('PSN', 'SCD')", "#{params[:term]}%").limit(10).collect{|x| x.STR.humanize.gsub(/\b('?[a-z])/) { $1.capitalize }}.uniq
 
     render :text => @items
   end
@@ -22,7 +22,7 @@ class RxnconsoController < ApplicationController
   def map_drug
 
     if request.post?
-      map_to = Rxnconso.where("STR = ? and TTY in ('PSN','SY')", "#{params[:rxnconso][:matching_drug]}").first
+      map_to = Rxnconso.where("STR = ? and TTY in ('PSN', 'SCD')", "#{params[:rxnconso][:matching_drug]}").first
       if  map_to.blank?
         item = News.where.("refers_to = ?",params[:rxnconso][:ndc_code]).first
         flash[:errors] = {} if flash[:errors].blank?
