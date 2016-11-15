@@ -91,6 +91,7 @@ Rails.application.routes.draw do
   get 'login' => "user#login"
   post 'login' => "user#login"
   get '/logout' => "user#logout"
+  post '/void_dispensation' => "dispensation#destroy"
 
   resources :general_inventory
   resources :pmap_inventory
