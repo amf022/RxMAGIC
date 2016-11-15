@@ -396,7 +396,16 @@
     })
 
     $("#provider").autocomplete({
-        source: providers
+        source: providers,
+        change: function(event,ui)
+        {
+          val = $(this).val().trim();
+          exists = $.inArray(val,providers);
+          if (exists<0) {
+            $(this).val("");
+            return false;
+          }
+        }
     })
 
     $(function() {

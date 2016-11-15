@@ -62,7 +62,7 @@ class GeneralInventoryController < ApplicationController
       flash[:errors] = {} if flash[:errors].blank?
       flash[:errors][:missing] = ["Item could not be found"]
     else
-      @new_stock_entry.rxaui = Rxnconso.where("STR = ? AND TTY = 'PSN'",
+      @new_stock_entry.rxaui = Rxnconso.where("STR = ? and TTY in ('PSN', 'SCD')",
                                               params[:edit_general_inventory][:item]).first.RXAUI rescue nil
       @new_stock_entry.lot_number = params[:edit_general_inventory][:lot_number].upcase
       @new_stock_entry.expiration_date = params[:edit_general_inventory][:expiration_date].to_date rescue nil
@@ -122,7 +122,7 @@ class GeneralInventoryController < ApplicationController
     # Create a new record for general inventory
     name = params[:general_inventory][:item]
     @new_stock_entry = GeneralInventory.new
-    @new_stock_entry.rxaui = Rxnconso.where("STR = ? AND TTY = 'PSN'", params[:general_inventory][:item]).first.RXAUI rescue nil
+    @new_stock_entry.rxaui = Rxnconso.where("STR = ? and TTY in ('PSN', 'SCD')", params[:general_inventory][:item]).first.RXAUI rescue nil
     @new_stock_entry.current_quantity = params[:general_inventory][:received_quantity]
     @new_stock_entry.lot_number = params[:general_inventory][:lot_number].upcase
     @new_stock_entry.expiration_date = params[:general_inventory][:expiration_date].to_date rescue nil
