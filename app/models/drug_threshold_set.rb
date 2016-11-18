@@ -5,7 +5,7 @@ class DrugThresholdSet < ActiveRecord::Base
   validates_associated :rxnconso
 
   def self.create_new_set(rxcui,threshold_id)
-    items = Rxnconso.find_by_sql("SELECT RXAUI FROM RXNCONSO where TTY = 'PSN' AND RXCUI in (SELECT RXCUI1 FROM RXNREL
+    items = Rxnconso.find_by_sql("SELECT RXAUI FROM RXNCONSO where TTY in ('PSN','SCD') AND RXCUI in (SELECT RXCUI1 FROM RXNREL
                                   where RXCUI2 = '#{rxcui}' AND RELA = 'constitutes')")
 
     (items || []).each do |item|
@@ -22,7 +22,7 @@ class DrugThresholdSet < ActiveRecord::Base
   end
 
   def self.update_drug_set(rxcui,threshold_id)
-    items = Rxnconso.find_by_sql("SELECT RXAUI FROM RXNCONSO where TTY = 'PSN' AND RXCUI in (SELECT RXCUI1 FROM RXNREL
+    items = Rxnconso.find_by_sql("SELECT RXAUI FROM RXNCONSO where TTY in ('PSN','SCD') AND RXCUI in (SELECT RXCUI1 FROM RXNREL
                                   where RXCUI2 = '#{rxcui}' AND RELA = 'constitutes')")
 
     (items || []).each do |item|
