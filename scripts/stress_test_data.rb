@@ -23,24 +23,24 @@ $manufacturers = JSON.parse(File.open("#{Rails.root}/app/assets/data/manufacture
 
 
 def start
-=begin
+
   puts "Creating 5000 patients"
-  (1..5000).each do |i|
+  (1..200).each do |i|
     create_patient()
   end
-=end
+
   puts "Creating 1500 general inventory entries"
-  (1..1500).each do |p|
+  (1..50).each do |p|
     create_general_stocks()
   end
 
   puts "Creating 500 PMAP stock items "
-  (1..500).each do |pap|
+  (1..20).each do |pap|
     create_pap_stocks()
   end
 
   puts "Creating 15000 prescriptions records"
-  (1..15000).each do |pap|
+  (1..15).each do |pap|
     create_prescriptions
   end
 
@@ -75,7 +75,7 @@ def create_patient
 end
 
 def create_prescriptions
-  patient_id = rand(5000)
+  patient_id = rand(200)
 
   new_prescription = Prescription.new
   new_prescription.provider_id = create_provider
@@ -105,7 +105,7 @@ def create_pmap_prescriptions()
 end
 
 def create_pap_stocks
-  patient_id = rand(5000)
+  patient_id = rand(100)
 
   new_stock_entry = PmapInventory.new
   new_stock_entry.patient_id = patient_id

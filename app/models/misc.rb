@@ -145,7 +145,7 @@ module Misc
     sets.each do | element|
       if mappings[element[0]].blank?
         threshold = DrugThreshold.find(element[0])
-        mappings[element[0]] = {"items" => [], "count" => 0,"name" => threshold.drug_name,"threshold" => threshold.threshold}
+        mappings[element[0]] = {"items" => [], "count" => 0,"name" => threshold.drug_name,"threshold" => threshold.threshold, "rxaui"=> element[1]}
       end
       mappings[element[0]]["items"] << element[1]
     end

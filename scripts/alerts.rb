@@ -39,30 +39,18 @@ def check_low_general_stock
 
   #this code block gets all items that have fewer than the permissible amounts available
 
-  thresholds = DrugThreshold.where("voided = ?", false)
-  items = Hash[*GeneralInventory.find_by_sql("SELECT (SELECT RXCUI FROM RXNCONSO where RXAUI = gn.rxaui LIMIT 1) as rxcui,
-                                          sum(gn.current_quantity) as current_quantity from general_inventories gn where
-                                          voided = false group by rxcui").collect{|x| [x.rxcui, x.current_quantity]}.flatten(1)]
-  (thresholds || []).each do |threshold|
+  thresholds = Misc.calculate_gn_thresholds
 
-    if items[threshold.rxcui].blank?
-      message = "#{threshold.drug_name} stock below par level"
+  underStocked =[]
+
+  (thresholds || []).each do |id, details|
+    if details["count"] <= details["threshold"]
+      message = "#{details["name"]} stock below par level"
       check_news = News.where("refers_to = ? AND news_type = ? AND date_resolved <= ?",
-                              threshold.rxaui, "low general stock",Time.now.advance(:day => (1)).strftime("%Y-%m-%d"))
+                              details["rxaui"], "low general stock",Time.now.advance(:day => (1)).strftime("%Y-%m-%d"))
 
       if check_news.blank?
-        create_alert(message, "low general stock", threshold.rxaui)
-      end
-
-    else
-      if items[threshold.rxcui] <= threshold.threshold
-        message = "#{threshold.drug_name} stock below par level"
-        check_news = News.where("refers_to = ? AND news_type = ? AND date_resolved <= ?",
-                                threshold.rxaui, "low general stock",Time.now.advance(:day => (1)).strftime("%Y-%m-%d"))
-
-        if check_news.blank?
-          create_alert(message, "low general stock", threshold.rxaui)
-        end
+        create_alert(message, "low general stock", details["rxaui"])
       end
     end
   end
