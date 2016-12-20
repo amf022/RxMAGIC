@@ -54,7 +54,7 @@ class PmapInventoryController < ApplicationController
       @entry.current_quantity = params[:pmap_inventory][:amount_received].to_i
       @entry.lot_number = params[:pmap_inventory][:lot_number]
       @entry.expiration_date = params[:pmap_inventory][:expiry_date].to_date rescue nil
-      @entry.manufacturer = params[:pmap_inventory][:manufacturer]
+      @entry.set_manufacturer(params[:pmap_inventory][:manufacturer])
       if @entry.save
         flash[:success] = "#{@entry.bottle_id}  was successfully updated."
         logger.info "Pmap Item #{@entry.bottle_id} was edited by #{current_user.username}"
@@ -74,7 +74,7 @@ class PmapInventoryController < ApplicationController
     @new_stock_entry.lot_number = params[:pmap_inventory][:lot_number].upcase
     @new_stock_entry.expiration_date = params[:pmap_inventory][:expiration_date].to_date rescue nil
     @new_stock_entry.reorder_date = params[:pmap_inventory][:reorder_date].to_date rescue nil
-    @new_stock_entry.manufacturer = params[:pmap_inventory][:manufacturer]
+    @new_stock_entry.set_manufacturer( params[:pmap_inventory][:manufacturer])
     @new_stock_entry.received_quantity = params[:pmap_inventory][:received_quantity]
     @new_stock_entry.current_quantity = params[:pmap_inventory][:received_quantity]
     @new_stock_entry.rxaui = Rxnconso.where("STR = ? AND TTY = 'PSN'", params[:pmap_inventory][:item]).first.RXAUI rescue nil

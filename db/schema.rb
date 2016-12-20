@@ -11,26 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104185041) do
-
-  create_table "RXNATOMARCHIVE", id: false, force: :cascade do |t|
-    t.string "RXAUI",             limit: 8,    null: false
-    t.string "AUI",               limit: 10
-    t.string "STR",               limit: 4000, null: false
-    t.string "ARCHIVE_TIMESTAMP", limit: 280,  null: false
-    t.string "CREATED_TIMESTAMP", limit: 280,  null: false
-    t.string "UPDATED_TIMESTAMP", limit: 280,  null: false
-    t.string "CODE",              limit: 50
-    t.string "IS_BRAND",          limit: 1
-    t.string "LAT",               limit: 3
-    t.string "LAST_RELEASED",     limit: 30
-    t.string "SAUI",              limit: 50
-    t.string "VSAB",              limit: 40
-    t.string "RXCUI",             limit: 8
-    t.string "SAB",               limit: 20
-    t.string "TTY",               limit: 20
-    t.string "MERGED_TO_RXCUI",   limit: 8
-  end
+ActiveRecord::Schema.define(version: 20161220161149) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -53,33 +34,6 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string "CVF",      limit: 50
   end
 
-  add_index "RXNCONSO", ["RXAUI"], name: "X_RXNCONSO_RXAUI", using: :btree
-
-  create_table "RXNCUI", id: false, force: :cascade do |t|
-    t.string "cui1",        limit: 8
-    t.string "ver_start",   limit: 40
-    t.string "ver_end",     limit: 40
-    t.string "cardinality", limit: 8
-    t.string "cui2",        limit: 8
-  end
-
-  create_table "RXNCUICHANGES", id: false, force: :cascade do |t|
-    t.string "RXAUI",     limit: 8
-    t.string "CODE",      limit: 50
-    t.string "SAB",       limit: 20
-    t.string "TTY",       limit: 20
-    t.string "STR",       limit: 3000
-    t.string "OLD_RXCUI", limit: 8,    null: false
-    t.string "NEW_RXCUI", limit: 8,    null: false
-  end
-
-  create_table "RXNDOC", id: false, force: :cascade do |t|
-    t.string "DOCKEY", limit: 50,   null: false
-    t.string "VALUE",  limit: 1000
-    t.string "TYPE",   limit: 50,   null: false
-    t.string "EXPL",   limit: 1000
-  end
-
   create_table "RXNREL", id: false, force: :cascade do |t|
     t.string "RXCUI1",   limit: 8
     t.string "RXAUI1",   limit: 8
@@ -99,39 +53,11 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string "CVF",      limit: 50
   end
 
-  create_table "RXNSAB", id: false, force: :cascade do |t|
-    t.string  "VCUI",   limit: 8
-    t.string  "RCUI",   limit: 8
-    t.string  "VSAB",   limit: 40
-    t.string  "RSAB",   limit: 20,   null: false
-    t.string  "SON",    limit: 3000
-    t.string  "SF",     limit: 20
-    t.string  "SVER",   limit: 20
-    t.string  "VSTART", limit: 10
-    t.string  "VEND",   limit: 10
-    t.string  "IMETA",  limit: 10
-    t.string  "RMETA",  limit: 10
-    t.string  "SLC",    limit: 1000
-    t.string  "SCC",    limit: 1000
-    t.integer "SRL",    limit: 4
-    t.integer "TFR",    limit: 4
-    t.integer "CFR",    limit: 4
-    t.string  "CXTY",   limit: 50
-    t.string  "TTYL",   limit: 300
-    t.string  "ATNL",   limit: 1000
-    t.string  "LAT",    limit: 3
-    t.string  "CENC",   limit: 20
-    t.string  "CURVER", limit: 1
-    t.string  "SABIN",  limit: 1
-    t.string  "SSN",    limit: 3000
-    t.string  "SCIT",   limit: 4000
-  end
-
   create_table "RXNSAT", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8
     t.string "LUI",      limit: 8
     t.string "SUI",      limit: 8
-    t.string "RXAUI",    limit: 9
+    t.string "RXAUI",    limit: 8
     t.string "STYPE",    limit: 50
     t.string "CODE",     limit: 50
     t.string "ATUI",     limit: 11
@@ -141,15 +67,6 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string "ATV",      limit: 4000
     t.string "SUPPRESS", limit: 1
     t.string "CVF",      limit: 50
-  end
-
-  create_table "RXNSTY", id: false, force: :cascade do |t|
-    t.string "RXCUI", limit: 8,   null: false
-    t.string "TUI",   limit: 4
-    t.string "STN",   limit: 100
-    t.string "STY",   limit: 50
-    t.string "ATUI",  limit: 11
-    t.string "CVF",   limit: 50
   end
 
   create_table "dispensations", primary_key: "dispensation_id", force: :cascade do |t|
@@ -184,6 +101,7 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string   "rxaui",             limit: 255
     t.string   "gn_identifier",     limit: 255
     t.string   "lot_number",        limit: 255
+    t.integer  "mfn_id",            limit: 4
     t.date     "expiration_date"
     t.date     "date_received"
     t.integer  "received_quantity", limit: 4,   default: 0
@@ -206,6 +124,13 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.boolean  "voided",          limit: 1,   default: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "manufacturers", primary_key: "mfn_id", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.boolean  "has_pmap",   limit: 1
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "ndc_code_matches", force: :cascade do |t|
@@ -258,7 +183,7 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string   "void_reason",       limit: 255
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
-    t.string   "manufacturer",      limit: 255
+    t.integer  "manufacturer",      limit: 4
   end
 
   create_table "prescriptions", primary_key: "rx_id", force: :cascade do |t|
@@ -287,15 +212,6 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.integer  "user_id",       limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-  end
-
-  create_table "user_roles", force: :cascade do |t|
-    t.text     "first_name", limit: 65535
-    t.text     "last_name",  limit: 65535
-    t.text     "username",   limit: 65535
-    t.text     "user_role",  limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -354,7 +354,7 @@
     // Date picker activation
 
     var manufacturers = [];
-    <% (manufacturers || []).each do |company|%>
+    <% (pmap_manufacturers || []).each do |company|%>
         manufacturers.push('<%= company.html_safe %>')
     <% end %>
 

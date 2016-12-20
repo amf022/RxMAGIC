@@ -36,6 +36,7 @@ class MainController < ApplicationController
         pdf = ActivitySheetPdf.new(@records, @low_stock,@date)
         send_data pdf.render, filename: "activity_sheet_#{report_date}.pdf", type: 'application/pdf'
       end
+
     end
 
   end

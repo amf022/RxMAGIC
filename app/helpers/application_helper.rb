@@ -2,8 +2,8 @@ module ApplicationHelper
   def facility_name
     YAML.load_file("#{Rails.root}/config/application.yml")['facility_name']
   end
-  def manufacturers
-    JSON.parse(File.open("#{Rails.root}/app/assets/data/manufacturers.json").read)
+  def pmap_manufacturers
+    Manufacturer.where("has_pmap = ?", true).collect{|x| x.name} rescue []
   end
   def logged_user
     current_user.username rescue ""

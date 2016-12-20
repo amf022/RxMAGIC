@@ -117,6 +117,13 @@
               <%#=f.error_span(:lot_number) %>
             </div>
             <div class="form-group">
+              <%= f.label :manufacturer, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="general_inventory[manufacturer]" id="mfn" data-provide="typeahead" placeholder="Enter item manufacturer" class ='form-control' required >
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
               <%= f.label :lot_number, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <%= f.text_field :lot_number, :class => 'form-control', :placeholder => 'Lot number',:autocomplete=> 'off', :required => true %>
@@ -169,6 +176,13 @@
               <%= f.label :item, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <input type="text" name="edit_general_inventory[item]" id="editDrugName" data-provide="typeahead" placeholder="Enter item name" class ='form-control' required>
+              </div>
+              <%#=f.error_span(:lot_number) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :manufacturer, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <input type="text" name="edit_general_inventory[manufacturer]" id="editMfn" data-provide="typeahead" placeholder="Enter item manufacturer" class ='form-control' required >
               </div>
               <%#=f.error_span(:lot_number) %>
             </div>
@@ -272,6 +286,15 @@
       $('#datetimepicker2').datetimepicker({format: 'MMM YYYY'});
     });
 
+    $( "#mfn" ).autocomplete({
+      source: "/mfn_suggestions",
+      minLength: 1
+    });
+
+    $( "#editMfn" ).autocomplete({
+      source: "/mfn_suggestions",
+      minLength: 1
+    });
 
     $( "#drugName" ).autocomplete({
         source: "/suggestions",
