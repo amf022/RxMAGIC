@@ -288,12 +288,30 @@
 
     $( "#mfn" ).autocomplete({
       source: "/mfn_suggestions",
-      minLength: 1
+      minLength: 1,
+      change: function(event,ui)
+      {
+        if (ui.item==null)
+        {
+          $("#mfn").val('');
+          $("#mfn").focus();
+        }
+      }
+
     });
 
     $( "#editMfn" ).autocomplete({
       source: "/mfn_suggestions",
-      minLength: 1
+      minLength: 1,
+      change: function(event,ui)
+      {
+        if (ui.item==null)
+        {
+          $("#editMfn").val('');
+          $("#editMfn").focus();
+        }
+      }
+
     });
 
     $( "#drugName" ).autocomplete({
