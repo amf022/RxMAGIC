@@ -36,7 +36,7 @@ class MainController < ApplicationController
         pdf = ActivitySheetPdf.new(@records, @low_stock,@date)
         send_data pdf.render, filename: "activity_sheet_#{report_date}.pdf", type: 'application/pdf'
       end
-
+      format.docx { headers["Content-Disposition"] = "attachment; filename=\"activity_sheet_#{report_date}.docx\"" }
     end
 
   end
@@ -61,6 +61,7 @@ class MainController < ApplicationController
   end
 
   def print_activity_sheet
+    #deprecated code
 
     report_date = params[:date].to_date rescue Date.today
     pdf_filename = "activity_sheet_#{report_date}.pdf"
