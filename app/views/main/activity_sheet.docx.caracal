@@ -1,13 +1,18 @@
 docx.page_size do
-  orientation :potrait  # sets the printer orientation. accepts :portrait and :landscape.
+  width     12240
+  height    15840
+  orientation :portrait  # sets the printer orientation. accepts :portrait and :landscape.
 end
 
 # Setting up all the data
-rows = [["Initials", "Rx#", "Patient Name", "Medication", "QTY","Directions", "Comments"]]
+rows = [["Initials", "Rx#", "Patient Name", "Medication", "QTY","Directions","Borrowed","PMAP","Stock","New Med",
+          "Reorder", "Re-Enrollment /New App","Comments"]]
 
 (@records || {}).each do |patient_id, patient|
   (patient ||{}).each do |drug_name, record|
-     rows << ["",record['prescription'],record['patient_name'], drug_name,record['quantity'],record['directions'],""]
+     rows << ["",record['prescription'],record['patient_name'], drug_name,record['quantity'],record['directions'],
+     (record['source'].include?('Borrowed') ? 'X' : ""),(record['source'].include?('PMAP') ? 'X' : ""),
+     (record['source'].include?('General') ? 'X' : ""),"",(record['reorder'].blank? ? "" : 'X'),"",""]
   end
 end
 
@@ -26,7 +31,8 @@ end
 
 docx.h1 'Pharmacy Activity Sheet', align: :center
 docx.p  'Date : '+ @date
-docx.p  'Clinic : '
+docx.p  'Clinic : '+ @clinic
+docx.p  'Please complete out all items for each patient with only one medication per line'
 
 docx.table rows.dup, border_size: 4 do
   cell_style cells,      size: 18, margins: { top: 100, bottom: 0, left: 100, right: 100 }
