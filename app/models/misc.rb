@@ -39,7 +39,7 @@ module Misc
 
   end
 
-  def create_dispensation_label(item,quantity,lot_number,directions,patient_name,prescriber,rx_id)
+  def create_dispensation_label(item,quantity,manufacturer,directions,patient_name,prescriber,rx_id)
 
     label = ZebraPrinter::StandardLabel.new
     label.font_size = 4
@@ -54,7 +54,8 @@ module Misc
     label.draw_multi_text("#{item}")
     label.draw_multi_text("Dir : #{directions}")
     label.draw_multi_text("QTY : #{quantity}")
-    label.draw_multi_text("Lot # :#{lot_number}")
+    label.draw_multi_text("Mfn :#{manufacturer}")
+    label.draw_text("#{Date.today.strftime('%m/%d/%Y')}",450,366,0,4,1,1,true)
     label.print(1)
 
   end

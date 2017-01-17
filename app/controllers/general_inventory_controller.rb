@@ -4,7 +4,7 @@ class GeneralInventoryController < ApplicationController
 
     @inventory = GeneralInventory.where("current_quantity > ? and voided = ?",
                                         0, false).pluck(:gn_inventory_id, :gn_identifier,:lot_number,:current_quantity,
-                                                        :expiration_date, :rxaui)
+                                                        :expiration_date, :rxaui,:mfn_id)
 
     concepts = Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[5]}.uniq).pluck(:rxaui,:rxcui,:STR)
 
@@ -17,6 +17,8 @@ class GeneralInventoryController < ApplicationController
       result[element[0]] = element[1]  rescue " "
       result
     end
+
+    @manufacturers = Hash[*Manufacturer.where("mfn_id in (?)", @inventory.collect { |x| x[6] }.uniq).pluck(:mfn_id,:name).flatten(1)]
 
     items = Hash.new(0)
     wellStocked = []

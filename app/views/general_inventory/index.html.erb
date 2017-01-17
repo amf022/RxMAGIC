@@ -48,7 +48,7 @@
               <td id="date<%= item[0] %>"><%= item[4].strftime('%b-%Y') rescue ""%></td>
               <td>
 
-                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item[0] %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+                <a href="#" class="edit" data-toggle="modal" data-target="#editModal" data-uid="<%= item[0] %>" data-mfn="<%= @manufacturers[item[6]] %>"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
                 <img style="padding-right: 5px;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item[1] %>'" title="Print Barcode">
                 <a href="#" data-id=<%= item[1] %> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
               </td>
@@ -349,6 +349,7 @@
         document.getElementById('edit_general_inventory_lot_number').value = document.getElementById('lot'+temp).innerHTML.replace('-','');
         document.getElementById('edit_general_inventory_received_quantity').value = parseInt(document.getElementById('qn'+temp).innerHTML.replace(",",""));
         document.getElementById('edit_general_inventory_expiration_date').value = document.getElementById('date'+temp).innerHTML;
+        document.getElementById('editMfn').value = $(this).data('mfn');
         document.getElementById('edit_general_inventory_inventory_id').value = temp
     });
 

@@ -4,7 +4,8 @@ class PmapInventoryController < ApplicationController
     @inventory = PmapInventory.where("current_quantity > 0 and voided = ?",
                                      false).order(date_received: :asc).pluck(:rxaui, :patient_id,:lot_number,
                                                                              :current_quantity,:expiration_date,
-                                                                             :pap_identifier,:pap_inventory_id)
+                                                                             :pap_identifier,:pap_inventory_id,
+                                                                             :manufacturer)
 
     @items = Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[0]}.uniq).pluck(:rxaui,:STR).flatten(1)]
 
@@ -12,6 +13,8 @@ class PmapInventoryController < ApplicationController
       result[element[0]] = element[1] + " " + element[2] rescue " "
       result
     end
+
+    @manufacturers = Hash[*Manufacturer.where("mfn_id in (?)", @inventory.collect { |x| x[7] }.uniq).pluck(:mfn_id,:name).flatten(1)]
 
     @in_stock = PmapInventory.select("patient_id, rxaui, count(rxaui) as count").where("current_quantity > 0
                                       and voided = ?",false).group(:patient_id,:rxaui).length

@@ -49,7 +49,7 @@
             <td><%= item[3] %></td>
             <td id="exp<%=item[6] %>"><%= item[4].strftime('%b-%Y') %></td>
             <td>
-              <a href="#" data-id=<%= item[5]%> data-uid=<%= item[6]%> data-toggle="modal" data-target="#confirm-edit" class="edit"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
+              <a href="#" data-id=<%= item[5]%> data-uid=<%= item[6]%> data-toggle="modal" data-mfn="<%= @manufacturers[item[7]] %>" data-target="#confirm-edit" class="edit"><img style="padding-right: 5px;" src="/assets/edit.png" title="Edit Item"></a>
               <img style="padding-right: 5px;cursor: pointer;" src="/assets/print.png" onmousedown="window.location='/print_bottle_barcode/<%= item[5] %>'" title="Print Barcode">
               <a href="#" data-href="/move_pmap_inventory/<%= item[5]%>" data-toggle="modal" data-target="#confirm-move" class="moveItem"><img src="/assets/move.png" title="Move Item to general inventory"></a>
               <a href="#" data-id=<%= item[5]%> data-toggle="modal" data-target="#confirm-delete" class="delete"><img src="/assets/delete.png" title="Void Item"></a>
@@ -255,6 +255,7 @@
         document.getElementById('pmap_inventory_patient_name').value = document.getElementById("pat" + temp.toString()).innerHTML
         document.getElementById('pmap_inventory_lot_number').value = document.getElementById("lot" + temp.toString().replace("-", "")).innerHTML.toString().replace("-", "")
         document.getElementById('pmap_inventory_expiry_date').value = document.getElementById("exp" + temp.toString()).innerHTML
+        document.getElementById('company').value = $(this).data('mfn');
     });
 
     var manufacturers = [];

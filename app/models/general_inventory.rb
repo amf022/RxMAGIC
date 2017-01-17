@@ -47,7 +47,7 @@ class GeneralInventory < ActiveRecord::Base
     self.mfn_id = mfn.id
   end
 
-  def manufacturer_name
+  def made_by
     return Manufacturer.find(self.mfn_id).name rescue "Unknown"
   end
   private
