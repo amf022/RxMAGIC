@@ -1,7 +1,7 @@
 class Patient < ActiveRecord::Base
 
   def fullname
-    (self.first_name + " " + self.last_name).titleize
+    (self.first_name + " " + self.last_name).titleize rescue "Unknown"
   end
 
   def patient_gender

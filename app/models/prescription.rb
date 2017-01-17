@@ -35,7 +35,10 @@ class Prescription < ActiveRecord::Base
   end
 
   def made_by
-    keys = self.dispensations.collect { |x| x.inventory.made_by.to_s }.join("','")
+    companies = self.dispensations.collect { |x| x.inventory.made_by.to_s }.join("','")
+
+    return (companies.blank? ? "Unknown" : companies)
+
   end
   
 end

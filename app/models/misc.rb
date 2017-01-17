@@ -56,6 +56,7 @@ module Misc
     label.draw_multi_text("QTY : #{quantity}")
     label.draw_multi_text("Mfn :#{manufacturer}")
     label.draw_text("#{Date.today.strftime('%m/%d/%Y')}",450,366,0,4,1,1,true)
+
     label.print(1)
 
   end
