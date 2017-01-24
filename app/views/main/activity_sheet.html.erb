@@ -15,6 +15,12 @@
       font-size: 12px;
       line-height: 1.42857;
   }
+  img.icon{
+    cursor: pointer;
+    padding: 5px;
+    height: 45px;
+  }
+
 </style>
 <div class="page-header" style="margin: 0px !important;padding: 5px !important;">
   <table style="width: 100%">
@@ -34,7 +40,10 @@
         <button class="btn btn-primary" onmousedown="genNextReport()">Generate</button>
       </td>
       <td>
-        <button class="btn btn-success" onmousedown="printReport()">Export as PDF</button>
+        <img src="/assets/pdf-icon.png" onmousedown="printReport()" class="icon" title="Export as PDF">
+      </td>
+      <td>
+        <img src="/assets/word_doc.png" onmousedown="exportReport()" class="icon"  title="Export as Word Document">
       </td>
     </tr>
   </table>
@@ -140,4 +149,7 @@
       window.location = "/pharmacy_sheet/<%=@date.to_s %>.pdf"
     }
 
+    function exportReport() {
+      window.location = "/pharmacy_sheet/<%=@date.to_s %>.docx"
+    }
 </script>

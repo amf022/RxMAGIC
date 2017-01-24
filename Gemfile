@@ -38,6 +38,9 @@ gem 'net-ldap', '~> 0.14.0'
 #Gem for password hashing
 gem 'bcrypt-ruby', '~> 3.1.5', require: "bcrypt"
 
+#Gem used to generate word docs
+gem 'caracal-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

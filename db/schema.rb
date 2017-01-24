@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20161104185041) do
+=======
+ActiveRecord::Schema.define(version: 20161220161149) do
+>>>>>>> development
 
   create_table "dispensations", primary_key: "dispensation_id", force: :cascade do |t|
     t.integer  "rx_id",             limit: 4
@@ -45,6 +49,7 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string   "rxaui",             limit: 255
     t.string   "gn_identifier",     limit: 255
     t.string   "lot_number",        limit: 255
+    t.integer  "mfn_id",            limit: 4
     t.date     "expiration_date"
     t.date     "date_received"
     t.integer  "received_quantity", limit: 4,   default: 0
@@ -67,6 +72,13 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.boolean  "voided",          limit: 1,   default: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "manufacturers", primary_key: "mfn_id", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.boolean  "has_pmap",   limit: 1,   default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   create_table "ndc_code_matches", force: :cascade do |t|
@@ -119,7 +131,7 @@ ActiveRecord::Schema.define(version: 20161104185041) do
     t.string   "void_reason",       limit: 255
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
-    t.string   "manufacturer",      limit: 255
+    t.integer  "manufacturer",      limit: 4
   end
 
   create_table "prescriptions", primary_key: "rx_id", force: :cascade do |t|

@@ -33,5 +33,12 @@ class Prescription < ActiveRecord::Base
                                   voided = 0)) UNION (SELECT lot_number FROM pmap_inventories WHERE
                                   (pap_identifier in ('#{keys}') AND voided = 0))").collect { |x| x.lot_number }.join(",") rescue ""
   end
+
+  def made_by
+    companies = self.dispensations.collect { |x| x.inventory.made_by.to_s }.join("','")
+
+    return (companies.blank? ? "Unknown" : companies)
+
+  end
   
 end

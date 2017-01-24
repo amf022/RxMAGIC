@@ -1,6 +1,7 @@
 class GeneralInventory < ActiveRecord::Base
   belongs_to :rxnconso, :foreign_key => :rxaui
   before_create :complete_record
+  belongs_to :manufacturer, :foreign_key => :mfn_id
 
   validates :lot_number, :presence => true
   validates :expiration_date, :presence => true
@@ -34,6 +35,20 @@ class GeneralInventory < ActiveRecord::Base
     end
 
     return false
+  end
+
+  def set_manufacturer(name)
+    mfn = Manufacturer.where(name: name).first_or_initialize
+    if mfn.id.blank?
+      mfn.has_pmap = false
+      mfn.save
+    end
+
+    self.mfn_id = mfn.id
+  end
+
+  def made_by
+    return Manufacturer.find(self.mfn_id).name rescue "Unknown"
   end
   private
 

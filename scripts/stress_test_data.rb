@@ -25,21 +25,25 @@ $manufacturers = JSON.parse(File.open("#{Rails.root}/app/assets/data/manufacture
 def start
 
   puts "Creating 5000 patients"
+
   (1..200).each do |i|
     create_patient()
   end
 
   puts "Creating 1500 general inventory entries"
+
   (1..50).each do |p|
     create_general_stocks()
   end
 
   puts "Creating 500 PMAP stock items "
+
   (1..20).each do |pap|
     create_pap_stocks()
   end
 
   puts "Creating 15000 prescriptions records"
+
   (1..15).each do |pap|
     create_prescriptions
   end
@@ -50,6 +54,7 @@ end
 
 def create_general_stocks
 
+  offset = rand(Manufacturer.count)
   new_stock_entry = GeneralInventory.new
   new_stock_entry.lot_number = (0...5).map { (65 + rand(26)).chr }.join
   new_stock_entry.expiration_date = Time.now.advance(:months => (rand(36))).strftime('%b-%d-%Y')
@@ -57,6 +62,7 @@ def create_general_stocks
   new_stock_entry.current_quantity = new_stock_entry.received_quantity
   new_stock_entry.date_received = Time.now.advance(:days => -(rand(1050))).strftime('%b-%d-%Y')
   new_stock_entry.rxaui = random_drug
+  new_stock_entry.mfn_id = Manufacturer.offset(offset).first.id
   new_stock_entry.save
 end
 
@@ -75,7 +81,8 @@ def create_patient
 end
 
 def create_prescriptions
-  patient_id = rand(200)
+  offset = rand(Patient.count)
+  patient_id = Patient.offset(offset).first.id
 
   new_prescription = Prescription.new
   new_prescription.provider_id = create_provider
@@ -105,7 +112,9 @@ def create_pmap_prescriptions()
 end
 
 def create_pap_stocks
-  patient_id = rand(100)
+
+  offset = rand(Patient.count)
+  patient_id = Patient.offset(offset).first.id
 
   new_stock_entry = PmapInventory.new
   new_stock_entry.patient_id = patient_id

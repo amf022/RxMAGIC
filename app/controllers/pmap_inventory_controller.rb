@@ -4,7 +4,8 @@ class PmapInventoryController < ApplicationController
     @inventory = PmapInventory.where("current_quantity > 0 and voided = ?",
                                      false).order(date_received: :asc).pluck(:rxaui, :patient_id,:lot_number,
                                                                              :current_quantity,:expiration_date,
-                                                                             :pap_identifier,:pap_inventory_id)
+                                                                             :pap_identifier,:pap_inventory_id,
+                                                                             :manufacturer)
 
     @items = Hash[*Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[0]}.uniq).pluck(:rxaui,:STR).flatten(1)]
 
@@ -12,6 +13,8 @@ class PmapInventoryController < ApplicationController
       result[element[0]] = element[1] + " " + element[2] rescue " "
       result
     end
+
+    @manufacturers = Hash[*Manufacturer.where("mfn_id in (?)", @inventory.collect { |x| x[7] }.uniq).pluck(:mfn_id,:name).flatten(1)]
 
     @in_stock = PmapInventory.select("patient_id, rxaui, count(rxaui) as count").where("current_quantity > 0
                                       and voided = ?",false).group(:patient_id,:rxaui).length
@@ -54,7 +57,7 @@ class PmapInventoryController < ApplicationController
       @entry.current_quantity = params[:pmap_inventory][:amount_received].to_i
       @entry.lot_number = params[:pmap_inventory][:lot_number]
       @entry.expiration_date = params[:pmap_inventory][:expiry_date].to_date rescue nil
-      @entry.manufacturer = params[:pmap_inventory][:manufacturer]
+      @entry.set_manufacturer(params[:pmap_inventory][:manufacturer])
       if @entry.save
         flash[:success] = "#{@entry.bottle_id}  was successfully updated."
         logger.info "Pmap Item #{@entry.bottle_id} was edited by #{current_user.username}"
@@ -74,7 +77,7 @@ class PmapInventoryController < ApplicationController
     @new_stock_entry.lot_number = params[:pmap_inventory][:lot_number].upcase
     @new_stock_entry.expiration_date = params[:pmap_inventory][:expiration_date].to_date rescue nil
     @new_stock_entry.reorder_date = params[:pmap_inventory][:reorder_date].to_date rescue nil
-    @new_stock_entry.manufacturer = params[:pmap_inventory][:manufacturer]
+    @new_stock_entry.set_manufacturer( params[:pmap_inventory][:manufacturer])
     @new_stock_entry.received_quantity = params[:pmap_inventory][:received_quantity]
     @new_stock_entry.current_quantity = params[:pmap_inventory][:received_quantity]
     @new_stock_entry.rxaui = Rxnconso.where("STR = ? and TTY in ('PSN', 'SCD')", params[:pmap_inventory][:item]).first.RXAUI rescue nil

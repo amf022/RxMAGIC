@@ -4,7 +4,7 @@ class GeneralInventoryController < ApplicationController
 
     @inventory = GeneralInventory.where("current_quantity > ? and voided = ?",
                                         0, false).pluck(:gn_inventory_id, :gn_identifier,:lot_number,:current_quantity,
-                                                        :expiration_date, :rxaui)
+                                                        :expiration_date, :rxaui,:mfn_id)
 
     concepts = Rxnconso.where("rxaui in (?)", @inventory.collect{|x| x[5]}.uniq).pluck(:rxaui,:rxcui,:STR)
 
@@ -17,6 +17,8 @@ class GeneralInventoryController < ApplicationController
       result[element[0]] = element[1]  rescue " "
       result
     end
+
+    @manufacturers = Hash[*Manufacturer.where("mfn_id in (?)", @inventory.collect { |x| x[6] }.uniq).pluck(:mfn_id,:name).flatten(1)]
 
     items = Hash.new(0)
     wellStocked = []
@@ -68,6 +70,7 @@ class GeneralInventoryController < ApplicationController
       @new_stock_entry.expiration_date = params[:edit_general_inventory][:expiration_date].to_date rescue nil
       @new_stock_entry.received_quantity = params[:edit_general_inventory][:received_quantity].to_i + (@new_stock_entry.received_quantity - @new_stock_entry.current_quantity)
       @new_stock_entry.current_quantity = params[:edit_general_inventory][:received_quantity].to_i
+      @new_stock_entry.set_manufacturer(params[:edit_general_inventory][:manufacturer])
 
       if @new_stock_entry.rxaui.blank?
         flash[:errors] = {} if flash[:errors].blank?
@@ -127,6 +130,7 @@ class GeneralInventoryController < ApplicationController
     @new_stock_entry.lot_number = params[:general_inventory][:lot_number].upcase
     @new_stock_entry.expiration_date = params[:general_inventory][:expiration_date].to_date rescue nil
     @new_stock_entry.received_quantity = params[:general_inventory][:received_quantity]
+    @new_stock_entry.set_manufacturer(params[:general_inventory][:manufacturer])
 
     if @new_stock_entry.rxaui.blank?
       flash[:errors] = {} if flash[:errors].blank?
@@ -196,4 +200,12 @@ class GeneralInventoryController < ApplicationController
       end
     end
   end
+
+  def mfn_suggestions
+
+    @companies = Manufacturer.where("name like ? ", "#{params[:term]}%").limit(10).collect{|x| x.name.humanize.gsub(/\b('?[a-z])/) { $1.capitalize }}
+
+    render :text => @companies
+  end
+
 end

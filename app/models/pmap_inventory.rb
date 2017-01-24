@@ -28,7 +28,7 @@ class PmapInventory < ActiveRecord::Base
   end
 
   def made_by
-    self.manufacturer.blank? ? "Unknown" : self.manufacturer
+    return Manufacturer.find(self.manufacturer).name rescue  "Unknown"
   end
 
   def bottle_id
@@ -70,6 +70,16 @@ class PmapInventory < ActiveRecord::Base
       end
     end
     return false
+  end
+
+  def set_manufacturer(name)
+    mfn = Manufacturer.where(name: name).first_or_initialize
+    if mfn.id.blank?
+      mfn.has_pmap = false
+      mfn.save
+    end
+
+    self.manufacturer = mfn.id
   end
 
   private
