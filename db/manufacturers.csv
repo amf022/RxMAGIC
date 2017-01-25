@@ -9,7 +9,7 @@ Accord Healthcare Inc.;FALSE
 Accredo Health Group, Inc.;FALSE
 Acella Pharmaceuticals, LLC;FALSE
 Acorda Therapeutics, Inc.;FALSE
-Actavis Pharma, Inc.;FALSE
+Actavis Pharma, Inc.;TRUE
 Actelion Pharmaceuticals US, Inc.;FALSE
 Acura Pharmaceuticals, Inc.;FALSE
 Acusphere, Inc.;FALSE
@@ -80,7 +80,7 @@ Bionpharma Inc.;FALSE
 Biovail Corporation;FALSE
 Blu Pharmaceuticals LLC;FALSE
 Blue Earth Diagnostics, Ltd.;FALSE
-Boehringer Ingelheim Pharmaceuticals, Inc.;FALSE
+Boehringer Ingelheim Pharmaceuticals, Inc.;TRUE
 Braintree Laboratories Inc.;FALSE
 Breckenridge Pharmaceutical, Inc.;FALSE
 Bristol-Myers Squibb Company;TRUE
@@ -228,7 +228,7 @@ Medicis Pharmaceutical Corporation;FALSE
 Medicure Pharma, Inc.;FALSE
 MedImmune, Inc.;FALSE
 MediQuest Therapeutics Inc;FALSE
-Merck & Co., Inc.;FALSE
+Merck & Co., Inc.;TRUE
 Merck Consumer Care;FALSE
 Merrimack Pharmaceuticals, Inc.;FALSE
 Molnlycke Healthcare;FALSE

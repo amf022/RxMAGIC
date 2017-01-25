@@ -1,7 +1,7 @@
 docx.page_size do
   width     12240
   height    15840
-  orientation :portrait  # sets the printer orientation. accepts :portrait and :landscape.
+  orientation :landscape
 end
 
 # Setting up all the data

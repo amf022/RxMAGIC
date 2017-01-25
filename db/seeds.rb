@@ -18,3 +18,6 @@ CSV.foreach("#{Rails.root}/db/thresholds.csv") do |row|
   new_drug_threshold.voided = false
   new_drug_threshold.save
 end
+
+puts "load manufacturers"
+`rails runner #{Rails.root}/scripts/load_manufacturers.rb`

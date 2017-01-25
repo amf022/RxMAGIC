@@ -3,7 +3,9 @@ def start
 
   (names || []).each do |manufacturer|
     mfn = Manufacturer.find_by_name(manufacturer[1]).id rescue nil
-    PmapInventory.where("manufacturer = ?", manufacturer[0]).update_all(manufacturer: mfn)
+		unless mfn.blank?
+	    PmapInventory.where("manufacturer = ?", manufacturer[0]).update_all(manufacturer: mfn)
+		end
   end
 end
 
