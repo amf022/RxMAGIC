@@ -1,14 +1,16 @@
 def start
-  puts "Started at #{Time.now}"
-  #check_low_pmap_stock
-  puts ""
+  f = File.open("#{Rails.root}/log/alerts.log", "w")
+  f.puts "Started at #{Time.now}"
+
+  check_low_pmap_stock
   check_low_general_stock
-  #check_expiring_pmap_stock
-  #check_expiring_general_stock
+  check_expiring_pmap_stock
+  check_expiring_general_stock
   check_unutilized_pmap_stock
   check_expired_general_items
   check_expired_pmap_items
-  puts "Finished at #{Time.now}"
+  f.puts "Finished at #{Time.now}"
+  f.close
 end
 
 def check_low_pmap_stock

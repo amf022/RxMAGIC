@@ -21,4 +21,34 @@ module MainHelper
     end
     return results
   end
+
+  def compile_report(prescriptions,inventory,later_dispensations)
+    records = {}
+
+    (prescriptions || []).each do |prescription|
+      records[prescription.rxaui] = {"drug_name" => prescription.drug_name, "stock" => 0, "rx_num" => 0,
+                                     "amount_prescribed" => 0, "amount_dispensed" => 0} if records[prescription.rxaui].blank?
+
+      records[prescription.rxaui]["rx_num"] = prescription.rx_id
+      records[prescription.rxaui]["amount_dispensed"] = prescription.amount_dispensed
+      records[prescription.rxaui]["amount_prescribed"] = prescription.quantity
+    end
+
+    (inventory || []).each do |item|
+      records[item.rxaui] = {"drug_name" => item.drug_name, "stock" => 0, "rx_num" => 0,
+                           "amount_prescribed" => 0, "amount_dispensed" => 0} if records[item.rxaui].blank?
+
+      records[item.rxaui]["stock"] += item.current_quantity
+    end
+
+    (later_dispensations || []).each do |item|
+      records[item.rxaui] = {"drug_name" => Rxnconso.find(item.rxaui).STR, "stock" => 0, "rx_num" => 0,
+                             "amount_prescribed" => 0, "amount_dispensed" => 0} if records[item.rxaui].blank?
+
+      records[item.rxaui]["stock"] += item.quantity
+    end
+
+    return records
+  end
+
 end

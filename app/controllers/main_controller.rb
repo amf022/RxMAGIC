@@ -91,4 +91,60 @@ class MainController < ApplicationController
   def faq
     #This page will display frequently asked questions
   end
+
+  def custom_report
+
+    if request.post?
+      case params[:report][:duration]
+        when 'daily'
+          @title = "Daily Inventory and Dispension Report for #{params[:report][:start_date].to_date.strftime('%d %B, %Y')}"
+          start_date = params[:report][:start_date].to_date.strftime('%Y-%m-%d 00:00:00')
+          end_date = params[:report][:start_date].to_date.strftime('%Y-%m-%d 23:59:59')
+ 
+        when 'monthly'
+          @title = "Inventory and Dispensation Report for #{params[:report][:start_date].to_date.strftime('%B %Y')}"
+          start_date = params[:report][:start_date].to_date.beginning_of_month.strftime('%Y-%m-%d 00:00:00')
+          end_date = params[:report][:start_date].to_date.end_of_month.strftime('%Y-%m-%d 23:59:59')
+
+        when 'range'
+          @title = "Inventory and Dispensation Report from #{params[:report][:start_date].to_date.strftime('%d %B, %Y')}
+         to #{params[:report][:end_date].to_date.strftime('%d %B, %Y')}"
+          start_date = params[:report][:start_date].to_date.strftime('%Y-%m-%d 00:00:00')
+          end_date = params[:report][:end_date].to_date.strftime('%Y-%m-%d 23:59:59')
+
+      end
+
+      prescriptions = Prescription.select("count(rx_id) as rx_id,sum(quantity) as quantity,sum(amount_dispensed) as amount_dispensed,
+                                          rxaui").where("voided = ? and date_prescribed BETWEEN ? and ?",
+                                                        false, start_date, end_date).group("rxaui")
+
+      dispensations = Dispensation.find_by_sql("select rxaui, sum(d.quantity) as quantity from dispensations as d left join
+                                       prescriptions p on d.rx_id=p.rx_id where dispensation_date > '#{end_date}' and
+                                       d.voided =0 and p.voided =0 group by rxaui, inventory_id")
+
+
+      inventory = GeneralInventory.find_by_sql("SELECT inventory.rxaui,sum(current_quantity)
+                                                as current_quantity FROM (Select rxaui, gn_identifier as identifier,
+                                                current_quantity from general_inventories where voided = 0 and
+                                                date_received <= '#{end_date}' UNION Select rxaui, pap_identifier as
+                                                identifier, current_quantity from pmap_inventories where voided = 0
+                                                and date_received <= '#{end_date}') as inventory group by inventory.rxaui")
+
+      @records = view_context.compile_report(prescriptions,inventory, dispensations)
+
+
+    else
+      @title = "Inventory and Dispensation Report"
+    end
+
+    respond_to do |format|
+      format.html do
+
+      end
+    end
+  end
+
+  def report
+
+  end
 end
