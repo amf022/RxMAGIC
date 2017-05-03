@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   get '/void_threshold/:id' => 'drug_threshold#destroy'
   get "/drug_threshold/unique_prescriptions"
 
+  ###################### Manufacturer Controller ######################
+  get '/void_manufacturer/:id' => 'manufacturer#destroy'
+
   ###################### Main Controller ##############################
 
   get '/dashboard' => "main#dashboard"
@@ -30,6 +33,8 @@ Rails.application.routes.draw do
   get '/pharmacy_sheet/:date' => "main#activity_sheet"
   get '/print_pharmacy_sheet/:date' => "main#print_activity_sheet"
   get '/printable_activity_sheet/:date' => "main#printable_activity_sheet"
+  get '/custom_report' => "main#custom_report"
+  post '/report' => "main#custom_report"
   get '/main/contact'
   post '/main/contact'
 
@@ -107,6 +112,7 @@ Rails.application.routes.draw do
   resources :news
   resources :user
   resources :dispensation
+  resources :manufacturer
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

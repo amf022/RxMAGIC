@@ -1,0 +1,171 @@
+<%= javascript_include_tag 'jquery-1.12.0.min.js' %>
+<%= javascript_include_tag 'jquery-ui.min.js' %>
+<%= stylesheet_link_tag    'jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+
+<style>
+  th{
+    text-align: center;
+    padding: 1px;
+    line-height: 2.5em;
+  }
+
+  td{
+    padding-left: 2px;
+    padding-right: 2px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    line-height: 1.42857;
+  }
+  img.icon{
+    cursor: pointer;
+    padding: 5px;
+    height: 45px;
+  }
+
+</style>
+<div class="page-header" style="margin: 0px !important;padding: 5px !important;">
+  <table style="width: 100%">
+    <tr>
+      <td style="width: 60%;">
+        <h4><%= @title rescue "" %></h4>
+      </td>
+      <td style="width: 30%;">
+        &nbsp;
+      </td>
+      <td>
+        <a href="#" class="btn btn-primary"
+           data-toggle="modal" style="width: 100%;"
+           data-target="#newReport">New Report</a>
+      </td>
+      <td>
+        <img src="/assets/pdf-icon.png" onmousedown="printReport()" class="icon" title="Export as PDF">
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-12 col-sm-12">
+    <div>
+      <table id="records" border="1" style="width: 100%;">
+        <thead style="background-color: silver;">
+        <tr>
+          <th>Item</th>
+          <th style="width: 20%;">Stock Quantity</th>
+          <th style="width: 20%;">Amount Prescribed (# of Rx)</th>
+          <th style="width: 20%;">Amount Dispensed</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% (@records || []).each do |rxaui,record| %>
+          <tr>
+            <td style="text-align: center;"><%= record['drug_name'] %> </td>
+            <td style="text-align: center;"><%= number_with_delimiter(record['stock']) %></td>
+            <td style="text-align: center;">
+              <%= number_with_delimiter(record['amount_prescribed']) %> (<%= number_with_delimiter(record['rx_num']) %>)
+            </td>
+            <td style="text-align: center;"><%= number_with_delimiter(record['amount_dispensed']) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="newReport" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">New Report Details</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for :main, :html => { :class => "form-horizontal" }, :url => "/report"  do |f| %>
+
+            <div class="form-group">
+              <%= f.label :report_duration, :class => 'control-label col-lg-4' %>
+              <input type="radio" name="report[duration]" value="daily" style="margin-left: 2vw;" required onchange="reportType()"> Daily
+              <input type="radio" name="report[duration]" value="monthly" style="margin-left: 2vw;" required onchange="reportType()"> Monthly
+              <input type="radio" name="report[duration]" value="range" style="margin-left: 2vw;" required onchange="reportType()"> Other
+            </div>
+            <div class="form-group">
+              <%= f.label :start_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='datetimepicker1'>
+                  <input name="report[start_date]" id="report_start_date" type='text' placeholder="Report Start Date" class="form-control" autocomplete="off" required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :end_date, :class => 'control-label col-lg-4' %>
+              <div class="col-lg-6">
+                <div class='input-group date' id='datetimepicker2'>
+                  <input name="report[end_date]" id="report_end_date" type='text' placeholder="Report End Date" class="form-control" autocomplete="off" disabled/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-offset-7 col-lg-11">
+                <%= f.submit "Generate", :class => 'btn btn-success' %>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  // Styling the table with datatables library
+  $(document).ready(function() {
+    $('#records').DataTable({"bLengthChange": false, "bDestroy": true});
+  } );
+
+  // Date picker activation
+  $(function () {
+    $('#datetimepicker1').datetimepicker({format: 'MMM D, YYYY'});
+    $('#datetimepicker2').datetimepicker({format: 'MMM D, YYYY'});
+  });
+
+
+  function genNextReport()
+  {
+    var date = document.getElementById("report_date").value.toString().trim()
+    if(date == "")
+    {
+      alert("Please select a date")
+    }
+    else{
+      window.location = "/pharmacy_sheet/"+date
+    }
+
+  }
+
+  function printReport() {
+    window.location = "/pharmacy_sheet/<%=@date.to_s %>.pdf"
+  }
+
+  function reportType()
+  {
+    if (document.forms[0].elements["report[duration]"].value == "range")
+    {
+      document.getElementById('report_end_date').required = true
+      $('#report_end_date').removeAttr("disabled")
+    }
+    else
+    {
+      document.getElementById('report_end_date').disabled = true
+      $('#report_end_date').removeAttr("required")
+    }
+
+  }
+</script>

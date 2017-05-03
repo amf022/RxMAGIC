@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161220161149) do
+ActiveRecord::Schema.define(version: 20170414144703) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20161220161149) do
     t.string "RXCUI",    limit: 8
     t.string "LUI",      limit: 8
     t.string "SUI",      limit: 8
-    t.string "RXAUI",    limit: 8
+    t.string "RXAUI",    limit: 9
     t.string "STYPE",    limit: 50
     t.string "CODE",     limit: 50
     t.string "ATUI",     limit: 11
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20161220161149) do
   create_table "manufacturers", primary_key: "mfn_id", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.boolean  "has_pmap",   limit: 1,   default: false
+    t.boolean  "voided",     limit: 1,   default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
@@ -212,6 +213,15 @@ ActiveRecord::Schema.define(version: 20161220161149) do
     t.integer  "user_id",       limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "user_roles", force: :cascade do |t|
+    t.text     "first_name", limit: 65535
+    t.text     "last_name",  limit: 65535
+    t.text     "username",   limit: 65535
+    t.text     "user_role",  limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "users", force: :cascade do |t|
