@@ -38,7 +38,11 @@
            data-target="#newReport">New Report</a>
       </td>
       <td>
-        <img src="/assets/pdf-icon.png" onmousedown="printReport()" class="icon" title="Export as PDF">
+        <% if @type.blank? %>
+            &nbsp;
+        <% else %>
+            <img src="/assets/pdf-icon.png" class="icon" onmousedown="printReport()" title="Export as pdf">
+      <% end %>
       </td>
     </tr>
   </table>
@@ -85,15 +89,15 @@
 
             <div class="form-group">
               <%= f.label :report_duration, :class => 'control-label col-lg-4' %>
-              <input type="radio" name="report[duration]" value="daily" style="margin-left: 2vw;" required onchange="reportType()"> Daily
-              <input type="radio" name="report[duration]" value="monthly" style="margin-left: 2vw;" required onchange="reportType()"> Monthly
-              <input type="radio" name="report[duration]" value="range" style="margin-left: 2vw;" required onchange="reportType()"> Other
+              <input type="radio" name="duration" value="daily" style="margin-left: 2vw;" required onchange="reportType()"> Daily
+              <input type="radio" name="duration" value="monthly" style="margin-left: 2vw;" required onchange="reportType()"> Monthly
+              <input type="radio" name="duration" value="range" style="margin-left: 2vw;" required onchange="reportType()"> Other
             </div>
             <div class="form-group">
               <%= f.label :start_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker1'>
-                  <input name="report[start_date]" id="report_start_date" type='text' placeholder="Report Start Date" class="form-control" autocomplete="off" required/>
+                  <input name="start_date" id="report_start_date" type='text' placeholder="Report Start Date" class="form-control" autocomplete="off" required/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -104,7 +108,7 @@
               <%= f.label :end_date, :class => 'control-label col-lg-4' %>
               <div class="col-lg-6">
                 <div class='input-group date' id='datetimepicker2'>
-                  <input name="report[end_date]" id="report_end_date" type='text' placeholder="Report End Date" class="form-control" autocomplete="off" disabled/>
+                  <input name="end_date" id="report_end_date" type='text' placeholder="Report End Date" class="form-control" autocomplete="off" disabled/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -151,12 +155,12 @@
   }
 
   function printReport() {
-    window.location = "/pharmacy_sheet/<%=@date.to_s %>.pdf"
+      window.location='/custom_report.pdf?duration=' + '<%=@type %>' + '&start_date='+ '<%=@start_date %>'+'&end_date='+'<%=@end_date %>'
   }
 
   function reportType()
   {
-    if (document.forms[0].elements["report[duration]"].value == "range")
+    if (document.forms[0].elements["duration"].value == "range")
     {
       document.getElementById('report_end_date').required = true
       $('#report_end_date').removeAttr("disabled")

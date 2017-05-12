@@ -30,8 +30,8 @@ module MainHelper
                                      "amount_prescribed" => 0, "amount_dispensed" => 0} if records[prescription.rxaui].blank?
 
       records[prescription.rxaui]["rx_num"] = prescription.rx_id
-      records[prescription.rxaui]["amount_dispensed"] = prescription.amount_dispensed
-      records[prescription.rxaui]["amount_prescribed"] = prescription.quantity
+      records[prescription.rxaui]["amount_dispensed"] = number_with_delimiter(prescription.amount_dispensed)
+      records[prescription.rxaui]["amount_prescribed"] = number_with_delimiter(prescription.quantity)
     end
 
     (inventory || []).each do |item|
