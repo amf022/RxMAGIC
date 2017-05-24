@@ -26,13 +26,15 @@ class InventoryReportPdf < Prawn::Document
   def table_content
 
     move_down 10
-    table(product_rows, :column_widths => {0 => 300, 1 => 120,2 => 200,3=>120})
+    table(product_rows, :column_widths => {0 => 300, 1 => 120,2 => 200,3=>120}, :header => true)
 
   end
 
   def product_rows
-    rows = [[{:content => 'Item'},{:content => 'Stock Quantity', :align => :center},
-             {:content => 'Amount Prescribed (# of Rx)', :align => :center}, {:content => 'Amount Dispensed', :align => :center}]]
+    rows = [[{:content => 'Item', :background_color => "CCCCCC"},
+             {:content => 'Stock Quantity', :align => :center, :background_color => "CCCCCC"},
+             {:content => 'Amount Prescribed (# of Rx)', :align => :center, :background_color => "CCCCCC"},
+             {:content => 'Amount Dispensed', :align => :center, :background_color => "CCCCCC"}]]
 
     (@records || []).each do |rxaui,record|
       rows << [record['drug_name'].to_s, {:content => record['stock'].to_s, :align => :center},

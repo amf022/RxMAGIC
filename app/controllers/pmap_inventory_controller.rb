@@ -175,12 +175,31 @@ class PmapInventoryController < ApplicationController
     @expired = PmapInventory.select("patient_id, rxaui,pap_identifier, date_received, expiration_date,current_quantity").where("voided = ? AND current_quantity > ? AND expiration_date <= ? ",
                                    false,0, Date.today.strftime('%Y-%m-%d'))
 
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        records = view_context.expired(@expired)
+        keys = %w[patient_name drug_name bottle_id date_received expiry_date quantity]
+        pdf = InventoryPdf.new(records, "PAP Inventory Expired Items",Date.current.strftime('%B %d, %Y'), keys)
+        send_data pdf.render, filename: "pap_expired_items_#{Date.current.strftime('%Y-%m-%d')}.pdf", type: 'application/pdf'
+      end
+    end
   end
 
   def about_to_expire
     @aboutToExpire = PmapInventory.where("voided = ? AND current_quantity > ? AND expiration_date  BETWEEN ? AND ?",false,0,
                                          Date.today.strftime('%Y-%m-%d'),
                                          Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
+    respond_to do |format|
+      format.html
+      format.pdf do
+        records = view_context.expired(@aboutToExpire)
+        keys = %w[patient_name drug_name bottle_id date_received expiry_date quantity]
+        pdf = InventoryPdf.new(records, "PAP Inventory Items About to Expire",Date.current.strftime('%B %d, %Y'), keys)
+        send_data pdf.render, filename: "pap_expiring_items_#{Date.current.strftime('%Y-%m-%d')}.pdf", type: 'application/pdf'
+      end
+    end
   end
 
   def underutilized
@@ -196,6 +215,14 @@ class PmapInventoryController < ApplicationController
       result[element[0]] = element[1] + " " + element[2] rescue " "
       result
     end
-
+    respond_to do |format|
+      format.html
+      format.pdf do
+        records = view_context.underutilized(@inventory, @items,@patients)
+        keys = %w[item item_identifier patient lot_number current_quantity expiration_date]
+        pdf = InventoryPdf.new(records, "PAP Underutilized Inventory Items",Date.current.strftime('%B %d, %Y'), keys)
+        send_data pdf.render, filename: "underutilized_items_#{Date.current.strftime('%Y-%m-%d')}.pdf", type: 'application/pdf'
+      end
+    end
   end
 end

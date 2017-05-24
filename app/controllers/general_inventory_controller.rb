@@ -155,9 +155,19 @@ class GeneralInventoryController < ApplicationController
   def expired_items
     #This funtion retrieves all the expired items
 
-    items = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.today.strftime('%Y-%m-%d'))
+    items = GeneralInventory.where("voided = ? AND current_quantity > ? AND expiration_date <= ? ", false,0, Date.current.strftime('%Y-%m-%d'))
 
     @expired = view_context.expired_items(items)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        keys = %w[drug_name bottle_id lot_number date_received expiry_date quantity]
+        pdf = InventoryPdf.new(@expired, "Expired General Inventory Items",Date.current.strftime('%B %d, %Y'), keys)
+        send_data pdf.render, filename: "expired_items_#{Date.current.strftime('%Y-%m-%d')}.pdf", type: 'application/pdf'
+      end
+    end
+
   end
 
   def expiring_items
@@ -168,6 +178,15 @@ class GeneralInventoryController < ApplicationController
                                                     Date.today.advance(:months => 2).end_of_month.strftime('%Y-%m-%d'))
 
     @expired = view_context.expired_items(items)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        keys = %w[drug_name bottle_id lot_number date_received expiry_date quantity]
+        pdf = InventoryPdf.new(@expired, "General Inventory Items About to Expire",Date.current.strftime('%B %d, %Y'), keys)
+        send_data pdf.render, filename: "expiring_items_#{Date.current.strftime('%Y-%m-%d')}.pdf", type: 'application/pdf'
+      end
+    end
   end
 
   def understocked

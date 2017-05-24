@@ -17,6 +17,9 @@
       <div style="display: table-cell">
         <h3><%=t '.title', :default => 'PMAP Inventory: Expired Items'.titleize %></h3>
       </div>
+      <div style="display: table-cell;padding-left: 5px;">
+        <img src="/assets/pdf-icon.png" style="" onmousedown="printReport()" class="icon" title="Export as PDF">
+      </div>
     </div>
   </div>
 </div>
@@ -114,5 +117,7 @@
       $.fn.dataTable.moment( 'MMM D, YYYY' );
       $('#expiredItems').DataTable({"bLengthChange": false, "bDestroy": true});
     } );
-
+    function printReport() {
+        window.location = "/expired_pmap_items.pdf"
+    }
 </script>
