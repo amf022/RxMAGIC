@@ -109,7 +109,7 @@
 
 <script type="text/javascript">
     $('.delete').on('click', function(e) {
-        document.getElementById('pmap_inventory_pmap_id').value = $(this).data('id');
+        document.getElementById('pmap_inventory_pmap_id').value = $(this).data('id').replace('-','');
     });
 
     // Styling the table with datatables library

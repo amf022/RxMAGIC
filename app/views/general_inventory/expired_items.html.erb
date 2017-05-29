@@ -111,7 +111,7 @@
 
 <script type="text/javascript">
     $('.delete').on('click', function(e) {
-        document.getElementById('general_inventory_gn_id').value = $(this).data('id');
+        document.getElementById('general_inventory_gn_id').value = $(this).data('id').replace('-','');
     });
 
     // Styling the table with datatables library
