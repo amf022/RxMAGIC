@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414144703) do
+ActiveRecord::Schema.define(version: 20170611153833) do
 
   create_table "RXNCONSO", id: false, force: :cascade do |t|
     t.string "RXCUI",    limit: 8,                    null: false
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20170414144703) do
     t.string "RXCUI",    limit: 8
     t.string "LUI",      limit: 8
     t.string "SUI",      limit: 8
-    t.string "RXAUI",    limit: 9
+    t.string "RXAUI",    limit: 8
     t.string "STYPE",    limit: 50
     t.string "CODE",     limit: 50
     t.string "ATUI",     limit: 11
@@ -207,21 +207,20 @@ ActiveRecord::Schema.define(version: 20170414144703) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "students", primary_key: "student_id", force: :cascade do |t|
+    t.string   "fname",      limit: 255
+    t.string   "lname",      limit: 255
+    t.integer  "age",        limit: 4,   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "user_credentials", force: :cascade do |t|
     t.string   "password_hash", limit: 255
     t.string   "password_salt", limit: 255
     t.integer  "user_id",       limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-  end
-
-  create_table "user_roles", force: :cascade do |t|
-    t.text     "first_name", limit: 65535
-    t.text     "last_name",  limit: 65535
-    t.text     "username",   limit: 65535
-    t.text     "user_role",  limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
   end
 
   create_table "users", force: :cascade do |t|

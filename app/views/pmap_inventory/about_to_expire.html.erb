@@ -134,6 +134,9 @@
     $('.moveItem').on('click', function(e) {
         document.getElementById('btnMove').href = $(this).data('href');
     });
+    $('.delete').on('click', function(e) {
+        document.getElementById('pmap_inventory_pmap_id').value = $(this).data('id').replace('-','');
+    });
     function printReport() {
         window.location = "/pmap_inventory/about_to_expire.pdf"
     }
